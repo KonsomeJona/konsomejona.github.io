@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Three Column Portfolio Template for Bootstrap 3</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS for the '3 Col Portfolio' Template -->
+    <link href="css/3-col-portfolio.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="https://github.com/KonsomeJona">Takohi - Jonathan Odul</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="privacy_policy.html">Privacy Policy</a></li>
+            <li><a href="mailto:takohigames@gmail.com">Contact</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <h1 class="page-header">Projects & Work</h1>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-4 portfolio-item">
+          <a href="https://assetstore.unity.com/publishers/4241"><img class="img-responsive" src="http://2.bp.blogspot.com/-AZXWRb3Ml0I/UkGHIM4TXjI/AAAAAAAAAlk/Fe5TPa9lgPg/s1600/Unity-Asset-Store.png"></a>
+          <h3><a href="https://assetstore.unity.com/publishers/4241">Unity Assets</a></h3>
+          <p>Visit our Unity Asset Store publisher page to check out all of my Unity assets.</p>
+        </div>
+
+        <div class="col-md-4 portfolio-item">
+          <a href="https://github.com/KonsomeJona/OctoMouse"><img class="img-responsive" src="https://camo.githubusercontent.com/528fd6dc783414c7fb36b7409cde7a30aa7ea04f2970e28cfa1b08dfe533a019/68747470733a2f2f6b6f6e736f6d656a6f6e612e6769746875622e696f2f4f63746f4d6f7573652f696d616765732f73637265656e73686f74732f73637265656e2d322e706e67"></a>
+          <h3><a href="https://github.com/KonsomeJona/OctoMouse">OctoMouse</a></h3>
+          <p>Free and open-source application for MAC OSX that measures your mouse and keyboard activities.</p>
+        </div>
+
+        <div class="col-md-4 portfolio-item">
+          <a href="https://github.com/KonsomeJona/UnityGB"><img class="img-responsive" src="https://assetstorev1-prd-cdn.unity3d.com/key-image/4438f2da-4b31-4d83-9d8b-e8237a845c8f.png"></a>
+          <h3><a href="https://github.com/KonsomeJona/UnityGB">UnityGB</a></h3>
+          <p>Game Boy emulator for Unity using C# and Mono.</p>
+        </div>
+
+      </div>
+
+      <div class="row">
+
+      </div>
+        <div class="col-md-4 portfolio-item">
+          <a href="https://github.com/KonsomeJona/Sanctuary"><img class="img-responsive" src="https://camo.githubusercontent.com/b2fafd714c7052b038bddf2cb27f8c70c1c7edaa85572d1f538747f3c19c3476/68747470733a2f2f706c61792d6c682e676f6f676c6575736572636f6e74656e742e636f6d2f5234784a3042616c6135355777636c5f4247344447557374303973475931466a426e376574442d6b585f6d7956696f6f456b69706c4d57497a4146507270496f48394d3d733336302d7277"></a>
+          <h3><a href="https://github.com/KonsomeJona/Sanctuary">Sanctuary</a></h3>
+          <p>Sanctuary relies on the Android Work Profile APIs to create a self-contained work profile on a user's personal device. Managed apps, data, and management policies are restricted to the work profile, keeping them secure and separate from personal data while maintaining user privacy.</p>
+        </div>
+      
+      </div>
+
+    </div><!-- /.container -->
+
+    <div class="container">
+
+      <hr>
+
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <p>Copyright &copy; Takohi <span id="getCurrentDate"></span></p>
+          </div>
+        </div>
+      </footer>
+      
+    </div><!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript">
+      var dt = new Date();
+      document.getElementById('getCurrentDate').innerHTML = dt.getFullYear();
+    </script>
+  </body>
+
+</html>
