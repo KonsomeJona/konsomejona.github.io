@@ -67,6 +67,22 @@ h1 {
     text-align: center;
 }
 
+.developer-link {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.developer-link a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.developer-link a:hover {
+    text-decoration: underline;
+}
+
 .apps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
