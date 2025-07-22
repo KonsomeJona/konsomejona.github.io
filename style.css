@@ -35,6 +35,7 @@ header .container {
 .logo {
     height: 50px;
     width: auto;
+    object-fit: contain;
 }
 
 nav ul {
@@ -112,6 +113,22 @@ h1 {
     width: 80px;
     height: 80px;
     border-radius: 16px;
+    object-fit: contain;
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.app-icon-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0 auto;
 }
 
 .app-card h3 {
