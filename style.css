@@ -114,8 +114,6 @@ h1 {
     height: 80px;
     border-radius: 16px;
     object-fit: contain;
-    background-color: #f0f0f0;
-    padding: 10px;
 }
 
 .app-icon-placeholder {
