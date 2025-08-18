@@ -1,11 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Takohi - Apps</title>
+    <meta name="description" content="Takohi - Professional Android app developer specializing in WearOS games, wellness apps, and productivity tools">
+    <meta name="author" content="Jonathan Odul (KonsomeJona)">
+    <title>Takohi - Professional Android Apps</title>
     <link rel="stylesheet" href="style.css">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .app-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .platform-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin: 0.25rem;
+        }
+        
+        .platform-badge.wearos { background: #1976D2; }
+        .platform-badge.mobile { background: #FF9800; }
+        .platform-badge.game { background: #9C27B0; }
+        .platform-badge.wellness { background: #4CAF50; }
+        .platform-badge.utility { background: #607D8B; }
+        .platform-badge.emulator { background: #FF5722; }
+        
+        .play-button {
+            display: inline-block;
+            background: #01875F;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .play-button:hover {
+            background: #016A4D;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .mono-repo-link {
+            background: #333;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .mono-repo-link:hover {
+            background: #555;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .developer-stats {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            display: inline-block;
+            margin: 0 1rem;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1976D2;
+        }
+        
+        .legacy-projects {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .legacy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .legacy-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .legacy-card img {
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -23,152 +162,279 @@
 
     <main>
         <div class="container">
-            <h1>Our Apps</h1>
-            <p class="developer-link">View all apps on <a href="https://play.google.com/store/apps/developer?id=%E8%9B%B8%E7%81%AF" target="_blank">Google Play Store</a></p>
-            <div class="apps-grid">
+            <h1>Professional Android Applications</h1>
+            <p class="developer-link">
+                View all apps on <a href="https://play.google.com/store/apps/developer?id=%E8%9B%B8%E7%81%AB" target="_blank">Google Play Store</a>
+                <a href="https://github.com/KonsomeJona/mono" target="_blank" class="mono-repo-link">
+                    📁 View Source Code (Mono Repo)
+                </a>
+            </p>
+            
+            <div class="developer-stats">
+                <h3>Development Portfolio Stats</h3>
+                <div class="stat-item">
+                    <span class="stat-number">7</span>
+                    <span>Published Apps</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span>Platforms</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15+</span>
+                    <span>Languages</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span>Kotlin + Compose</span>
+                </div>
+            </div>
+
+            <h2>Featured Applications</h2>
+            <div class="app-grid">
+                <!-- TronWear -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="tronwear-icon.png" alt="TronWear">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge game">Game</div>
+                    <h3>TronWear</h3>
+                    <p><strong>Tron-Inspired WearOS Game</strong></p>
+                    <p>A motorcycle light cycle game optimized for WearOS with gesture controls, AI opponents, and 6 game modes including multiplayer and power-up battles.</p>
+                    <p><em>Package: me.takohi.tronwear</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Sophisticated AI with multiple difficulty levels</li>
+                        <li>Circular map layout for round watch displays</li>
+                        <li>Multi-language support (15+ languages)</li>
+                        <li>Haptic feedback and sound effects</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=me.takohi.tronwear" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- MindfulBreath -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="mindfulbreath-icon.png" alt="MindfulBreath">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge wellness">Wellness</div>
+                    <h3>MindfulBreath</h3>
+                    <p><strong>Meditation & Wellness App</strong></p>
+                    <p>A meditation and breathing exercises app designed for mindfulness and wellness on WearOS devices with guided sessions and progress tracking.</p>
+                    <p><em>Package: com.takohi.mindfulbreath</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Guided breathing exercises with animations</li>
+                        <li>Session tracking and progress history</li>
+                        <li>Multiple breathing patterns (4-7-8, Box breathing)</li>
+                        <li>WearOS tiles and complications</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.takohi.mindfulbreath" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- HourlyChime -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="hourlychime-icon.png" alt="HourlyChime">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge mobile">Mobile</div>
+                    <div class="platform-badge utility">Utility</div>
+                    <h3>HourlyChime</h3>
+                    <p><strong>Dual-Platform Time Announcer</strong></p>
+                    <p>A utility app that announces the current time every hour using text-to-speech synthesis, available for both WearOS and Android mobile.</p>
+                    <p><em>Package: me.takohi.hourlychime</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Hourly time announcements with TTS</li>
+                        <li>Customizable voice settings and languages</li>
+                        <li>Battery optimization and boot persistence</li>
+                        <li>Cross-platform compatibility</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=me.takohi.hourlychime" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- AstroWear -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="astrowear-icon.png" alt="AstroWear">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge game">Game</div>
+                    <h3>AstroWear</h3>
+                    <p><strong>Classic Asteroids Game</strong></p>
+                    <p>A retro-inspired space shooter game featuring classic asteroids gameplay with touch and crown controls optimized for WearOS devices.</p>
+                    <p><em>Package: com.studiojona.astrowear</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Authentic 80s asteroids gameplay</li>
+                        <li>Touch + crown controls optimized for watches</li>
+                        <li>Progressive haptic feedback</li>
+                        <li>Instant ship destruction with particle effects</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.studiojona.astrowear" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- SkyBird -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="skybird-icon.png" alt="SkyBird">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge game">Game</div>
+                    <h3>SkyBird</h3>
+                    <p><strong>Endless Runner Game</strong></p>
+                    <p>A classic endless runner game with Flappy Bird-style mechanics, featuring smooth gameplay and crown control support for WearOS.</p>
+                    <p><em>Package: com.flappybird.wear</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Smooth 60 FPS gameplay</li>
+                        <li>Touch or crown controls</li>
+                        <li>Realistic physics with gravity</li>
+                        <li>Optimized for round and square displays</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.flappybird.wear" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- IPTV -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="iptv-icon.png" alt="IPTV">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge mobile">Mobile</div>
+                    <div class="platform-badge utility">Android TV</div>
+                    <h3>IPTV</h3>
+                    <p><strong>Multi-Platform IPTV Streaming</strong></p>
+                    <p>Cross-platform IPTV streaming app with synchronization between WearOS, Mobile, and Android TV devices. Features favorites sync and voice input.</p>
+                    <p><em>Package: me.takohi.iptv (WearOS) / me.takohi.iptv.mobile (Mobile) / me.takohi.iptv.tv (TV)</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>M3U/M3U8 playlist support</li>
+                        <li>Cross-device synchronization</li>
+                        <li>Voice input for URLs</li>
+                        <li>Smart favorites management</li>
+                    </ul>
+                    <p><em>Coming Soon to Google Play</em></p>
+                </div>
+
+                <!-- WearGB -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="weargb-icon.png" alt="WearGB">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge emulator">Emulator</div>
+                    <h3>WearGB</h3>
+                    <p><strong>Game Boy Emulator</strong></p>
+                    <p>A Game Boy and Game Boy Color emulator designed specifically for WearOS devices with optimized touch controls and crown navigation.</p>
+                    <p><em>Package: me.takohi.weargb</em></p>
+                    <ul style="text-align: left; display: inline-block;">
+                        <li>Game Boy / Game Boy Color emulation</li>
+                        <li>Touch controls optimized for watches</li>
+                        <li>Crown navigation support</li>
+                        <li>Save states and SRAM support</li>
+                    </ul>
+                    <p><em>In Development</em></p>
+                </div>
+
+                <!-- Easy Print -->
                 <div class="app-card">
                     <div class="app-icon">
                         <img src="easyprint-icon.svg" alt="Easy Print">
                     </div>
+                    <div class="platform-badge mobile">Mobile</div>
+                    <div class="platform-badge utility">Utility</div>
                     <h3>Easy Print</h3>
+                    <p><strong>Mobile Printing Solution</strong></p>
                     <p>Simple and easy printing solution for your mobile device</p>
                     <a href="https://play.google.com/store/apps/details?id=com.takohi.easyprint" class="play-button" target="_blank">
                         View on Google Play
                     </a>
                 </div>
 
+                <!-- Mood Light -->
                 <div class="app-card">
                     <div class="app-icon">
                         <img src="moodlight-icon.svg" alt="Mood Light">
                     </div>
+                    <div class="platform-badge mobile">Mobile</div>
+                    <div class="platform-badge wellness">Wellness</div>
                     <h3>Mood Light</h3>
+                    <p><strong>Ambient Lighting App</strong></p>
                     <p>Transform your device into a relaxing mood light with customizable colors</p>
                     <a href="https://play.google.com/store/apps/details?id=com.takohi.moodlight" class="play-button" target="_blank">
                         View on Google Play
                     </a>
                 </div>
             </div>
+
+            <section class="legacy-projects">
+                <h2>Development Portfolio & Open Source</h2>
+                <p>Additional projects showcasing diverse development skills across platforms and technologies.</p>
+                
+                <div class="legacy-grid">
+                    <div class="legacy-card">
+                        <a href="https://assetstore.unity.com/publishers/4241">
+                            <img src="http://2.bp.blogspot.com/-AZXWRb3Ml0I/UkGHIM4TXjI/AAAAAAAAAlk/Fe5TPa9lgPg/s1600/Unity-Asset-Store.png" alt="Unity Assets">
+                        </a>
+                        <h4><a href="https://assetstore.unity.com/publishers/4241">Unity Assets</a></h4>
+                        <p>Game development assets and tools for Unity developers</p>
+                    </div>
+
+                    <div class="legacy-card">
+                        <a href="https://github.com/KonsomeJona/OctoMouse">
+                            <img src="https://camo.githubusercontent.com/528fd6dc783414c7fb36b7409cde7a30aa7ea04f2970e28cfa1b08dfe533a019/68747470733a2f2f6b6f6e736f6d656a6f6e612e6769746875622e696f2f4f63746f4d6f7573652f696d616765732f73637265656e73686f74732f73637265656e2d322e706e67" alt="OctoMouse">
+                        </a>
+                        <h4><a href="https://github.com/KonsomeJona/OctoMouse">OctoMouse</a></h4>
+                        <p>Free macOS application for tracking mouse and keyboard activities</p>
+                    </div>
+
+                    <div class="legacy-card">
+                        <a href="https://github.com/KonsomeJona/UnityGB">
+                            <img src="https://assetstorev1-prd-cdn.unity3d.com/key-image/4438f2da-4b31-4d83-9d8b-e8237a845c8f.png" alt="UnityGB">
+                        </a>
+                        <h4><a href="https://github.com/KonsomeJona/UnityGB">UnityGB</a></h4>
+                        <p>Game Boy emulator for Unity using C# and Mono</p>
+                    </div>
+
+                    <div class="legacy-card">
+                        <a href="https://github.com/KonsomeJona/Sanctuary">
+                            <img src="https://camo.githubusercontent.com/b2fafd714c7052b038bddf2cb27f8c70c1c7edaa85572d1f538747f3c19c3476/68747470733a2f2f706c61792d6c682e676f6f676c6575736572636f6e74656e742e636f6d2f5234784a3042616c6135355777636c5f4247344447557374303973475931466a426e376574442d6b585f6d7956696f6f456b69706c4d57497a4146507270496f48394d3d733336302d7277" alt="Sanctuary">
+                        </a>
+                        <h4><a href="https://github.com/KonsomeJona/Sanctuary">Sanctuary</a></h4>
+                        <p>Android Work Profile management using enterprise APIs</p>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Takohi. All rights reserved.</p>
+            <p>&copy; 2024 Takohi (Jonathan Odul). All rights reserved.</p>
             <div class="footer-links">
                 <a href="privacy-policy.html">Privacy Policy</a>
                 <a href="terms-of-service.html">Terms of Service</a>
                 <a href="https://play.google.com/store/apps/developer?id=%E8%9B%B8%E7%81%AB" target="_blank">All Apps</a>
+                <a href="https://github.com/KonsomeJona" target="_blank">GitHub</a>
+                <a href="mailto:takohigames@gmail.com">Contact</a>
             </div>
         </div>
     </footer>
-</body>
-=======
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
 
-    <title>Takohi - KonsomeJona (Jonathan Odul)</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-
-    <!-- Custom CSS for the '3 Col Portfolio' Template -->
-    <link href="css/3-col-portfolio.css" rel="stylesheet">
-  </head>
-
-  <body>
-
-    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="https://github.com/KonsomeJona">Takohi - KonsomeJona (Jonathan Odul)</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="privacy_policy.html">Privacy Policy</a></li>
-            <li><a href="mailto:takohigames@gmail.com">Contact</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container -->
-    </nav>
-
-    <div class="container">
-
-      <div class="row">
-
-        <div class="col-lg-12">
-          <h1 class="page-header">Projects & Work</h1>
-        </div>
-
-      </div>
-
-      <div class="row">
-
-        <div class="col-md-4 portfolio-item">
-          <a href="https://assetstore.unity.com/publishers/4241"><img class="img-responsive" src="http://2.bp.blogspot.com/-AZXWRb3Ml0I/UkGHIM4TXjI/AAAAAAAAAlk/Fe5TPa9lgPg/s1600/Unity-Asset-Store.png"></a>
-          <h3><a href="https://assetstore.unity.com/publishers/4241">Unity Assets</a></h3>
-          <p>Visit our Unity Asset Store publisher page to check out all of my Unity assets.</p>
-        </div>
-
-        <div class="col-md-4 portfolio-item">
-          <a href="https://github.com/KonsomeJona/OctoMouse"><img class="img-responsive" src="https://camo.githubusercontent.com/528fd6dc783414c7fb36b7409cde7a30aa7ea04f2970e28cfa1b08dfe533a019/68747470733a2f2f6b6f6e736f6d656a6f6e612e6769746875622e696f2f4f63746f4d6f7573652f696d616765732f73637265656e73686f74732f73637265656e2d322e706e67"></a>
-          <h3><a href="https://github.com/KonsomeJona/OctoMouse">OctoMouse</a></h3>
-          <p>Free and open-source application for MAC OSX that measures your mouse and keyboard activities.</p>
-        </div>
-
-        <div class="col-md-4 portfolio-item">
-          <a href="https://github.com/KonsomeJona/UnityGB"><img class="img-responsive" src="https://assetstorev1-prd-cdn.unity3d.com/key-image/4438f2da-4b31-4d83-9d8b-e8237a845c8f.png"></a>
-          <h3><a href="https://github.com/KonsomeJona/UnityGB">UnityGB</a></h3>
-          <p>Game Boy emulator for Unity using C# and Mono.</p>
-        </div>
-
-      </div>
-
-      <div class="row">
-
-      </div>
-        <div class="col-md-4 portfolio-item">
-          <a href="https://github.com/KonsomeJona/Sanctuary"><img class="img-responsive" src="https://camo.githubusercontent.com/b2fafd714c7052b038bddf2cb27f8c70c1c7edaa85572d1f538747f3c19c3476/68747470733a2f2f706c61792d6c682e676f6f676c6575736572636f6e74656e742e636f6d2f5234784a3042616c6135355777636c5f4247344447557374303973475931466a426e376574442d6b585f6d7956696f6f456b69706c4d57497a4146507270496f48394d3d733336302d7277"></a>
-          <h3><a href="https://github.com/KonsomeJona/Sanctuary">Sanctuary</a></h3>
-          <p>Sanctuary relies on the Android Work Profile APIs to create a self-contained work profile on a user's personal device. Managed apps, data, and management policies are restricted to the work profile, keeping them secure and separate from personal data while maintaining user privacy.</p>
-        </div>
-      
-      </div>
-
-    </div><!-- /.container -->
-
-    <div class="container">
-
-      <hr>
-
-      <footer>
-        <div class="row">
-          <div class="col-lg-12">
-            <p>Copyright &copy; Takohi <span id="getCurrentDate"></span></p>
-          </div>
-        </div>
-      </footer>
-      
-    </div><!-- /.container -->
-
-    <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
-    <script type="text/javascript">
-      var dt = new Date();
-      document.getElementById('getCurrentDate').innerHTML = dt.getFullYear();
+    <script>
+        // Update copyright year automatically
+        document.addEventListener('DOMContentLoaded', function() {
+            const year = new Date().getFullYear();
+            document.querySelector('footer p').innerHTML = `&copy; ${year} Takohi (Jonathan Odul). All rights reserved.`;
+        });
     </script>
-  </body>
-
->>>>>>> 703ea65a991bbe3bb6893709b908563a210b81ef
+</body>
 </html>
