@@ -207,15 +207,16 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
 
-        // Firebase configuration - Free tier project for WearGB
+        // Firebase configuration - WearGB Project
+        // TODO: Replace with actual Firebase project configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBvOiLM9R7VGFZf5P-q8YmXhPMpJbEhElQ",
-            authDomain: "weargb-url-input.firebaseapp.com", 
-            databaseURL: "https://weargb-url-input-default-rtdb.firebaseio.com",
-            projectId: "weargb-url-input",
-            storageBucket: "weargb-url-input.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef123456789weargb"
+            apiKey: "YOUR_API_KEY", // Get from Firebase Console
+            authDomain: "weargb.firebaseapp.com",
+            databaseURL: "https://weargb-default-rtdb.firebaseio.com",
+            projectId: "weargb",
+            storageBucket: "weargb.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID", // Get from Firebase Console  
+            appId: "YOUR_APP_ID" // Get from Firebase Console
         };
 
         // Initialize Firebase
