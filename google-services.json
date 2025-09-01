@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "480332250386",
+    "firebase_url": "https://weargb-default-rtdb.firebaseio.com",
+    "project_id": "weargb",
+    "storage_bucket": "weargb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480332250386:android:bb0b24818b022d2f9747cb",
+        "android_client_info": {
+          "package_name": "me.takohi.weargb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmJscxLCqL4FegLbhPU3c9v1Ilr-b5Ans"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

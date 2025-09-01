@@ -1,0 +1,11 @@
+{
+  "rules": {
+    "url-sessions": {
+      "$sessionId": {
+        ".read": true,
+        ".write": true,
+        ".validate": "newData.hasChildren(['url', 'timestamp', 'consumed'])"
+      }
+    }
+  }
+}
