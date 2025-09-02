@@ -279,8 +279,8 @@
                 status.textContent = 'Sending URL to your device...';
                 status.className = 'status info';
                 
-                // Write to Firebase with session ID as key (using iptv/url-sessions path)
-                await set(ref(database, `iptv/url-sessions/${sessionId}`), {
+                // Write to Firebase with session ID as key (using url-sessions path like wearGB)
+                await set(ref(database, `url-sessions/${sessionId}`), {
                     url: url,
                     timestamp: Date.now(),
                     consumed: false
