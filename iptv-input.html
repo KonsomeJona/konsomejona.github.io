@@ -208,15 +208,15 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
         import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
 
-        // Firebase configuration - Using public test database
+        // Firebase configuration - Using weargb database with IPTV path
         const firebaseConfig = {
-            apiKey: "AIzaSyDOCAbC123dEf456GhI789jKl012-MnO",
-            authDomain: "public-test-db.firebaseapp.com",
-            databaseURL: "https://public-test-db-default-rtdb.firebaseio.com",
-            projectId: "public-test-db",
-            storageBucket: "public-test-db.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abc123def456"
+            apiKey: "AIzaSyBp8_V8jjEUq1aGuypS6VV63cFBFap0s6M",
+            authDomain: "weargb.firebaseapp.com",
+            databaseURL: "https://weargb-default-rtdb.firebaseio.com",
+            projectId: "weargb",
+            storageBucket: "weargb.firebasestorage.app",
+            messagingSenderId: "480332250386",
+            appId: "1:480332250386:web:9747cb"
         };
 
         // Initialize Firebase
@@ -279,8 +279,8 @@
                 status.textContent = 'Sending URL to your device...';
                 status.className = 'status info';
                 
-                // Write to Firebase with session ID as key
-                await set(ref(database, `iptv-url-sessions/${sessionId}`), {
+                // Write to Firebase with session ID as key (using iptv/url-sessions path)
+                await set(ref(database, `iptv/url-sessions/${sessionId}`), {
                     url: url,
                     timestamp: Date.now(),
                     consumed: false
