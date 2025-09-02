@@ -144,6 +144,30 @@
             object-fit: cover;
             border-radius: 8px;
         }
+        
+        .support-button {
+            display: inline-block;
+            background: #FFDD00;
+            color: #000;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-left: 1rem;
+        }
+        
+        .support-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4);
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .support-button span {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -156,6 +180,9 @@
                     <li><a href="privacy-policy.html">Privacy Policy</a></li>
                     <li><a href="terms-of-service.html">Terms of Service</a></li>
                 </ul>
+                <a href="https://buymeacoffee.com/konsomejona" target="_blank" class="support-button">
+                    <span>☕</span> Support Developer
+                </a>
             </nav>
         </div>
     </header>
@@ -320,6 +347,7 @@
                         <li>Cross-device synchronization</li>
                         <li>Voice input for URLs</li>
                         <li>Smart favorites management</li>
+                        <li>In-app support button (Buy Me a Coffee)</li>
                     </ul>
                     <p><em>Coming Soon to Google Play</em></p>
                 </div>
