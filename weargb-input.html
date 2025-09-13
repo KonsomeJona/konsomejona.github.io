@@ -129,20 +129,34 @@
             margin-top: 20px;
             font-size: 12px;
             opacity: 0.7;
+            display: flex;
+            gap: 30px;
+            justify-content: space-between;
         }
-        
+
+        .examples-column {
+            flex: 1;
+        }
+
         .examples h3 {
             margin: 0 0 10px 0;
             font-size: 14px;
         }
-        
+
         .examples ul {
             margin: 0;
             padding-left: 20px;
         }
-        
+
         .examples li {
             margin-bottom: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .examples {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
         
         .loading {
@@ -193,21 +207,25 @@
         <div id="status" class="status"></div>
         
         <div class="examples">
-            <h3>Supported formats:</h3>
-            <ul>
-                <li>Game Boy (.gb, .gbc)</li>
-                <li>Direct download links</li>
-                <li>ZIP archives (.zip, .7z)</li>
-            </ul>
-            <h3 style="margin-top: 15px;">Supported sites:</h3>
-            <ul>
-                <li>Google Drive</li>
-                <li>Dropbox</li>
-                <li>MediaFire</li>
-                <li>GitHub Releases</li>
-                <li>Archive.org</li>
-                <li>Direct URLs (any site with direct download)</li>
-            </ul>
+            <div class="examples-column">
+                <h3>Supported formats:</h3>
+                <ul>
+                    <li>Game Boy (.gb, .gbc)</li>
+                    <li>Direct download links</li>
+                    <li>ZIP archives (.zip, .7z)</li>
+                </ul>
+            </div>
+            <div class="examples-column">
+                <h3>Supported sites:</h3>
+                <ul>
+                    <li>Google Drive</li>
+                    <li>Dropbox</li>
+                    <li>MediaFire</li>
+                    <li>GitHub Releases</li>
+                    <li>Archive.org</li>
+                    <li>Direct URLs</li>
+                </ul>
+            </div>
         </div>
     </div>
 
