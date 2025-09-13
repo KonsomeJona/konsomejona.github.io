@@ -197,7 +197,16 @@
             <ul>
                 <li>Game Boy (.gb, .gbc)</li>
                 <li>Direct download links</li>
-                <li>Personal cloud storage links</li>
+                <li>ZIP archives (.zip, .7z)</li>
+            </ul>
+            <h3 style="margin-top: 15px;">Supported sites:</h3>
+            <ul>
+                <li>Google Drive</li>
+                <li>Dropbox</li>
+                <li>MediaFire</li>
+                <li>GitHub Releases</li>
+                <li>Archive.org</li>
+                <li>Direct URLs (any site with direct download)</li>
             </ul>
         </div>
     </div>
@@ -231,9 +240,6 @@
             document.getElementById('status').textContent = 'Error: No session ID found in URL';
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
-        } else {
-            document.getElementById('status').textContent = `Session: ${sessionId.substring(0, 8)}...`;
-            document.getElementById('status').className = 'status info';
         }
 
         // Global function for sending URL to Firebase
@@ -286,25 +292,14 @@
                     consumed: false
                 });
                 
-                status.textContent = '✅ URL sent successfully! Check your watch.';
-                status.className = 'status success';
-                
-                // Auto-close after 3 seconds
-                setTimeout(() => {
-                    try {
-                        window.close();
-                    } catch (e) {
-                        // If we can't close (some browsers block this), show message
-                        status.textContent = '✅ Done! You can close this tab and check your watch.';
-                    }
-                }, 3000);
+                // Redirect to success page
+                window.location.href = 'weargb-success.html';
                 
             } catch (error) {
                 console.error('Error sending URL to Firebase:', error);
-                status.textContent = 'Error: Could not send URL. Please try again.';
-                status.className = 'status error';
-                sendButton.disabled = false;
-                sendButton.textContent = 'Send to Watch';
+                // Redirect to error page with error details
+                const errorMessage = encodeURIComponent(error.message || 'Unknown error occurred');
+                window.location.href = `weargb-error.html?error=${errorMessage}`;
             }
         };
         

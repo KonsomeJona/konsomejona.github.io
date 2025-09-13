@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success - WearGB</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 28px;
+            font-weight: 600;
+            color: #4ade80;
+        }
+
+        .message {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #fbbf24;
+        }
+
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 28px;
+            background: linear-gradient(45deg, #4ade80, #22c55e);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+        }
+
+        .close-hint {
+            margin-top: 30px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        <h1>Success!</h1>
+        <div class="message">
+            Your ROM URL has been sent to your WearGB watch app.
+        </div>
+
+        <div class="instructions">
+            <h3>📱 What's next?</h3>
+            <ol>
+                <li>Check your watch screen</li>
+                <li>The download should start automatically</li>
+                <li>Once downloaded, the game will appear in your ROM list</li>
+                <li>Tap the game to start playing!</li>
+            </ol>
+        </div>
+
+        <div class="instructions">
+            <h3>⚠️ Troubleshooting:</h3>
+            <ol>
+                <li>Make sure your watch is connected to WiFi</li>
+                <li>Ensure WearGB app is open on your watch</li>
+                <li>The QR code scanner should be active</li>
+                <li>Download may take a few moments depending on file size</li>
+            </ol>
+        </div>
+
+        <a href="#" onclick="window.close(); return false;" class="button">
+            Close This Page
+        </a>
+
+        <div class="close-hint">
+            You can safely close this tab now
+        </div>
+    </div>
+
+    <script>
+        // Auto-close after 10 seconds
+        setTimeout(() => {
+            try {
+                window.close();
+            } catch (e) {
+                // Some browsers block window.close()
+                console.log('Auto-close blocked by browser');
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
