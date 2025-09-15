@@ -608,7 +608,7 @@
                         This page will close automatically in 5 seconds...
                     </div>
                     <div style="margin-top: 20px;">
-                        <button onclick="window.close()" style="background: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                        <button onclick="closeAndRedirect()" style="background: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;">
                             Close Tab
                         </button>
                     </div>
@@ -618,6 +618,23 @@
             // Add some celebration animation
             const container = document.querySelector('.container');
             container.style.animation = 'fadeIn 0.5s ease-in-out';
+        }
+
+        // Function to close and redirect to clear history
+        function closeAndRedirect() {
+            try {
+                // Clear history and redirect to Google
+                window.history.replaceState(null, '', 'https://www.google.com');
+                window.location.replace('https://www.google.com');
+            } catch (e) {
+                // If redirect fails, try to close the window
+                try {
+                    window.close();
+                } catch (closeError) {
+                    // If we can't close either, show alert
+                    alert('Please close this tab manually.');
+                }
+            }
         }
 
         // Function to get user's preferred language
@@ -1027,11 +1044,18 @@
                 // Auto-close after 5 seconds (longer to let user see success)
                 setTimeout(() => {
                     try {
-                        window.close();
+                        // Clear history and redirect to Google
+                        window.history.replaceState(null, '', 'https://www.google.com');
+                        window.location.replace('https://www.google.com');
                     } catch (e) {
-                        // If we can't close (some browsers block this), show message
-                        status.textContent = t.successClose;
-                        status.className = 'status success';
+                        // If redirect fails, try to close the window
+                        try {
+                            window.close();
+                        } catch (closeError) {
+                            // If we can't close either, show message
+                            status.textContent = t.successClose;
+                            status.className = 'status success';
+                        }
                     }
                 }, 5000);
 
