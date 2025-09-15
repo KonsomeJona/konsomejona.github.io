@@ -15,6 +15,42 @@
             color: white;
         }
 
+        .input-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-type-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .input-type-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: white;
+            transform: scale(1.02);
+        }
+
+        .input-type-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .input-section {
+            display: none;
+        }
+
+        .input-section.active {
+            display: block;
+        }
+
         .container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -49,7 +85,9 @@
             font-size: 14px;
         }
 
-        input[type="url"] {
+        input[type="url"],
+        input[type="text"],
+        input[type="password"] {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -61,11 +99,15 @@
             backdrop-filter: blur(5px);
         }
 
-        input[type="url"]::placeholder {
+        input[type="url"]::placeholder,
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
 
-        input[type="url"]:focus {
+        input[type="url"]:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus {
             outline: none;
             border-color: rgba(255, 255, 255, 0.8);
             background: rgba(255, 255, 255, 0.2);
@@ -188,6 +230,138 @@
     <script>
         // Language translations
         const translations = {
+            it: {
+                title: '📺 IPTV Guarda',
+                subtitle: 'Inserisci URL della playlist IPTV per il tuo dispositivo',
+                urlLabel: 'URL Lista IPTV',
+                urlPlaceholder: 'https://esempio.com/lista.m3u8',
+                sendButton: 'Invia al Dispositivo',
+                sending: 'Invio al Dispositivo...',
+                spamProtection: '🛡️ Protezione Anti-Spam: Limitato a 10 sessioni simultanee. Le sessioni scadono dopo 10 minuti.',
+                supportedFormats: 'Formati supportati:',
+                format1: 'Liste M3U/M3U8 (.m3u, .m3u8)',
+                format2: 'URL API Xtream Codes',
+                format3: 'URL di streaming diretto',
+                format4: 'Endpoint API Panel',
+                legalNotice: '⚖️ Avviso Legale: Questo strumento è progettato per accedere a contenuti IPTV di proprietà legale. Gli utenti sono responsabili di assicurarsi di avere l\'autorizzazione appropriata per accedere a qualsiasi contenuto di streaming. Non utilizzare questo strumento per accedere a materiale protetto da copyright senza autorizzazione.',
+                errorNoSession: 'Errore: Nessun ID di sessione trovato nell\'URL',
+                errorInvalidSession: 'Errore: Formato ID sessione non valido',
+                sessionInfo: 'Sessione: ',
+                rateLimited: 'Limite raggiunto. Attendere',
+                seconds: 'secondi.',
+                enterUrl: 'Inserisci un URL',
+                invalidUrl: 'URL non valido: ',
+                onlyHttpAllowed: 'Sono consentiti solo URL HTTP e HTTPS',
+                localhostBlocked: 'URL localhost e privati non sono consentiti',
+                invalidUrlFormat: 'Formato URL non valido',
+                urlAccepted: 'URL accettato (nessun pattern IPTV rilevato)',
+                validIptvUrl: 'URL IPTV valido',
+                noIptvWarning: 'L\'URL non contiene pattern IPTV comuni. Continuare comunque?',
+                sendingToDevice: 'Invio URL al tuo dispositivo...',
+                successMessage: '✅ URL inviato con successo! Controlla il tuo dispositivo.',
+                successClose: '✅ Fatto! Puoi chiudere questa scheda e controllare il tuo dispositivo.',
+                errorSending: 'Errore: Impossibile inviare l\'URL. Riprova.',
+                sessionAlreadyUsed: '⚠️ Questa sessione è già stata utilizzata. Scansiona un nuovo codice QR.',
+                checkingSession: 'Controllo stato sessione...',
+                directUrl: 'URL Diretto',
+                xtreamCodes: 'Codici Xtream',
+                serverUrl: 'URL Server',
+                serverUrlPlaceholder: 'http://esempio.com:8080',
+                username: 'Nome utente',
+                usernamePlaceholder: 'Il tuo nome utente',
+                password: 'Password',
+                passwordPlaceholder: 'La tua password',
+                converting: 'Conversione in URL IPTV...',
+                invalidXtream: 'Compila tutti i campi Xtream Codes'
+            },
+            ja: {
+                title: '📺 IPTVウォッチ',
+                subtitle: 'デバイス用のIPTVプレイリストURLを入力',
+                urlLabel: 'IPTVプレイリストURL',
+                urlPlaceholder: 'https://example.com/playlist.m3u8',
+                sendButton: 'デバイスに送信',
+                sending: 'デバイスに送信中...',
+                spamProtection: '🛡️ スパム保護：10の同時セッションに制限。セッションは10分後に期限切れ。',
+                supportedFormats: 'サポート形式:',
+                format1: 'M3U/M3U8プレイリスト (.m3u, .m3u8)',
+                format2: 'Xtream Codes API URL',
+                format3: 'ダイレクトストリーミングURL',
+                format4: 'パネルAPIエンドポイント',
+                legalNotice: '⚖️ 法的通知：このツールは合法的に所有されているIPTVコンテンツにアクセスするために設計されています。',
+                errorNoSession: 'エラー：URLにセッションIDが見つかりません',
+                errorInvalidSession: 'エラー：無効なセッションID形式',
+                sessionInfo: 'セッション: ',
+                rateLimited: 'レート制限。待ってください',
+                seconds: '秒。',
+                enterUrl: 'URLを入力してください',
+                invalidUrl: '無効なURL: ',
+                onlyHttpAllowed: 'HTTPとHTTPS URLのみ許可',
+                localhostBlocked: 'localhostとプライベートURLは許可されません',
+                invalidUrlFormat: '無効なURL形式',
+                urlAccepted: 'URL承認済み（IPTVパターン未検出）',
+                validIptvUrl: '有効なIPTV URL',
+                noIptvWarning: 'URLに一般的なIPTVパターンが含まれていません。続行しますか？',
+                sendingToDevice: 'デバイスにURLを送信中...',
+                successMessage: '✅ URLが正常に送信されました！デバイスを確認してください。',
+                successClose: '✅ 完了！このタブを閉じてデバイスを確認できます。',
+                errorSending: 'エラー：URLを送信できませんでした。もう一度お試しください。',
+                sessionAlreadyUsed: '⚠️ このセッションは既に使用されています。新しいQRコードをスキャンしてください。',
+                checkingSession: 'セッション状態を確認中...',
+                directUrl: '直接URL',
+                xtreamCodes: 'Xtreamコード',
+                serverUrl: 'サーバーURL',
+                serverUrlPlaceholder: 'http://example.com:8080',
+                username: 'ユーザー名',
+                usernamePlaceholder: 'あなたのユーザー名',
+                password: 'パスワード',
+                passwordPlaceholder: 'あなたのパスワード',
+                converting: 'IPTV URLに変換中...',
+                invalidXtream: 'すべてのXtream Codesフィールドを入力してください'
+            },
+            pt: {
+                title: '📺 IPTV Assistir',
+                subtitle: 'Digite a URL da lista IPTV para seu dispositivo',
+                urlLabel: 'URL da Lista IPTV',
+                urlPlaceholder: 'https://exemplo.com/lista.m3u8',
+                sendButton: 'Enviar para Dispositivo',
+                sending: 'Enviando para Dispositivo...',
+                spamProtection: '🛡️ Proteção Anti-Spam: Limitado a 10 sessões simultâneas. Sessões expiram após 10 minutos.',
+                supportedFormats: 'Formatos suportados:',
+                format1: 'Listas M3U/M3U8 (.m3u, .m3u8)',
+                format2: 'URLs da API Xtream Codes',
+                format3: 'URLs de streaming direto',
+                format4: 'Endpoints da API do Painel',
+                legalNotice: '⚖️ Aviso Legal: Esta ferramenta é projetada para acessar conteúdo IPTV de propriedade legal. Os usuários são responsáveis por garantir que têm autorização adequada para acessar qualquer conteúdo de streaming. Não use esta ferramenta para acessar material protegido por direitos autorais sem permissão.',
+                errorNoSession: 'Erro: Nenhum ID de sessão encontrado na URL',
+                errorInvalidSession: 'Erro: Formato de ID de sessão inválido',
+                sessionInfo: 'Sessão: ',
+                rateLimited: 'Limite atingido. Por favor aguarde',
+                seconds: 'segundos.',
+                enterUrl: 'Por favor, insira uma URL',
+                invalidUrl: 'URL inválida: ',
+                onlyHttpAllowed: 'Apenas URLs HTTP e HTTPS são permitidas',
+                localhostBlocked: 'URLs localhost e privadas não são permitidas',
+                invalidUrlFormat: 'Formato de URL inválido',
+                urlAccepted: 'URL aceita (nenhum padrão IPTV detectado)',
+                validIptvUrl: 'URL IPTV válida',
+                noIptvWarning: 'A URL não contém padrões IPTV comuns. Continuar mesmo assim?',
+                sendingToDevice: 'Enviando URL para seu dispositivo...',
+                successMessage: '✅ URL enviada com sucesso! Verifique seu dispositivo.',
+                successClose: '✅ Pronto! Você pode fechar esta aba e verificar seu dispositivo.',
+                errorSending: 'Erro: Não foi possível enviar a URL. Por favor, tente novamente.',
+                sessionAlreadyUsed: '⚠️ Esta sessão já foi usada. Por favor, escaneie um novo código QR.',
+                checkingSession: 'Verificando status da sessão...',
+                directUrl: 'URL Direta',
+                xtreamCodes: 'Códigos Xtream',
+                serverUrl: 'URL do Servidor',
+                serverUrlPlaceholder: 'http://exemplo.com:8080',
+                username: 'Nome de usuário',
+                usernamePlaceholder: 'Seu nome de usuário',
+                password: 'Senha',
+                passwordPlaceholder: 'Sua senha',
+                converting: 'Convertendo para URL IPTV...',
+                invalidXtream: 'Por favor, preencha todos os campos do Xtream Codes'
+            },
             en: {
                 title: '📺 IPTV Watch',
                 subtitle: 'Enter IPTV playlist URL for your device',
@@ -220,7 +394,17 @@
                 successClose: '✅ Done! You can close this tab and check your device.',
                 errorSending: 'Error: Could not send URL. Please try again.',
                 sessionAlreadyUsed: '⚠️ This session has already been used. Please scan a new QR code.',
-                checkingSession: 'Checking session status...'
+                checkingSession: 'Checking session status...',
+                directUrl: 'Direct URL',
+                xtreamCodes: 'Xtream Codes',
+                serverUrl: 'Server URL',
+                serverUrlPlaceholder: 'http://example.com:8080',
+                username: 'Username',
+                usernamePlaceholder: 'Your username',
+                password: 'Password',
+                passwordPlaceholder: 'Your password',
+                converting: 'Converting to IPTV URL...',
+                invalidXtream: 'Please fill in all Xtream Codes fields'
             },
             es: {
                 title: '📺 IPTV Ver',
@@ -254,7 +438,17 @@
                 successClose: '✅ ¡Listo! Puede cerrar esta pestaña y verificar su dispositivo.',
                 errorSending: 'Error: No se pudo enviar la URL. Por favor intente de nuevo.',
                 sessionAlreadyUsed: '⚠️ Esta sesión ya ha sido utilizada. Por favor escanee un nuevo código QR.',
-                checkingSession: 'Verificando estado de la sesión...'
+                checkingSession: 'Verificando estado de la sesión...',
+                directUrl: 'URL Directa',
+                xtreamCodes: 'Códigos Xtream',
+                serverUrl: 'URL del Servidor',
+                serverUrlPlaceholder: 'http://ejemplo.com:8080',
+                username: 'Usuario',
+                usernamePlaceholder: 'Su nombre de usuario',
+                password: 'Contraseña',
+                passwordPlaceholder: 'Su contraseña',
+                converting: 'Convirtiendo a URL IPTV...',
+                invalidXtream: 'Por favor complete todos los campos de Xtream Codes'
             },
             fr: {
                 title: '📺 IPTV Regarder',
@@ -288,7 +482,17 @@
                 successClose: '✅ Terminé! Vous pouvez fermer cet onglet et vérifier votre appareil.',
                 errorSending: 'Erreur: Impossible d\'envoyer l\'URL. Veuillez réessayer.',
                 sessionAlreadyUsed: '⚠️ Cette session a déjà été utilisée. Veuillez scanner un nouveau code QR.',
-                checkingSession: 'Vérification du statut de la session...'
+                checkingSession: 'Vérification du statut de la session...',
+                directUrl: 'URL Directe',
+                xtreamCodes: 'Codes Xtream',
+                serverUrl: 'URL du Serveur',
+                serverUrlPlaceholder: 'http://exemple.com:8080',
+                username: 'Nom d\'utilisateur',
+                usernamePlaceholder: 'Votre nom d\'utilisateur',
+                password: 'Mot de passe',
+                passwordPlaceholder: 'Votre mot de passe',
+                converting: 'Conversion en URL IPTV...',
+                invalidXtream: 'Veuillez remplir tous les champs Xtream Codes'
             },
             de: {
                 title: '📺 IPTV Ansehen',
@@ -322,7 +526,17 @@
                 successClose: '✅ Fertig! Sie können diese Registerkarte schließen und Ihr Gerät überprüfen.',
                 errorSending: 'Fehler: URL konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
                 sessionAlreadyUsed: '⚠️ Diese Sitzung wurde bereits verwendet. Bitte scannen Sie einen neuen QR-Code.',
-                checkingSession: 'Sitzungsstatus wird überprüft...'
+                checkingSession: 'Sitzungsstatus wird überprüft...',
+                directUrl: 'Direkte URL',
+                xtreamCodes: 'Xtream Codes',
+                serverUrl: 'Server-URL',
+                serverUrlPlaceholder: 'http://beispiel.com:8080',
+                username: 'Benutzername',
+                usernamePlaceholder: 'Ihr Benutzername',
+                password: 'Passwort',
+                passwordPlaceholder: 'Ihr Passwort',
+                converting: 'Konvertierung zu IPTV-URL...',
+                invalidXtream: 'Bitte füllen Sie alle Xtream Codes-Felder aus'
             }
         };
 
@@ -339,6 +553,7 @@
                 return browserLang;
             }
 
+            // Default to English if no match
             return 'en';
         }
 
@@ -355,15 +570,62 @@
         <h1>📺 IPTV Watch</h1>
         <div class="subtitle">Enter IPTV playlist URL for your device</div>
 
-        <div class="form-group">
-            <label for="urlInput">IPTV Playlist URL</label>
-            <input
-                type="url"
-                id="urlInput"
-                placeholder="https://example.com/playlist.m3u8"
-                autocomplete="url"
-                spellcheck="false"
-            >
+        <!-- Input Type Selector -->
+        <div class="input-type-selector">
+            <button class="input-type-btn active" id="urlBtn" onclick="switchInputType('url')">
+                🌐 <span id="directUrlLabel">Direct URL</span>
+            </button>
+            <button class="input-type-btn" id="xtreamBtn" onclick="switchInputType('xtream')">
+                🔑 <span id="xtreamCodesLabel">Xtream Codes</span>
+            </button>
+        </div>
+
+        <!-- Direct URL Input Section -->
+        <div class="input-section active" id="urlSection">
+            <div class="form-group">
+                <label for="urlInput">IPTV Playlist URL</label>
+                <input
+                    type="url"
+                    id="urlInput"
+                    placeholder="https://example.com/playlist.m3u8"
+                    autocomplete="url"
+                    spellcheck="false"
+                >
+            </div>
+        </div>
+
+        <!-- Xtream Codes Input Section -->
+        <div class="input-section" id="xtreamSection">
+            <div class="form-group">
+                <label for="serverInput" id="serverLabel">Server URL</label>
+                <input
+                    type="url"
+                    id="serverInput"
+                    placeholder="http://example.com:8080"
+                    autocomplete="url"
+                    spellcheck="false"
+                >
+            </div>
+            <div class="form-group">
+                <label for="usernameInput" id="usernameLabel">Username</label>
+                <input
+                    type="text"
+                    id="usernameInput"
+                    placeholder="Your username"
+                    autocomplete="username"
+                    spellcheck="false"
+                >
+            </div>
+            <div class="form-group">
+                <label for="passwordInput" id="passwordLabel">Password</label>
+                <input
+                    type="password"
+                    id="passwordInput"
+                    placeholder="Your password"
+                    autocomplete="current-password"
+                    spellcheck="false"
+                >
+            </div>
         </div>
 
         <button class="button" onclick="sendUrl()" id="sendButton">
@@ -508,13 +770,60 @@
             }
         }
 
+        // Function to switch between input types
+        window.switchInputType = function(type) {
+            // Update active button
+            document.getElementById('urlBtn').classList.toggle('active', type === 'url');
+            document.getElementById('xtreamBtn').classList.toggle('active', type === 'xtream');
+
+            // Show/hide sections
+            document.getElementById('urlSection').classList.toggle('active', type === 'url');
+            document.getElementById('xtreamSection').classList.toggle('active', type === 'xtream');
+        };
+
+        // Function to convert Xtream Codes to IPTV URL
+        function convertXtreamToUrl(server, username, password) {
+            // Remove trailing slash from server if present
+            server = server.replace(/\/$/, '');
+
+            // Build Xtream Codes API URL for M3U playlist
+            // Format: http://server:port/get.php?username=XXX&password=XXX&type=m3u_plus&output=ts
+            return `${server}/get.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&type=m3u_plus&output=ts`;
+        }
+
         // Global function for sending URL to Firebase
         window.sendUrl = async function() {
             const urlInput = document.getElementById('urlInput');
             const sendButton = document.getElementById('sendButton');
             const status = document.getElementById('status');
 
-            const url = urlInput.value.trim();
+            // Determine which input type is active
+            const isXtreamMode = document.getElementById('xtreamSection').classList.contains('active');
+            let url = '';
+
+            if (isXtreamMode) {
+                // Get Xtream Codes inputs
+                const serverUrl = document.getElementById('serverInput').value.trim();
+                const username = document.getElementById('usernameInput').value.trim();
+                const password = document.getElementById('passwordInput').value.trim();
+
+                // Validate Xtream inputs
+                if (!serverUrl || !username || !password) {
+                    status.textContent = t.invalidXtream;
+                    status.className = 'status error';
+                    return;
+                }
+
+                // Convert Xtream Codes to IPTV URL
+                status.textContent = t.converting;
+                status.className = 'status info';
+                url = convertXtreamToUrl(serverUrl, username, password);
+                console.log('Converted Xtream Codes to URL:', url);
+            } else {
+                // Get direct URL input
+                const urlInput = document.getElementById('urlInput');
+                url = urlInput.value.trim();
+            }
 
             // Rate limiting check
             if (isRateLimited()) {
@@ -606,8 +915,21 @@
             // Update all text content with translations
             document.querySelector('h1').textContent = t.title;
             document.querySelector('.subtitle').textContent = t.subtitle;
+
+            // Direct URL section
             document.querySelector('label[for="urlInput"]').textContent = t.urlLabel;
             document.getElementById('urlInput').placeholder = t.urlPlaceholder;
+
+            // Xtream Codes section
+            document.getElementById('directUrlLabel').textContent = t.directUrl;
+            document.getElementById('xtreamCodesLabel').textContent = t.xtreamCodes;
+            document.getElementById('serverLabel').textContent = t.serverUrl;
+            document.getElementById('serverInput').placeholder = t.serverUrlPlaceholder;
+            document.getElementById('usernameLabel').textContent = t.username;
+            document.getElementById('usernameInput').placeholder = t.usernamePlaceholder;
+            document.getElementById('passwordLabel').textContent = t.password;
+            document.getElementById('passwordInput').placeholder = t.passwordPlaceholder;
+
             document.getElementById('sendButton').textContent = t.sendButton;
             document.querySelector('.rate-limit-notice').innerHTML = t.spamProtection;
             document.querySelector('.examples h3').textContent = t.supportedFormats;
@@ -622,10 +944,15 @@
             document.getElementById('urlInput').focus();
         });
 
-        // Enable Enter key to submit
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendUrl();
+        // Enable Enter key to submit for all inputs
+        ['urlInput', 'serverInput', 'usernameInput', 'passwordInput'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendUrl();
+                    }
+                });
             }
         });
 
