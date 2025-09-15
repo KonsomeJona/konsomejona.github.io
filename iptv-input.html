@@ -820,7 +820,7 @@
         }
 
         // Function to validate URL by making a HEAD request
-        async function validateUrl(url) {
+        async function validateUrlReachability(url) {
             try {
                 // Use a timeout to avoid hanging
                 const controller = new AbortController();
@@ -876,7 +876,7 @@
 
                 // Validate the generated URL
                 status.textContent = t.validatingUrl;
-                const validation = await validateUrl(url);
+                const validation = await validateUrlReachability(url);
 
                 if (!validation.success) {
                     let errorMessage = t.serverNotResponding;
@@ -956,6 +956,9 @@
                 status.textContent = t.sendingToDevice;
 
                 // Write to Firebase with session ID as key (using url-sessions path like wearGB)
+                console.log('🔥 Attempting Firebase write to session:', sessionId);
+                console.log('🔥 URL to send:', url);
+
                 await set(ref(database, `url-sessions/${sessionId}`), {
                     url: url,
                     timestamp: Date.now(),
@@ -963,6 +966,8 @@
                     userAgent: navigator.userAgent.substring(0, 100), // Limited info for debugging
                     iptvValidation: validation.hasIptvPattern
                 });
+
+                console.log('✅ Firebase write successful for session:', sessionId);
 
                 status.textContent = t.successMessage;
                 status.className = 'status success';
@@ -978,8 +983,14 @@
                 }, 3000);
 
             } catch (error) {
-                console.error('Error sending URL to Firebase:', error);
-                status.textContent = t.errorSending;
+                console.error('❌ Error sending URL to Firebase:', error);
+                console.error('❌ Error details:', {
+                    name: error.name,
+                    message: error.message,
+                    code: error.code,
+                    stack: error.stack
+                });
+                status.textContent = t.errorSending + ' (' + error.message + ')';
                 status.className = 'status error';
                 sendButton.disabled = false;
                 sendButton.textContent = t.sendButton;
