@@ -24,6 +24,7 @@ const translations = {
         ],
         errors: {
             noSession: "Error: No session ID found in URL",
+            sessionUsed: "This session has already been used. Please generate a new QR code.",
             pleaseWait: "Please wait {seconds} seconds before submitting again",
             maxSubmissions: "Maximum submissions reached for this session. Please refresh the page.",
             enterUrl: "Please enter a URL",
@@ -58,6 +59,7 @@ const translations = {
         ],
         errors: {
             noSession: "Error: No se encontró ID de sesión en la URL",
+            sessionUsed: "Esta sesión ya ha sido utilizada. Por favor, genere un nuevo código QR.",
             pleaseWait: "Por favor espere {seconds} segundos antes de enviar de nuevo",
             maxSubmissions: "Máximo de envíos alcanzado para esta sesión. Por favor actualice la página.",
             enterUrl: "Por favor ingrese una URL",
@@ -92,6 +94,7 @@ const translations = {
         ],
         errors: {
             noSession: "Erreur: Aucun ID de session trouvé dans l'URL",
+            sessionUsed: "Cette session a déjà été utilisée. Veuillez générer un nouveau code QR.",
             pleaseWait: "Veuillez attendre {seconds} secondes avant de soumettre à nouveau",
             maxSubmissions: "Maximum de soumissions atteint pour cette session. Veuillez rafraîchir la page.",
             enterUrl: "Veuillez entrer une URL",
@@ -126,6 +129,7 @@ const translations = {
         ],
         errors: {
             noSession: "エラー: URLにセッションIDが見つかりません",
+            sessionUsed: "このセッションは既に使用されています。新しいQRコードを生成してください。",
             pleaseWait: "再送信まで{seconds}秒お待ちください",
             maxSubmissions: "このセッションの最大送信回数に達しました。ページを更新してください。",
             enterUrl: "URLを入力してください",

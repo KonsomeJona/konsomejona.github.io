@@ -255,7 +255,7 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-        import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
+        import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
 
         // Firebase configuration - WearGB Project (Real Configuration)
         const firebaseConfig = {
@@ -286,12 +286,34 @@
         // Get session ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session');
-        
+
         if (!sessionId) {
             const lang = window.languageSupport.detectLanguage();
             document.getElementById('status').textContent = window.languageSupport.getErrorMessage('noSession', lang);
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
+        } else {
+            // Check if session already exists and was consumed
+            checkSessionStatus(sessionId);
+        }
+
+        // Check if session has already been used
+        async function checkSessionStatus(sessionId) {
+            try {
+                const snapshot = await get(ref(database, `url-sessions/${sessionId}`));
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    if (data.consumed) {
+                        const lang = window.languageSupport.detectLanguage();
+                        document.getElementById('status').textContent = window.languageSupport.getErrorMessage('sessionUsed', lang);
+                        document.getElementById('status').className = 'status error';
+                        document.getElementById('sendButton').disabled = true;
+                        document.getElementById('urlInput').disabled = true;
+                    }
+                }
+            } catch (error) {
+                console.log('Session check error:', error);
+            }
         }
 
         // Anti-spam protection

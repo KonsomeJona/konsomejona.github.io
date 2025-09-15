@@ -218,7 +218,9 @@
                 sendingToDevice: 'Sending URL to your device...',
                 successMessage: '✅ URL sent successfully! Check your device.',
                 successClose: '✅ Done! You can close this tab and check your device.',
-                errorSending: 'Error: Could not send URL. Please try again.'
+                errorSending: 'Error: Could not send URL. Please try again.',
+                sessionAlreadyUsed: '⚠️ This session has already been used. Please scan a new QR code.',
+                checkingSession: 'Checking session status...'
             },
             es: {
                 title: '📺 IPTV Ver',
@@ -250,7 +252,9 @@
                 sendingToDevice: 'Enviando URL a su dispositivo...',
                 successMessage: '✅ ¡URL enviada con éxito! Verifique su dispositivo.',
                 successClose: '✅ ¡Listo! Puede cerrar esta pestaña y verificar su dispositivo.',
-                errorSending: 'Error: No se pudo enviar la URL. Por favor intente de nuevo.'
+                errorSending: 'Error: No se pudo enviar la URL. Por favor intente de nuevo.',
+                sessionAlreadyUsed: '⚠️ Esta sesión ya ha sido utilizada. Por favor escanee un nuevo código QR.',
+                checkingSession: 'Verificando estado de la sesión...'
             },
             fr: {
                 title: '📺 IPTV Regarder',
@@ -282,7 +286,9 @@
                 sendingToDevice: 'Envoi de l\'URL à votre appareil...',
                 successMessage: '✅ URL envoyée avec succès! Vérifiez votre appareil.',
                 successClose: '✅ Terminé! Vous pouvez fermer cet onglet et vérifier votre appareil.',
-                errorSending: 'Erreur: Impossible d\'envoyer l\'URL. Veuillez réessayer.'
+                errorSending: 'Erreur: Impossible d\'envoyer l\'URL. Veuillez réessayer.',
+                sessionAlreadyUsed: '⚠️ Cette session a déjà été utilisée. Veuillez scanner un nouveau code QR.',
+                checkingSession: 'Vérification du statut de la session...'
             },
             de: {
                 title: '📺 IPTV Ansehen',
@@ -314,7 +320,9 @@
                 sendingToDevice: 'URL wird an Ihr Gerät gesendet...',
                 successMessage: '✅ URL erfolgreich gesendet! Überprüfen Sie Ihr Gerät.',
                 successClose: '✅ Fertig! Sie können diese Registerkarte schließen und Ihr Gerät überprüfen.',
-                errorSending: 'Fehler: URL konnte nicht gesendet werden. Bitte versuchen Sie es erneut.'
+                errorSending: 'Fehler: URL konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
+                sessionAlreadyUsed: '⚠️ Diese Sitzung wurde bereits verwendet. Bitte scannen Sie einen neuen QR-Code.',
+                checkingSession: 'Sitzungsstatus wird überprüft...'
             }
         };
 
@@ -424,6 +432,21 @@
         } else {
             document.getElementById('status').textContent = t.sessionInfo + sessionId.substring(0, 8) + '...';
             document.getElementById('status').className = 'status info';
+
+            // Check if session has already been consumed on page load
+            fetch(`https://weargb-default-rtdb.firebaseio.com/url-sessions/${sessionId}.json`)
+                .then(response => response.json())
+                .then(sessionData => {
+                    if (sessionData && sessionData.consumed === true) {
+                        document.getElementById('status').textContent = t.sessionAlreadyUsed;
+                        document.getElementById('status').className = 'status error';
+                        document.getElementById('sendButton').disabled = true;
+                        document.getElementById('urlInput').disabled = true;
+                    }
+                })
+                .catch(error => {
+                    console.log('Could not check session status:', error);
+                });
         }
 
         // Validate session ID format (UUID)
@@ -527,9 +550,25 @@
             // Send URL to Firebase Realtime Database
             try {
                 sendButton.disabled = true;
+                sendButton.innerHTML = '<span class="loading"></span> ' + t.checkingSession;
+                status.textContent = t.checkingSession;
+                status.className = 'status info';
+
+                // First check if session has already been consumed
+                const checkResponse = await fetch(`https://weargb-default-rtdb.firebaseio.com/url-sessions/${sessionId}.json`);
+                if (checkResponse.ok) {
+                    const sessionData = await checkResponse.json();
+                    if (sessionData && sessionData.consumed === true) {
+                        status.textContent = t.sessionAlreadyUsed;
+                        status.className = 'status error';
+                        sendButton.disabled = false;
+                        sendButton.textContent = t.sendButton;
+                        return;
+                    }
+                }
+
                 sendButton.innerHTML = '<span class="loading"></span> ' + t.sending;
                 status.textContent = t.sendingToDevice;
-                status.className = 'status info';
 
                 // Write to Firebase with session ID as key (using url-sessions path like wearGB)
                 await set(ref(database, `url-sessions/${sessionId}`), {
