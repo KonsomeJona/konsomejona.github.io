@@ -243,6 +243,11 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
     </style>
     <script>
         // Language translations
@@ -584,6 +589,36 @@
                 urlValidated: '✅ URL erfolgreich validiert'
             }
         };
+
+        // Function to show enhanced success page
+        function showSuccessPage(t) {
+            // Hide the form and show success
+            const mainContainer = document.querySelector('.container');
+            const originalContent = mainContainer.innerHTML;
+
+            // Create success page content
+            mainContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="font-size: 4em; margin-bottom: 20px;">✅</div>
+                    <h1 style="color: #2ecc71; margin-bottom: 20px; font-size: 24px;">${t.successMessage}</h1>
+                    <div style="background: rgba(39, 174, 96, 0.1); border: 2px solid #2ecc71; border-radius: 12px; padding: 20px; margin: 20px 0; color: #2ecc71; font-size: 16px;">
+                        🎉 URL successfully sent to your device!
+                    </div>
+                    <div style="font-size: 14px; color: #666; margin-top: 20px;">
+                        This page will close automatically in 5 seconds...
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button onclick="window.close()" style="background: #2ecc71; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                            Close Tab
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Add some celebration animation
+            const container = document.querySelector('.container');
+            container.style.animation = 'fadeIn 0.5s ease-in-out';
+        }
 
         // Function to get user's preferred language
         function getUserLanguage() {
@@ -986,18 +1021,19 @@
 
                 console.log('✅ Firebase write successful for session:', sessionId);
 
-                status.textContent = t.successMessage;
-                status.className = 'status success';
+                // Show enhanced success page
+                showSuccessPage(t);
 
-                // Auto-close after 3 seconds
+                // Auto-close after 5 seconds (longer to let user see success)
                 setTimeout(() => {
                     try {
                         window.close();
                     } catch (e) {
                         // If we can't close (some browsers block this), show message
                         status.textContent = t.successClose;
+                        status.className = 'status success';
                     }
-                }, 3000);
+                }, 5000);
 
             } catch (error) {
                 console.error('❌ Error sending URL to Firebase:', error);
