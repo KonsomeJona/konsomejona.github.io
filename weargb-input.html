@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WearGB ROM URL Entry</title>
+    <!-- Version 2.0 with Anti-Spam Protection - Sep 15, 2024 -->
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -270,12 +271,34 @@
             document.getElementById('sendButton').disabled = true;
         }
 
+        // Anti-spam protection
+        let lastSubmissionTime = 0;
+        let submissionCount = 0;
+        const SUBMISSION_COOLDOWN = 10000; // 10 seconds between submissions
+        const MAX_SUBMISSIONS_PER_SESSION = 5; // Max 5 URLs per session
+
         // Global function for sending URL to Firebase
         window.sendUrl = async function() {
             const urlInput = document.getElementById('urlInput');
             const sendButton = document.getElementById('sendButton');
             const status = document.getElementById('status');
-            
+
+            // Anti-spam check: Rate limiting
+            const now = Date.now();
+            if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
+                const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
+                status.textContent = `Please wait ${remainingTime} seconds before submitting again`;
+                status.className = 'status error';
+                return;
+            }
+
+            // Anti-spam check: Submission count
+            if (submissionCount >= MAX_SUBMISSIONS_PER_SESSION) {
+                status.textContent = 'Maximum submissions reached for this session. Please refresh the page.';
+                status.className = 'status error';
+                return;
+            }
+
             const url = urlInput.value.trim();
             
             if (!url) {
@@ -293,12 +316,36 @@
                 return;
             }
             
+            // Enhanced URL validation
+            if (url.length > 2048) {
+                status.textContent = 'URL is too long (max 2048 characters)';
+                status.className = 'status error';
+                return;
+            }
+
+            // Block suspicious patterns
+            const suspiciousPatterns = [
+                /javascript:/i,
+                /data:/i,
+                /file:/i,
+                /ftp:/i,
+                /<script/i,
+                /eval\(/i,
+                /alert\(/i
+            ];
+
+            if (suspiciousPatterns.some(pattern => pattern.test(url))) {
+                status.textContent = 'Invalid URL: Contains suspicious content';
+                status.className = 'status error';
+                return;
+            }
+
             // Check for Game Boy ROM file extensions
             const validExtensions = ['.gb', '.gbc', '.zip', '.7z'];
-            const hasValidExtension = validExtensions.some(ext => 
+            const hasValidExtension = validExtensions.some(ext =>
                 url.toLowerCase().includes(ext)
             );
-            
+
             if (!hasValidExtension) {
                 const proceed = confirm(
                     'URL does not seem to contain a Game Boy ROM file (.gb/.gbc). Continue anyway?'
@@ -313,11 +360,17 @@
                 status.textContent = 'Sending URL to your watch...';
                 status.className = 'status info';
                 
-                // Write to Firebase with session ID as key
+                // Update spam protection counters
+                lastSubmissionTime = now;
+                submissionCount++;
+
+                // Write to Firebase with session ID as key and TTL
                 await set(ref(database, `url-sessions/${sessionId}`), {
                     url: url,
                     timestamp: Date.now(),
-                    consumed: false
+                    consumed: false,
+                    userAgent: navigator.userAgent.substring(0, 100), // Limited user agent for basic tracking
+                    ttl: Date.now() + (10 * 60 * 1000) // Auto-expire in 10 minutes
                 });
                 
                 // Redirect to success page

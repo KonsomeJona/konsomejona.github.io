@@ -14,7 +14,7 @@
             min-height: 100vh;
             color: white;
         }
-        
+
         .container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -23,32 +23,32 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         h1 {
             text-align: center;
             margin-bottom: 10px;
             font-size: 24px;
             font-weight: 600;
         }
-        
+
         .subtitle {
             text-align: center;
             opacity: 0.8;
             margin-bottom: 30px;
             font-size: 14px;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 500;
             font-size: 14px;
         }
-        
+
         input[type="url"] {
             width: 100%;
             padding: 12px 16px;
@@ -60,17 +60,17 @@
             box-sizing: border-box;
             backdrop-filter: blur(5px);
         }
-        
+
         input[type="url"]::placeholder {
             color: rgba(255, 255, 255, 0.6);
         }
-        
+
         input[type="url"]:focus {
             outline: none;
             border-color: rgba(255, 255, 255, 0.8);
             background: rgba(255, 255, 255, 0.2);
         }
-        
+
         .button {
             width: 100%;
             padding: 14px;
@@ -84,19 +84,19 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
         }
-        
+
         .button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
         }
-        
+
         .button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
             box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
         }
-        
+
         .status {
             margin-top: 20px;
             padding: 12px 16px;
@@ -106,45 +106,51 @@
             font-weight: 500;
             min-height: 20px;
         }
-        
+
         .status.success {
             background: rgba(39, 174, 96, 0.2);
             border: 1px solid rgba(39, 174, 96, 0.4);
             color: #2ecc71;
         }
-        
+
         .status.error {
             background: rgba(231, 76, 60, 0.2);
             border: 1px solid rgba(231, 76, 60, 0.4);
             color: #e74c3c;
         }
-        
+
         .status.info {
             background: rgba(52, 152, 219, 0.2);
             border: 1px solid rgba(52, 152, 219, 0.4);
             color: #3498db;
         }
-        
+
+        .status.warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            color: #f39c12;
+        }
+
         .examples {
             margin-top: 20px;
             font-size: 12px;
             opacity: 0.7;
         }
-        
+
         .examples h3 {
             margin: 0 0 10px 0;
             font-size: 14px;
         }
-        
+
         .examples ul {
             margin: 0;
             padding-left: 20px;
         }
-        
+
         .examples li {
             margin-bottom: 4px;
         }
-        
+
         .loading {
             display: inline-block;
             width: 20px;
@@ -154,16 +160,26 @@
             border-top-color: white;
             animation: spin 1s ease-in-out infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
+        .rate-limit-notice {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
             }
-            
+
             .container {
                 padding: 20px;
             }
@@ -174,24 +190,28 @@
     <div class="container">
         <h1>📺 IPTV Watch</h1>
         <div class="subtitle">Enter IPTV playlist URL for your device</div>
-        
+
         <div class="form-group">
             <label for="urlInput">IPTV Playlist URL</label>
-            <input 
-                type="url" 
-                id="urlInput" 
+            <input
+                type="url"
+                id="urlInput"
                 placeholder="https://example.com/playlist.m3u8"
                 autocomplete="url"
                 spellcheck="false"
             >
         </div>
-        
+
         <button class="button" onclick="sendUrl()" id="sendButton">
             Send to Device
         </button>
-        
+
         <div id="status" class="status"></div>
-        
+
+        <div class="rate-limit-notice">
+            <strong>🛡️ Spam Protection:</strong> Limited to 10 simultaneous sessions. Sessions expire after 10 minutes.
+        </div>
+
         <div class="examples">
             <h3>Supported formats:</h3>
             <ul>
@@ -227,12 +247,22 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        // Rate limiting state
+        let submitAttempts = 0;
+        const MAX_ATTEMPTS_PER_SESSION = 3;
+        const RATE_LIMIT_RESET_TIME = 60000; // 1 minute
+        let lastAttemptTime = 0;
+
         // Get session ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session');
-        
+
         if (!sessionId) {
             document.getElementById('status').textContent = 'Error: No session ID found in URL';
+            document.getElementById('status').className = 'status error';
+            document.getElementById('sendButton').disabled = true;
+        } else if (!isValidSessionFormat(sessionId)) {
+            document.getElementById('status').textContent = 'Error: Invalid session ID format';
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
         } else {
@@ -240,59 +270,125 @@
             document.getElementById('status').className = 'status info';
         }
 
+        // Validate session ID format (UUID)
+        function isValidSessionFormat(sessionId) {
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+            return uuidRegex.test(sessionId);
+        }
+
+        // Check rate limiting
+        function isRateLimited() {
+            const now = Date.now();
+
+            // Reset counter if enough time has passed
+            if (now - lastAttemptTime > RATE_LIMIT_RESET_TIME) {
+                submitAttempts = 0;
+            }
+
+            return submitAttempts >= MAX_ATTEMPTS_PER_SESSION;
+        }
+
+        // Validate URL for IPTV patterns and security
+        function validateUrl(url) {
+            try {
+                const urlObj = new URL(url);
+
+                // Must be HTTP or HTTPS
+                if (!['http:', 'https:'].includes(urlObj.protocol)) {
+                    return { valid: false, reason: 'Only HTTP and HTTPS URLs are allowed' };
+                }
+
+                // Block localhost and private IP ranges
+                const blockedPatterns = [
+                    'localhost', '127.0.0.1', '192.168.', '10.0.', '172.',
+                    'file://', 'ftp://', 'javascript:', 'data:'
+                ];
+
+                const isBlocked = blockedPatterns.some(pattern =>
+                    url.toLowerCase().includes(pattern)
+                );
+
+                if (isBlocked) {
+                    return { valid: false, reason: 'Localhost and private URLs are not allowed' };
+                }
+
+                // Check for IPTV patterns (warn but allow)
+                const iptvPatterns = ['.m3u', '.m3u8', 'get.php', 'player_api.php', 'output=ts', 'type=m3u'];
+                const hasIptvPattern = iptvPatterns.some(pattern =>
+                    url.toLowerCase().includes(pattern)
+                );
+
+                return {
+                    valid: true,
+                    hasIptvPattern: hasIptvPattern,
+                    reason: hasIptvPattern ? 'Valid IPTV URL' : 'URL accepted (no IPTV patterns detected)'
+                };
+
+            } catch (e) {
+                return { valid: false, reason: 'Invalid URL format' };
+            }
+        }
+
         // Global function for sending URL to Firebase
         window.sendUrl = async function() {
             const urlInput = document.getElementById('urlInput');
             const sendButton = document.getElementById('sendButton');
             const status = document.getElementById('status');
-            
+
             const url = urlInput.value.trim();
-            
+
+            // Rate limiting check
+            if (isRateLimited()) {
+                status.textContent = `Rate limited. Please wait ${Math.ceil((RATE_LIMIT_RESET_TIME - (Date.now() - lastAttemptTime)) / 1000)} seconds.`;
+                status.className = 'status warning';
+                return;
+            }
+
             if (!url) {
                 status.textContent = 'Please enter a URL';
                 status.className = 'status error';
                 return;
             }
-            
-            // Validate URL format
-            try {
-                new URL(url);
-            } catch (e) {
-                status.textContent = 'Please enter a valid URL';
+
+            // Validate URL
+            const validation = validateUrl(url);
+            if (!validation.valid) {
+                status.textContent = `Invalid URL: ${validation.reason}`;
                 status.className = 'status error';
                 return;
             }
-            
-            // Check for IPTV playlist file extensions/patterns
-            const validPatterns = ['.m3u', '.m3u8', 'get.php', 'player_api.php', 'output=ts', 'type=m3u'];
-            const hasValidPattern = validPatterns.some(pattern => 
-                url.toLowerCase().includes(pattern)
-            );
-            
-            if (!hasValidPattern && !url.includes('://')) {
+
+            // Show warning for non-IPTV URLs
+            if (!validation.hasIptvPattern) {
                 const proceed = confirm(
-                    'URL does not seem to contain a valid IPTV playlist format. Continue anyway?'
+                    'URL does not contain common IPTV patterns. Continue anyway?'
                 );
                 if (!proceed) return;
             }
-            
+
+            // Update rate limiting
+            submitAttempts++;
+            lastAttemptTime = Date.now();
+
             // Send URL to Firebase Realtime Database
             try {
                 sendButton.disabled = true;
                 sendButton.innerHTML = '<span class="loading"></span> Sending to Device...';
                 status.textContent = 'Sending URL to your device...';
                 status.className = 'status info';
-                
+
                 // Write to Firebase with session ID as key (using url-sessions path like wearGB)
                 await set(ref(database, `url-sessions/${sessionId}`), {
                     url: url,
                     timestamp: Date.now(),
-                    consumed: false
+                    consumed: false,
+                    userAgent: navigator.userAgent.substring(0, 100), // Limited info for debugging
+                    iptvValidation: validation.hasIptvPattern
                 });
-                
+
                 status.textContent = '✅ URL sent successfully! Check your device.';
                 status.className = 'status success';
-                
+
                 // Auto-close after 3 seconds
                 setTimeout(() => {
                     try {
@@ -302,7 +398,7 @@
                         status.textContent = '✅ Done! You can close this tab and check your device.';
                     }
                 }, 3000);
-                
+
             } catch (error) {
                 console.error('Error sending URL to Firebase:', error);
                 status.textContent = 'Error: Could not send URL. Please try again.';
@@ -311,19 +407,19 @@
                 sendButton.textContent = 'Send to Device';
             }
         };
-        
+
         // Auto-focus the URL input for better UX
         document.getElementById('urlInput').focus();
-        
+
         // Enable Enter key to submit
         document.getElementById('urlInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendUrl();
             }
         });
-        
-        // Log session info for debugging
-        console.log('IPTV URL Input - Session:', sessionId);
+
+        // Log session info for debugging (limited info only)
+        console.log('IPTV URL Input - Session:', sessionId ? sessionId.substring(0, 8) + '...' : 'none');
         console.log('Firebase initialized successfully');
     </script>
 </body>

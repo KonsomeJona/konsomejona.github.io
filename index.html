@@ -461,6 +461,15 @@
     </footer>
 
     <script>
+        // Check for WearGB session parameter and redirect
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session');
+
+        if (sessionId) {
+            // Redirect to WearGB input page with session ID
+            window.location.href = `weargb-input.html?session=${sessionId}`;
+        }
+
         // Update copyright year automatically
         document.addEventListener('DOMContentLoaded', function() {
             const year = new Date().getFullYear();
