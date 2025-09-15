@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WearGB ROM URL Entry</title>
-    <!-- Version 2.0 with Anti-Spam Protection - Sep 15, 2024 -->
+    <!-- Version 3.0 with Multi-Language Support - Sep 15, 2025 -->
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -196,6 +196,15 @@
     </style>
 </head>
 <body>
+    <!-- Language Selection -->
+    <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
+        <select id="languageSelector" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 5px; border-radius: 5px; cursor: pointer;">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="ja">日本語</option>
+        </select>
+    </div>
     <div class="container">
         <h1>🎮 WearGB</h1>
         <div class="subtitle">Enter ROM URL for your watch</div>
@@ -240,6 +249,9 @@
         </div>
     </div>
 
+    <!-- Multi-language support -->
+    <script src="weargb-input-multilang.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
@@ -261,12 +273,23 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        // Initialize language support
+        const currentLang = window.languageSupport.detectLanguage();
+        window.languageSupport.applyTranslations(currentLang);
+        document.getElementById('languageSelector').value = currentLang;
+
+        // Language selector change handler
+        document.getElementById('languageSelector').addEventListener('change', function(e) {
+            window.languageSupport.applyTranslations(e.target.value);
+        });
+
         // Get session ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session');
         
         if (!sessionId) {
-            document.getElementById('status').textContent = 'Error: No session ID found in URL';
+            const lang = window.languageSupport.detectLanguage();
+            document.getElementById('status').textContent = window.languageSupport.getErrorMessage('noSession', lang);
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
         }
@@ -287,14 +310,16 @@
             const now = Date.now();
             if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
                 const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
-                status.textContent = `Please wait ${remainingTime} seconds before submitting again`;
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('pleaseWait', lang, { seconds: remainingTime });
                 status.className = 'status error';
                 return;
             }
 
             // Anti-spam check: Submission count
             if (submissionCount >= MAX_SUBMISSIONS_PER_SESSION) {
-                status.textContent = 'Maximum submissions reached for this session. Please refresh the page.';
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('maxSubmissions', lang);
                 status.className = 'status error';
                 return;
             }
@@ -302,7 +327,8 @@
             const url = urlInput.value.trim();
             
             if (!url) {
-                status.textContent = 'Please enter a URL';
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('enterUrl', lang);
                 status.className = 'status error';
                 return;
             }
@@ -311,14 +337,16 @@
             try {
                 new URL(url);
             } catch (e) {
-                status.textContent = 'Please enter a valid URL';
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('invalidUrl', lang);
                 status.className = 'status error';
                 return;
             }
             
             // Enhanced URL validation
             if (url.length > 2048) {
-                status.textContent = 'URL is too long (max 2048 characters)';
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('urlTooLong', lang);
                 status.className = 'status error';
                 return;
             }
@@ -335,7 +363,8 @@
             ];
 
             if (suspiciousPatterns.some(pattern => pattern.test(url))) {
-                status.textContent = 'Invalid URL: Contains suspicious content';
+                const lang = window.languageSupport.detectLanguage();
+                status.textContent = window.languageSupport.getErrorMessage('suspiciousUrl', lang);
                 status.className = 'status error';
                 return;
             }
@@ -347,8 +376,9 @@
             );
 
             if (!hasValidExtension) {
+                const lang = window.languageSupport.detectLanguage();
                 const proceed = confirm(
-                    'URL does not seem to contain a Game Boy ROM file (.gb/.gbc). Continue anyway?'
+                    window.languageSupport.getErrorMessage('noRomConfirm', lang)
                 );
                 if (!proceed) return;
             }
@@ -356,8 +386,10 @@
             // Send URL to Firebase Realtime Database
             try {
                 sendButton.disabled = true;
-                sendButton.innerHTML = '<span class="loading"></span> Sending to Watch...';
-                status.textContent = 'Sending URL to your watch...';
+                const lang = window.languageSupport.detectLanguage();
+                const t = window.languageSupport.translations[lang];
+                sendButton.innerHTML = `<span class="loading"></span> ${t.sendingText}`;
+                status.textContent = window.languageSupport.getErrorMessage('sending', lang);
                 status.className = 'status info';
                 
                 // Update spam protection counters

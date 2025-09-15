@@ -185,6 +185,162 @@
             }
         }
     </style>
+    <script>
+        // Language translations
+        const translations = {
+            en: {
+                title: '📺 IPTV Watch',
+                subtitle: 'Enter IPTV playlist URL for your device',
+                urlLabel: 'IPTV Playlist URL',
+                urlPlaceholder: 'https://example.com/playlist.m3u8',
+                sendButton: 'Send to Device',
+                sending: 'Sending to Device...',
+                spamProtection: '🛡️ Spam Protection: Limited to 10 simultaneous sessions. Sessions expire after 10 minutes.',
+                supportedFormats: 'Supported formats:',
+                format1: 'M3U/M3U8 playlists (.m3u, .m3u8)',
+                format2: 'Xtream Codes API URLs',
+                format3: 'Direct streaming URLs',
+                format4: 'Panel API endpoints',
+                legalNotice: '⚖️ Legal Notice: This tool is designed for accessing legally owned IPTV content. Users are responsible for ensuring they have proper authorization to access any streaming content. Do not use this tool for accessing copyrighted material without permission.',
+                errorNoSession: 'Error: No session ID found in URL',
+                errorInvalidSession: 'Error: Invalid session ID format',
+                sessionInfo: 'Session: ',
+                rateLimited: 'Rate limited. Please wait',
+                seconds: 'seconds.',
+                enterUrl: 'Please enter a URL',
+                invalidUrl: 'Invalid URL: ',
+                onlyHttpAllowed: 'Only HTTP and HTTPS URLs are allowed',
+                localhostBlocked: 'Localhost and private URLs are not allowed',
+                invalidUrlFormat: 'Invalid URL format',
+                urlAccepted: 'URL accepted (no IPTV patterns detected)',
+                validIptvUrl: 'Valid IPTV URL',
+                noIptvWarning: 'URL does not contain common IPTV patterns. Continue anyway?',
+                sendingToDevice: 'Sending URL to your device...',
+                successMessage: '✅ URL sent successfully! Check your device.',
+                successClose: '✅ Done! You can close this tab and check your device.',
+                errorSending: 'Error: Could not send URL. Please try again.'
+            },
+            es: {
+                title: '📺 IPTV Ver',
+                subtitle: 'Ingrese la URL de la lista IPTV para su dispositivo',
+                urlLabel: 'URL de Lista IPTV',
+                urlPlaceholder: 'https://ejemplo.com/lista.m3u8',
+                sendButton: 'Enviar al Dispositivo',
+                sending: 'Enviando al Dispositivo...',
+                spamProtection: '🛡️ Protección Anti-Spam: Limitado a 10 sesiones simultáneas. Las sesiones expiran después de 10 minutos.',
+                supportedFormats: 'Formatos soportados:',
+                format1: 'Listas M3U/M3U8 (.m3u, .m3u8)',
+                format2: 'URLs de API Xtream Codes',
+                format3: 'URLs de streaming directo',
+                format4: 'Endpoints de API Panel',
+                legalNotice: '⚖️ Aviso Legal: Esta herramienta está diseñada para acceder a contenido IPTV de propiedad legal. Los usuarios son responsables de asegurarse de tener la autorización adecuada para acceder a cualquier contenido de streaming. No use esta herramienta para acceder a material con derechos de autor sin permiso.',
+                errorNoSession: 'Error: No se encontró ID de sesión en la URL',
+                errorInvalidSession: 'Error: Formato de ID de sesión inválido',
+                sessionInfo: 'Sesión: ',
+                rateLimited: 'Límite alcanzado. Por favor espere',
+                seconds: 'segundos.',
+                enterUrl: 'Por favor ingrese una URL',
+                invalidUrl: 'URL inválida: ',
+                onlyHttpAllowed: 'Solo se permiten URLs HTTP y HTTPS',
+                localhostBlocked: 'No se permiten URLs localhost y privadas',
+                invalidUrlFormat: 'Formato de URL inválido',
+                urlAccepted: 'URL aceptada (no se detectaron patrones IPTV)',
+                validIptvUrl: 'URL IPTV válida',
+                noIptvWarning: 'La URL no contiene patrones IPTV comunes. ¿Continuar de todos modos?',
+                sendingToDevice: 'Enviando URL a su dispositivo...',
+                successMessage: '✅ ¡URL enviada con éxito! Verifique su dispositivo.',
+                successClose: '✅ ¡Listo! Puede cerrar esta pestaña y verificar su dispositivo.',
+                errorSending: 'Error: No se pudo enviar la URL. Por favor intente de nuevo.'
+            },
+            fr: {
+                title: '📺 IPTV Regarder',
+                subtitle: "Entrez l'URL de la liste IPTV pour votre appareil",
+                urlLabel: 'URL de la Liste IPTV',
+                urlPlaceholder: 'https://exemple.com/liste.m3u8',
+                sendButton: "Envoyer à l'Appareil",
+                sending: "Envoi à l'Appareil...",
+                spamProtection: '🛡️ Protection Anti-Spam: Limité à 10 sessions simultanées. Les sessions expirent après 10 minutes.',
+                supportedFormats: 'Formats supportés:',
+                format1: 'Listes M3U/M3U8 (.m3u, .m3u8)',
+                format2: 'URLs API Xtream Codes',
+                format3: 'URLs de streaming direct',
+                format4: 'Points de terminaison API Panel',
+                legalNotice: "⚖️ Avis Légal: Cet outil est conçu pour accéder au contenu IPTV légalement possédé. Les utilisateurs sont responsables de s'assurer qu'ils ont l'autorisation appropriée pour accéder à tout contenu de streaming. N'utilisez pas cet outil pour accéder à du matériel protégé par des droits d'auteur sans autorisation.",
+                errorNoSession: 'Erreur: Aucun ID de session trouvé dans l\'URL',
+                errorInvalidSession: 'Erreur: Format d\'ID de session invalide',
+                sessionInfo: 'Session: ',
+                rateLimited: 'Limite atteinte. Veuillez attendre',
+                seconds: 'secondes.',
+                enterUrl: 'Veuillez entrer une URL',
+                invalidUrl: 'URL invalide: ',
+                onlyHttpAllowed: 'Seules les URLs HTTP et HTTPS sont autorisées',
+                localhostBlocked: 'Les URLs localhost et privées ne sont pas autorisées',
+                invalidUrlFormat: 'Format d\'URL invalide',
+                urlAccepted: 'URL acceptée (aucun modèle IPTV détecté)',
+                validIptvUrl: 'URL IPTV valide',
+                noIptvWarning: "L'URL ne contient pas de modèles IPTV courants. Continuer quand même?",
+                sendingToDevice: 'Envoi de l\'URL à votre appareil...',
+                successMessage: '✅ URL envoyée avec succès! Vérifiez votre appareil.',
+                successClose: '✅ Terminé! Vous pouvez fermer cet onglet et vérifier votre appareil.',
+                errorSending: 'Erreur: Impossible d\'envoyer l\'URL. Veuillez réessayer.'
+            },
+            de: {
+                title: '📺 IPTV Ansehen',
+                subtitle: 'Geben Sie die IPTV-Playlist-URL für Ihr Gerät ein',
+                urlLabel: 'IPTV-Playlist-URL',
+                urlPlaceholder: 'https://beispiel.com/playlist.m3u8',
+                sendButton: 'An Gerät senden',
+                sending: 'An Gerät senden...',
+                spamProtection: '🛡️ Spam-Schutz: Begrenzt auf 10 gleichzeitige Sitzungen. Sitzungen laufen nach 10 Minuten ab.',
+                supportedFormats: 'Unterstützte Formate:',
+                format1: 'M3U/M3U8-Playlisten (.m3u, .m3u8)',
+                format2: 'Xtream Codes API-URLs',
+                format3: 'Direkte Streaming-URLs',
+                format4: 'Panel-API-Endpunkte',
+                legalNotice: '⚖️ Rechtlicher Hinweis: Dieses Tool ist für den Zugriff auf legal besessene IPTV-Inhalte konzipiert. Benutzer sind dafür verantwortlich, sicherzustellen, dass sie die richtige Berechtigung haben, auf Streaming-Inhalte zuzugreifen. Verwenden Sie dieses Tool nicht, um ohne Erlaubnis auf urheberrechtlich geschütztes Material zuzugreifen.',
+                errorNoSession: 'Fehler: Keine Sitzungs-ID in URL gefunden',
+                errorInvalidSession: 'Fehler: Ungültiges Sitzungs-ID-Format',
+                sessionInfo: 'Sitzung: ',
+                rateLimited: 'Limit erreicht. Bitte warten Sie',
+                seconds: 'Sekunden.',
+                enterUrl: 'Bitte geben Sie eine URL ein',
+                invalidUrl: 'Ungültige URL: ',
+                onlyHttpAllowed: 'Nur HTTP- und HTTPS-URLs sind erlaubt',
+                localhostBlocked: 'Localhost- und private URLs sind nicht erlaubt',
+                invalidUrlFormat: 'Ungültiges URL-Format',
+                urlAccepted: 'URL akzeptiert (keine IPTV-Muster erkannt)',
+                validIptvUrl: 'Gültige IPTV-URL',
+                noIptvWarning: 'URL enthält keine gängigen IPTV-Muster. Trotzdem fortfahren?',
+                sendingToDevice: 'URL wird an Ihr Gerät gesendet...',
+                successMessage: '✅ URL erfolgreich gesendet! Überprüfen Sie Ihr Gerät.',
+                successClose: '✅ Fertig! Sie können diese Registerkarte schließen und Ihr Gerät überprüfen.',
+                errorSending: 'Fehler: URL konnte nicht gesendet werden. Bitte versuchen Sie es erneut.'
+            }
+        };
+
+        // Function to get user's preferred language
+        function getUserLanguage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            if (langParam && translations[langParam]) {
+                return langParam;
+            }
+
+            const browserLang = navigator.language.substring(0, 2);
+            if (translations[browserLang]) {
+                return browserLang;
+            }
+
+            return 'en';
+        }
+
+        // Get current language
+        const currentLang = getUserLanguage();
+        const t = translations[currentLang];
+
+        // Update document language
+        document.documentElement.lang = currentLang;
+    </script>
 </head>
 <body>
     <div class="container">
@@ -258,15 +414,15 @@
         const sessionId = urlParams.get('session');
 
         if (!sessionId) {
-            document.getElementById('status').textContent = 'Error: No session ID found in URL';
+            document.getElementById('status').textContent = t.errorNoSession;
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
         } else if (!isValidSessionFormat(sessionId)) {
-            document.getElementById('status').textContent = 'Error: Invalid session ID format';
+            document.getElementById('status').textContent = t.errorInvalidSession;
             document.getElementById('status').className = 'status error';
             document.getElementById('sendButton').disabled = true;
         } else {
-            document.getElementById('status').textContent = `Session: ${sessionId.substring(0, 8)}...`;
+            document.getElementById('status').textContent = t.sessionInfo + sessionId.substring(0, 8) + '...';
             document.getElementById('status').className = 'status info';
         }
 
@@ -295,7 +451,7 @@
 
                 // Must be HTTP or HTTPS
                 if (!['http:', 'https:'].includes(urlObj.protocol)) {
-                    return { valid: false, reason: 'Only HTTP and HTTPS URLs are allowed' };
+                    return { valid: false, reason: t.onlyHttpAllowed };
                 }
 
                 // Block localhost and private IP ranges
@@ -309,7 +465,7 @@
                 );
 
                 if (isBlocked) {
-                    return { valid: false, reason: 'Localhost and private URLs are not allowed' };
+                    return { valid: false, reason: t.localhostBlocked };
                 }
 
                 // Check for IPTV patterns (warn but allow)
@@ -321,11 +477,11 @@
                 return {
                     valid: true,
                     hasIptvPattern: hasIptvPattern,
-                    reason: hasIptvPattern ? 'Valid IPTV URL' : 'URL accepted (no IPTV patterns detected)'
+                    reason: hasIptvPattern ? t.validIptvUrl : t.urlAccepted
                 };
 
             } catch (e) {
-                return { valid: false, reason: 'Invalid URL format' };
+                return { valid: false, reason: t.invalidUrlFormat };
             }
         }
 
@@ -339,13 +495,13 @@
 
             // Rate limiting check
             if (isRateLimited()) {
-                status.textContent = `Rate limited. Please wait ${Math.ceil((RATE_LIMIT_RESET_TIME - (Date.now() - lastAttemptTime)) / 1000)} seconds.`;
+                status.textContent = t.rateLimited + ' ' + Math.ceil((RATE_LIMIT_RESET_TIME - (Date.now() - lastAttemptTime)) / 1000) + ' ' + t.seconds;
                 status.className = 'status warning';
                 return;
             }
 
             if (!url) {
-                status.textContent = 'Please enter a URL';
+                status.textContent = t.enterUrl;
                 status.className = 'status error';
                 return;
             }
@@ -353,16 +509,14 @@
             // Validate URL
             const validation = validateUrl(url);
             if (!validation.valid) {
-                status.textContent = `Invalid URL: ${validation.reason}`;
+                status.textContent = t.invalidUrl + validation.reason;
                 status.className = 'status error';
                 return;
             }
 
             // Show warning for non-IPTV URLs
             if (!validation.hasIptvPattern) {
-                const proceed = confirm(
-                    'URL does not contain common IPTV patterns. Continue anyway?'
-                );
+                const proceed = confirm(t.noIptvWarning);
                 if (!proceed) return;
             }
 
@@ -373,8 +527,8 @@
             // Send URL to Firebase Realtime Database
             try {
                 sendButton.disabled = true;
-                sendButton.innerHTML = '<span class="loading"></span> Sending to Device...';
-                status.textContent = 'Sending URL to your device...';
+                sendButton.innerHTML = '<span class="loading"></span> ' + t.sending;
+                status.textContent = t.sendingToDevice;
                 status.className = 'status info';
 
                 // Write to Firebase with session ID as key (using url-sessions path like wearGB)
@@ -386,7 +540,7 @@
                     iptvValidation: validation.hasIptvPattern
                 });
 
-                status.textContent = '✅ URL sent successfully! Check your device.';
+                status.textContent = t.successMessage;
                 status.className = 'status success';
 
                 // Auto-close after 3 seconds
@@ -395,21 +549,39 @@
                         window.close();
                     } catch (e) {
                         // If we can't close (some browsers block this), show message
-                        status.textContent = '✅ Done! You can close this tab and check your device.';
+                        status.textContent = t.successClose;
                     }
                 }, 3000);
 
             } catch (error) {
                 console.error('Error sending URL to Firebase:', error);
-                status.textContent = 'Error: Could not send URL. Please try again.';
+                status.textContent = t.errorSending;
                 status.className = 'status error';
                 sendButton.disabled = false;
-                sendButton.textContent = 'Send to Device';
+                sendButton.textContent = t.sendButton;
             }
         };
 
-        // Auto-focus the URL input for better UX
-        document.getElementById('urlInput').focus();
+        // Initialize UI with translations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update all text content with translations
+            document.querySelector('h1').textContent = t.title;
+            document.querySelector('.subtitle').textContent = t.subtitle;
+            document.querySelector('label[for="urlInput"]').textContent = t.urlLabel;
+            document.getElementById('urlInput').placeholder = t.urlPlaceholder;
+            document.getElementById('sendButton').textContent = t.sendButton;
+            document.querySelector('.rate-limit-notice').innerHTML = t.spamProtection;
+            document.querySelector('.examples h3').textContent = t.supportedFormats;
+            const formatItems = document.querySelectorAll('.examples ul li');
+            formatItems[0].textContent = t.format1;
+            formatItems[1].textContent = t.format2;
+            formatItems[2].textContent = t.format3;
+            formatItems[3].textContent = t.format4;
+            document.querySelector('.examples > div').innerHTML = t.legalNotice;
+
+            // Auto-focus the URL input for better UX
+            document.getElementById('urlInput').focus();
+        });
 
         // Enable Enter key to submit
         document.getElementById('urlInput').addEventListener('keypress', function(e) {
@@ -421,6 +593,7 @@
         // Log session info for debugging (limited info only)
         console.log('IPTV URL Input - Session:', sessionId ? sessionId.substring(0, 8) + '...' : 'none');
         console.log('Firebase initialized successfully');
+        console.log('Language:', currentLang);
     </script>
 </body>
 </html>

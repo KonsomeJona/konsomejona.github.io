@@ -213,6 +213,15 @@
     </div>
 
     <script>
+        // Prevent going back to form page
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+
+        // Also replace the current history state to prevent back navigation
+        history.replaceState(null, null, location.href);
+
         // Get error from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const errorMessage = urlParams.get('error') || 'Unknown error occurred';

@@ -158,6 +158,15 @@
     </div>
 
     <script>
+        // Prevent going back to form page
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+
+        // Also replace the current history state to prevent back navigation
+        history.replaceState(null, null, location.href);
+
         // Auto-close after 10 seconds
         setTimeout(() => {
             try {
