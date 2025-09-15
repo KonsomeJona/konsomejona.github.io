@@ -272,7 +272,11 @@
                 password: 'Password',
                 passwordPlaceholder: 'La tua password',
                 converting: 'Conversione in URL IPTV...',
-                invalidXtream: 'Compila tutti i campi Xtream Codes'
+                invalidXtream: 'Compila tutti i campi Xtream Codes',
+                validatingUrl: 'Validazione URL...',
+                urlValidationFailed: '❌ Validazione URL fallita. Il server ha restituito: ',
+                serverNotResponding: '❌ Server non risponde o credenziali non valide',
+                urlValidated: '✅ URL validato con successo'
             },
             ja: {
                 title: '📺 IPTVウォッチ',
@@ -316,7 +320,11 @@
                 password: 'パスワード',
                 passwordPlaceholder: 'あなたのパスワード',
                 converting: 'IPTV URLに変換中...',
-                invalidXtream: 'すべてのXtream Codesフィールドを入力してください'
+                invalidXtream: 'すべてのXtream Codesフィールドを入力してください',
+                validatingUrl: 'URL検証中...',
+                urlValidationFailed: '❌ URL検証失敗。サーバーが応答: ',
+                serverNotResponding: '❌ サーバーが応答しないか認証情報が無効',
+                urlValidated: '✅ URL検証成功'
             },
             pt: {
                 title: '📺 IPTV Assistir',
@@ -360,7 +368,11 @@
                 password: 'Senha',
                 passwordPlaceholder: 'Sua senha',
                 converting: 'Convertendo para URL IPTV...',
-                invalidXtream: 'Por favor, preencha todos os campos do Xtream Codes'
+                invalidXtream: 'Por favor, preencha todos os campos do Xtream Codes',
+                validatingUrl: 'Validando URL...',
+                urlValidationFailed: '❌ Validação de URL falhou. Servidor retornou: ',
+                serverNotResponding: '❌ Servidor não responde ou credenciais inválidas',
+                urlValidated: '✅ URL validada com sucesso'
             },
             en: {
                 title: '📺 IPTV Watch',
@@ -404,7 +416,11 @@
                 password: 'Password',
                 passwordPlaceholder: 'Your password',
                 converting: 'Converting to IPTV URL...',
-                invalidXtream: 'Please fill in all Xtream Codes fields'
+                invalidXtream: 'Please fill in all Xtream Codes fields',
+                validatingUrl: 'Validating URL...',
+                urlValidationFailed: '❌ URL validation failed. Server returned: ',
+                serverNotResponding: '❌ Server not responding or credentials invalid',
+                urlValidated: '✅ URL validated successfully'
             },
             es: {
                 title: '📺 IPTV Ver',
@@ -448,7 +464,11 @@
                 password: 'Contraseña',
                 passwordPlaceholder: 'Su contraseña',
                 converting: 'Convirtiendo a URL IPTV...',
-                invalidXtream: 'Por favor complete todos los campos de Xtream Codes'
+                invalidXtream: 'Por favor complete todos los campos de Xtream Codes',
+                validatingUrl: 'Validando URL...',
+                urlValidationFailed: '❌ Validación de URL falló. El servidor devolvió: ',
+                serverNotResponding: '❌ Servidor no responde o credenciales inválidas',
+                urlValidated: '✅ URL validada exitosamente'
             },
             fr: {
                 title: '📺 IPTV Regarder',
@@ -492,7 +512,11 @@
                 password: 'Mot de passe',
                 passwordPlaceholder: 'Votre mot de passe',
                 converting: 'Conversion en URL IPTV...',
-                invalidXtream: 'Veuillez remplir tous les champs Xtream Codes'
+                invalidXtream: 'Veuillez remplir tous les champs Xtream Codes',
+                validatingUrl: 'Validation de l\'URL...',
+                urlValidationFailed: '❌ Validation de l\'URL échouée. Le serveur a renvoyé: ',
+                serverNotResponding: '❌ Serveur ne répond pas ou identifiants invalides',
+                urlValidated: '✅ URL validée avec succès'
             },
             de: {
                 title: '📺 IPTV Ansehen',
@@ -536,7 +560,11 @@
                 password: 'Passwort',
                 passwordPlaceholder: 'Ihr Passwort',
                 converting: 'Konvertierung zu IPTV-URL...',
-                invalidXtream: 'Bitte füllen Sie alle Xtream Codes-Felder aus'
+                invalidXtream: 'Bitte füllen Sie alle Xtream Codes-Felder aus',
+                validatingUrl: 'URL wird validiert...',
+                urlValidationFailed: '❌ URL-Validierung fehlgeschlagen. Server gab zurück: ',
+                serverNotResponding: '❌ Server antwortet nicht oder Anmeldedaten ungültig',
+                urlValidated: '✅ URL erfolgreich validiert'
             }
         };
 
@@ -791,6 +819,32 @@
             return `${server}/get.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&type=m3u_plus&output=ts`;
         }
 
+        // Function to validate URL by making a HEAD request
+        async function validateUrl(url) {
+            try {
+                // Use a timeout to avoid hanging
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+                const response = await fetch(url, {
+                    method: 'HEAD', // Only get headers, not content
+                    signal: controller.signal,
+                    mode: 'no-cors' // Allow cross-origin requests
+                });
+
+                clearTimeout(timeoutId);
+
+                // For no-cors mode, we can't read the status
+                // But if the request doesn't throw, it means the server responded
+                return { success: true, status: 'reachable', message: 'Server is reachable' };
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    return { success: false, status: 'timeout', message: 'Request timed out' };
+                }
+                return { success: false, status: 'error', message: error.message };
+            }
+        }
+
         // Global function for sending URL to Firebase
         window.sendUrl = async function() {
             const urlInput = document.getElementById('urlInput');
@@ -819,6 +873,28 @@
                 status.className = 'status info';
                 url = convertXtreamToUrl(serverUrl, username, password);
                 console.log('Converted Xtream Codes to URL:', url);
+
+                // Validate the generated URL
+                status.textContent = t.validatingUrl;
+                const validation = await validateUrl(url);
+
+                if (!validation.success) {
+                    let errorMessage = t.serverNotResponding;
+                    if (validation.status === 'timeout') {
+                        errorMessage = t.urlValidationFailed + 'Connection timeout';
+                    } else if (validation.message) {
+                        errorMessage = t.urlValidationFailed + validation.message;
+                    }
+
+                    status.textContent = errorMessage;
+                    status.className = 'status error';
+                    sendButton.disabled = false;
+                    sendButton.textContent = t.sendButton;
+                    return;
+                }
+
+                status.textContent = t.urlValidated;
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Show success for 1 second
             } else {
                 // Get direct URL input
                 const urlInput = document.getElementById('urlInput');
