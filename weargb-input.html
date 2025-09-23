@@ -438,6 +438,14 @@
                     
                     helperText.style.display = 'none';
                     premiumNotice.style.display = 'block';
+                } else {
+                    // Pro version - hide premium notice and show version indicator
+                    const premiumNotice = document.getElementById('premium-notice');
+                    premiumNotice.style.display = 'none';
+                    
+                    // Add Pro badge to title
+                    const logoDiv = document.querySelector('.logo p');
+                    logoDiv.innerHTML = 'Game Boy Emulator for Wear OS <span style="background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">[PRO]</span>';
                 }
             } else {
                 showStatus('No session ID provided', 'error');
