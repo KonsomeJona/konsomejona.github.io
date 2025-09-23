@@ -3,40 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WearGB ROM URL Entry</title>
-    <!-- Version 3.0 with Multi-Language Support - Sep 15, 2025 -->
+    <title>WearGB - ROM Selection</title>
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
-        h1 {
+        .logo {
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .status {
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .status.connected {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .status.success {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.2em;
             font-weight: 600;
         }
         
-        .subtitle {
+        .divider {
             text-align: center;
-            opacity: 0.8;
-            margin-bottom: 30px;
-            font-size: 14px;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 20px;
+            position: relative;
+            color: #999;
+            font-size: 0.9em;
+            font-weight: 500;
         }
         
         .form-group {
@@ -46,411 +119,463 @@
         label {
             display: block;
             margin-bottom: 8px;
+            color: #333;
             font-weight: 500;
-            font-size: 14px;
         }
         
-        input[type="url"] {
+        input[type="text"], 
+        input[type="url"],
+        select {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-            box-sizing: border-box;
-            backdrop-filter: blur(5px);
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
         }
         
-        input[type="url"]::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        input[type="url"]:focus {
+        input[type="text"]:focus,
+        input[type="url"]:focus,
+        select:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.8);
-            background: rgba(255, 255, 255, 0.2);
+            border-color: #667eea;
         }
         
-        .button {
+        select {
+            cursor: pointer;
+            background: white;
+        }
+        
+        .rom-select {
+            margin-bottom: 15px;
+        }
+        
+        .rom-info {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .rom-info.visible {
+            display: block;
+        }
+        
+        .rom-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .rom-info p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .license-tag {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+        
+        .btn {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        .button:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
         
-        .button:disabled {
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
-            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
         }
         
-        .status {
-            margin-top: 20px;
-            padding: 12px 16px;
-            border-radius: 8px;
+        .helper-text {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f4ff;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .category-label {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 10px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        footer {
+            margin-top: 30px;
             text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            min-height: 20px;
-        }
-        
-        .status.success {
-            background: rgba(39, 174, 96, 0.2);
-            border: 1px solid rgba(39, 174, 96, 0.4);
-            color: #2ecc71;
-        }
-        
-        .status.error {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            color: #e74c3c;
-        }
-        
-        .status.info {
-            background: rgba(52, 152, 219, 0.2);
-            border: 1px solid rgba(52, 152, 219, 0.4);
-            color: #3498db;
-        }
-        
-        .examples {
-            margin-top: 20px;
-            font-size: 12px;
-            opacity: 0.7;
-            display: flex;
-            gap: 20px;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-        }
-
-        .examples-column {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .examples h3 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            font-weight: 600;
-            opacity: 1;
-        }
-
-        .examples ul {
-            margin: 0;
-            padding-left: 20px;
-            list-style-type: disc;
-        }
-
-        .examples li {
-            margin-bottom: 4px;
-            line-height: 1.4;
-        }
-
-        @media (max-width: 480px) {
-            .examples {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .examples-column {
-                width: 100%;
-            }
+            color: #999;
+            font-size: 0.85em;
         }
         
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 14px;
+            height: 14px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
         }
         
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 20px;
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Language Selection -->
-    <div style="position: absolute; top: 10px; right: 10px; z-index: 100;">
-        <select id="languageSelector" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 5px; border-radius: 5px; cursor: pointer;">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="ja">日本語</option>
-        </select>
-    </div>
     <div class="container">
-        <h1>🎮 WearGB</h1>
-        <div class="subtitle">Enter ROM URL for your watch</div>
-        
-        <div class="form-group">
-            <label for="urlInput">Game ROM URL</label>
-            <input 
-                type="url" 
-                id="urlInput" 
-                placeholder="https://example.com/game.gb"
-                autocomplete="url"
-                spellcheck="false"
-            >
+        <div class="logo">
+            <h1>🎮 WearGB</h1>
+            <p>Game Boy Emulator for Wear OS</p>
         </div>
         
-        <button class="button" onclick="sendUrl()" id="sendButton">
-            Send to Watch
-        </button>
+        <div id="status" class="status">
+            Connecting to watch session...<span class="loading"></span>
+        </div>
         
-        <div id="status" class="status"></div>
-        
-        <div class="examples">
-            <div class="examples-column">
-                <h3>Supported formats:</h3>
-                <ul>
-                    <li>Game Boy (.gb, .gbc)</li>
-                    <li>Direct download links</li>
-                    <li>ZIP archives (.zip, .7z)</li>
-                </ul>
-            </div>
-            <div class="examples-column">
-                <h3>Supported sites:</h3>
-                <ul>
-                    <li>Google Drive</li>
-                    <li>Dropbox</li>
-                    <li>MediaFire</li>
-                    <li>GitHub Releases</li>
-                    <li>Archive.org</li>
-                    <li>Direct URLs</li>
-                </ul>
+        <!-- Custom URL Section (Top) -->
+        <div class="section" id="custom-url-section">
+            <h3>📎 Load Your Own ROM</h3>
+            <div class="form-group">
+                <label for="custom-url">Enter ROM URL:</label>
+                <input type="url" id="custom-url" placeholder="https://example.com/game.gb" 
+                       onkeypress="if(event.key==='Enter') sendCustomUrl()" style="margin-bottom: 15px;">
+                
+                <button class="btn" id="custom-send-btn" onclick="sendCustomUrl()">
+                    Send URL to Watch
+                </button>
+                
+                <div class="helper-text" id="custom-helper">
+                    💡 Supported: Direct links to .gb/.gbc files, Google Drive, Dropbox, MediaFire, GitHub Releases, Archive.org
+                </div>
+                
+                <!-- Premium upgrade message (hidden by default) -->
+                <div class="premium-notice" id="premium-notice" style="display: none;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-top: 15px;">
+                        <h4 style="color: #856404; margin: 0 0 10px 0;">🔒 Premium Feature</h4>
+                        <p style="color: #856404; margin: 0 0 10px 0;">Custom ROM URLs are available in the paid version of WearGB.</p>
+                        <p style="color: #856404; margin: 0 0 15px 0;">Support the developer and unlock this feature for only <strong>$0.99</strong>!</p>
+                        <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.paid" 
+                           target="_blank" 
+                           style="display: inline-block; background: #ffc107; color: #000; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                            🛒 Get WearGB Pro on Google Play
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+        
+        <div class="divider">
+            <span>OR</span>
+        </div>
+        
+        <!-- ROM Library Section (Bottom) -->
+        <div class="section">
+            <h3>🎮 Choose from Free ROM Library</h3>
+            <div class="form-group">
+                <label for="rom-select">Select a Game Boy ROM:</label>
+                
+                <select id="rom-select" class="rom-select" onchange="updateRomInfo()">
+                    <option value="">-- Select a ROM --</option>
+                    <optgroup label="🎮 Popular Games">
+                        <option value="tobutobugirl.gb" data-name="Tobu Tobu Girl" data-desc="Open-source platformer where you bounce on enemies to climb higher" data-license="MIT">Tobu Tobu Girl</option>
+                        <option value="ucity.gbc" data-name="µCity" data-desc="Build and manage your city in this SimCity-inspired GBC game" data-license="GPL">µCity (GBC)</option>
+                        <option value="2048.gb" data-name="2048" data-desc="The popular sliding puzzle game for Game Boy" data-license="MIT">2048</option>
+                        <option value="adjustris.gb" data-name="Adjustris" data-desc="Tetris clone with adjustable gameplay mechanics" data-license="Open Source">Adjustris</option>
+                    </optgroup>
+                    
+                    <optgroup label="🎯 Action & Adventure">
+                        <option value="tuff.gb" data-name="Tuff" data-desc="Platformer adventure with charming graphics" data-license="Open Source">Tuff</option>
+                        <option value="airaki.gb" data-name="Airaki" data-desc="Classic shoot-em-up with waves of enemies" data-license="Public Domain">Airaki</option>
+                        <option value="theycame.gb" data-name="They Came From Outer Space" data-desc="Retro alien invasion game" data-license="Public Domain">They Came From Outer Space</option>
+                        <option value="sheepitup.gb" data-name="Sheep It Up" data-desc="Jump higher as a sheep in this vertical platformer" data-license="Public Domain">Sheep It Up</option>
+                        <option value="into-the-blue.gb" data-name="Into The Blue" data-desc="Underwater adventure exploration game" data-license="Public Domain">Into The Blue</option>
+                    </optgroup>
+                    
+                    <optgroup label="🧩 Puzzle Games">
+                        <option value="gb-wordyl.gb" data-name="GB-Wordyl" data-desc="Wordle clone - guess the 5-letter word" data-license="Open Source">GB-Wordyl (Wordle)</option>
+                        <option value="geometrix.gb" data-name="Geometrix" data-desc="Geometric puzzle challenges" data-license="Public Domain">Geometrix</option>
+                        <option value="bubble-factory.gb" data-name="Bubble Factory" data-desc="Match bubbles and clear the screen" data-license="Public Domain">Bubble Factory</option>
+                    </optgroup>
+                    
+                    <optgroup label="🕹️ Arcade">
+                        <option value="retroid.gb" data-name="Retroid" data-desc="Arkanoid-style block breaking game" data-license="Public Domain">Retroid</option>
+                        <option value="plantboy.gb" data-name="Plantboy" data-desc="Gardening adventure game" data-license="Public Domain">Plantboy</option>
+                        <option value="hotdog.gb" data-name="Hot Dog Ingress" data-desc="Action arcade game" data-license="Public Domain">Hot Dog Ingress</option>
+                    </optgroup>
+                    
+                    <optgroup label="🧪 Test ROMs">
+                        <option value="test-roms/cpu_instrs.gb" data-name="CPU Instructions Test" data-desc="Tests CPU instruction accuracy for emulators" data-license="Test ROM">CPU Instructions Test</option>
+                        <option value="test-roms/dmg-acid2.gb" data-name="DMG-ACID2" data-desc="Graphics and timing accuracy test" data-license="Test ROM">DMG-ACID2</option>
+                        <option value="test-roms/hello-world.gb" data-name="Hello World" data-desc="Simple test ROM displaying Hello World" data-license="Test ROM">Hello World</option>
+                    </optgroup>
+                    
+                    <optgroup label="🎨 Demos">
+                        <option value="gbstudio-sample.gb" data-name="GB Studio Sample" data-desc="Sample platformer from GB Studio" data-license="Open Source">GB Studio Sample</option>
+                        <option value="demotronic.gb" data-name="Demotronic" data-desc="Technical demo showcasing GB capabilities" data-license="Public Domain">Demotronic</option>
+                    </optgroup>
+                </select>
+                
+                <div id="rom-info" class="rom-info">
+                    <h4><span id="rom-name"></span><span id="rom-license" class="license-tag"></span></h4>
+                    <p id="rom-description"></p>
+                </div>
+                
+                <button id="download-btn" class="btn" onclick="sendRomUrl()" disabled>
+                    Select ROM to Send to Watch
+                </button>
+                
+                <div class="helper-text">
+                    💡 All ROMs in this library are 100% free and legal - either open source, homebrew, or public domain.
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            Session ID: <span id="session-id">Loading...</span>
+        </footer>
     </div>
-
-    <!-- Multi-language support -->
-    <script src="weargb-input-multilang.js"></script>
-
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
-        import { getDatabase, ref, set, get } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js';
-
-        // Firebase configuration - WearGB Project (Real Configuration)
+    
+    <script>
+        // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBp8_V8jjEUq1aGuypS6VV63cFBFap0s6M",
+            apiKey: "AIzaSyDw7cGPgUcWdJ0sYtRdOjv3Q6FgLpze0Pg",
             authDomain: "weargb.firebaseapp.com",
             databaseURL: "https://weargb-default-rtdb.firebaseio.com",
             projectId: "weargb",
-            storageBucket: "weargb.firebasestorage.app",
+            storageBucket: "weargb.appspot.com",
             messagingSenderId: "480332250386",
-            appId: "1:480332250386:web:bbedc88699265f019747cb",
-            measurementId: "G-K7GSDPC934"
+            appId: "1:480332250386:web:9747cb818b022d2f9747cb"
         };
-
+        
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Initialize language support
-        const currentLang = window.languageSupport.detectLanguage();
-        window.languageSupport.applyTranslations(currentLang);
-        document.getElementById('languageSelector').value = currentLang;
-
-        // Language selector change handler
-        document.getElementById('languageSelector').addEventListener('change', function(e) {
-            window.languageSupport.applyTranslations(e.target.value);
-        });
-
-        // Get session ID from URL parameters
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // Get parameters from URL
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session');
-
-        if (!sessionId) {
-            const lang = window.languageSupport.detectLanguage();
-            document.getElementById('status').textContent = window.languageSupport.getErrorMessage('noSession', lang);
-            document.getElementById('status').className = 'status error';
-            document.getElementById('sendButton').disabled = true;
-        } else {
-            // Check if session already exists and was consumed
-            checkSessionStatus(sessionId);
-        }
-
-        // Check if session has already been used
-        async function checkSessionStatus(sessionId) {
+        const versionToken = urlParams.get('v');
+        
+        // Base URL for ROM downloads
+        const ROM_BASE_URL = 'https://konsomejona.github.io/downloads/gameboy-roms/';
+        
+        // Decode and validate version token
+        function isValidPaidVersion() {
+            if (!versionToken) return false;
             try {
-                const snapshot = await get(ref(database, `url-sessions/${sessionId}`));
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    if (data.consumed) {
-                        const lang = window.languageSupport.detectLanguage();
-                        document.getElementById('status').textContent = window.languageSupport.getErrorMessage('sessionUsed', lang);
-                        document.getElementById('status').className = 'status error';
-                        document.getElementById('sendButton').disabled = true;
-                        document.getElementById('urlInput').disabled = true;
-                    }
-                }
-            } catch (error) {
-                console.log('Session check error:', error);
+                // Decode base64 token
+                const decoded = atob(versionToken);
+                // Check if it matches the expected pattern for paid version
+                // Token format: "paid_[sessionId]_[timestamp]"
+                const parts = decoded.split('_');
+                if (parts[0] !== 'paid') return false;
+                if (parts[1] !== sessionId.substring(0, 8)) return false;
+                // Check timestamp is within last 24 hours
+                const timestamp = parseInt(parts[2]);
+                const now = Date.now();
+                const hoursSinceCreation = (now - timestamp) / (1000 * 60 * 60);
+                return hoursSinceCreation < 24;
+            } catch (e) {
+                return false;
             }
         }
-
-        // Anti-spam protection
-        let lastSubmissionTime = 0;
-        let submissionCount = 0;
-        const SUBMISSION_COOLDOWN = 10000; // 10 seconds between submissions
-        const MAX_SUBMISSIONS_PER_SESSION = 5; // Max 5 URLs per session
-
-        // Global function for sending URL to Firebase
-        window.sendUrl = async function() {
-            const urlInput = document.getElementById('urlInput');
-            const sendButton = document.getElementById('sendButton');
-            const status = document.getElementById('status');
-
-            // Anti-spam check: Rate limiting
-            const now = Date.now();
-            if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
-                const remainingTime = Math.ceil((SUBMISSION_COOLDOWN - (now - lastSubmissionTime)) / 1000);
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('pleaseWait', lang, { seconds: remainingTime });
-                status.className = 'status error';
+        
+        const isPaidVersion = isValidPaidVersion();
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionId) {
+                document.getElementById('session-id').textContent = sessionId.substring(0, 8) + '...';
+                checkSession();
+                
+                // Apply version restrictions
+                if (!isPaidVersion) {
+                    // Disable custom URL input for free version
+                    const customInput = document.getElementById('custom-url');
+                    const customBtn = document.getElementById('custom-send-btn');
+                    const helperText = document.getElementById('custom-helper');
+                    const premiumNotice = document.getElementById('premium-notice');
+                    
+                    customInput.disabled = true;
+                    customInput.style.opacity = '0.5';
+                    customInput.placeholder = 'Upgrade to Pro to use custom URLs';
+                    
+                    customBtn.disabled = true;
+                    customBtn.style.opacity = '0.5';
+                    customBtn.style.cursor = 'not-allowed';
+                    
+                    helperText.style.display = 'none';
+                    premiumNotice.style.display = 'block';
+                }
+            } else {
+                showStatus('No session ID provided', 'error');
+            }
+        });
+        
+        function checkSession() {
+            const sessionRef = database.ref(`url_sessions/${sessionId}`);
+            sessionRef.once('value').then(snapshot => {
+                if (snapshot.exists()) {
+                    showStatus('Connected to watch session', 'connected');
+                } else {
+                    showStatus('Creating new session...', 'connected');
+                    // Initialize session
+                    sessionRef.set({
+                        timestamp: Date.now(),
+                        consumed: false,
+                        ttl: 300000 // 5 minutes
+                    }).then(() => {
+                        showStatus('Connected to watch session', 'connected');
+                    });
+                }
+            }).catch(error => {
+                showStatus('Connection error: ' + error.message, 'error');
+            });
+        }
+        
+        // Tab switching removed - single page layout
+        
+        function updateRomInfo() {
+            const select = document.getElementById('rom-select');
+            const option = select.options[select.selectedIndex];
+            const infoDiv = document.getElementById('rom-info');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            if (option.value) {
+                document.getElementById('rom-name').textContent = option.dataset.name;
+                document.getElementById('rom-description').textContent = option.dataset.desc;
+                document.getElementById('rom-license').textContent = option.dataset.license;
+                infoDiv.classList.add('visible');
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = `Send "${option.dataset.name}" to Watch`;
+            } else {
+                infoDiv.classList.remove('visible');
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = 'Select ROM to Send to Watch';
+            }
+        }
+        
+        function sendRomUrl() {
+            const select = document.getElementById('rom-select');
+            const selectedRom = select.value;
+            
+            if (!selectedRom) {
+                showStatus('Please select a ROM first', 'error');
                 return;
             }
-
-            // Anti-spam check: Submission count
-            if (submissionCount >= MAX_SUBMISSIONS_PER_SESSION) {
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('maxSubmissions', lang);
-                status.className = 'status error';
+            
+            const romUrl = ROM_BASE_URL + selectedRom;
+            const romName = select.options[select.selectedIndex].dataset.name;
+            
+            sendUrlToWatch(romUrl, romName);
+        }
+        
+        function sendCustomUrl() {
+            // Double-check paid version in case someone tries to bypass
+            if (!isPaidVersion) {
+                showStatus('Custom URLs are available in WearGB Pro', 'error');
+                window.open('https://play.google.com/store/apps/details?id=me.takohi.weargb.paid', '_blank');
                 return;
             }
-
+            
+            const urlInput = document.getElementById('custom-url');
             const url = urlInput.value.trim();
             
             if (!url) {
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('enterUrl', lang);
-                status.className = 'status error';
+                showStatus('Please enter a URL', 'error');
                 return;
             }
             
-            // Validate URL format
+            if (!isValidUrl(url)) {
+                showStatus('Please enter a valid URL', 'error');
+                return;
+            }
+            
+            sendUrlToWatch(url, 'Custom ROM');
+        }
+        
+        function sendUrlToWatch(url, romName) {
+            if (!sessionId) {
+                showStatus('No session ID', 'error');
+                return;
+            }
+            
+            showStatus('Sending ROM to watch...', 'connected');
+            
+            const sessionRef = database.ref(`url_sessions/${sessionId}`);
+            sessionRef.set({
+                url: url,
+                romName: romName || 'ROM',
+                timestamp: Date.now(),
+                consumed: false,
+                userAgent: navigator.userAgent,
+                ttl: 300000 // 5 minutes
+            }).then(() => {
+                showStatus(`✅ "${romName}" sent to watch successfully!`, 'success');
+                
+                // Clear custom URL if used
+                const urlInput = document.getElementById('custom-url');
+                if (urlInput) urlInput.value = '';
+                
+                // Show success for 5 seconds then reset
+                setTimeout(() => {
+                    showStatus('Connected to watch session', 'connected');
+                }, 5000);
+            }).catch(error => {
+                showStatus('Failed to send: ' + error.message, 'error');
+            });
+        }
+        
+        function isValidUrl(string) {
             try {
-                new URL(url);
-            } catch (e) {
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('invalidUrl', lang);
-                status.className = 'status error';
-                return;
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
             }
+        }
+        
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status ' + type;
+            statusDiv.innerHTML = message;
             
-            // Enhanced URL validation
-            if (url.length > 2048) {
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('urlTooLong', lang);
-                status.className = 'status error';
-                return;
+            if (type === 'connected' && message.includes('Connecting')) {
+                statusDiv.innerHTML += '<span class="loading"></span>';
             }
-
-            // Block suspicious patterns
-            const suspiciousPatterns = [
-                /javascript:/i,
-                /data:/i,
-                /file:/i,
-                /ftp:/i,
-                /<script/i,
-                /eval\(/i,
-                /alert\(/i
-            ];
-
-            if (suspiciousPatterns.some(pattern => pattern.test(url))) {
-                const lang = window.languageSupport.detectLanguage();
-                status.textContent = window.languageSupport.getErrorMessage('suspiciousUrl', lang);
-                status.className = 'status error';
-                return;
-            }
-
-            // Check for Game Boy ROM file extensions
-            const validExtensions = ['.gb', '.gbc', '.zip', '.7z'];
-            const hasValidExtension = validExtensions.some(ext =>
-                url.toLowerCase().includes(ext)
-            );
-
-            if (!hasValidExtension) {
-                const lang = window.languageSupport.detectLanguage();
-                const proceed = confirm(
-                    window.languageSupport.getErrorMessage('noRomConfirm', lang)
-                );
-                if (!proceed) return;
-            }
-            
-            // Send URL to Firebase Realtime Database
-            try {
-                sendButton.disabled = true;
-                const lang = window.languageSupport.detectLanguage();
-                const t = window.languageSupport.translations[lang];
-                sendButton.innerHTML = `<span class="loading"></span> ${t.sendingText}`;
-                status.textContent = window.languageSupport.getErrorMessage('sending', lang);
-                status.className = 'status info';
-                
-                // Update spam protection counters
-                lastSubmissionTime = now;
-                submissionCount++;
-
-                // Write to Firebase with session ID as key and TTL
-                await set(ref(database, `url-sessions/${sessionId}`), {
-                    url: url,
-                    timestamp: Date.now(),
-                    consumed: false,
-                    userAgent: navigator.userAgent.substring(0, 100), // Limited user agent for basic tracking
-                    ttl: Date.now() + (10 * 60 * 1000) // Auto-expire in 10 minutes
-                });
-                
-                // Redirect to success page
-                window.location.href = 'weargb-success.html';
-                
-            } catch (error) {
-                console.error('Error sending URL to Firebase:', error);
-                // Redirect to error page with error details
-                const errorMessage = encodeURIComponent(error.message || 'Unknown error occurred');
-                window.location.href = `weargb-error.html?error=${errorMessage}`;
-            }
-        };
-        
-        // Auto-focus the URL input for better UX
-        document.getElementById('urlInput').focus();
-        
-        // Enable Enter key to submit
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendUrl();
-            }
-        });
-        
-        // Log session info for debugging
-        console.log('WearGB URL Input - Session:', sessionId);
-        console.log('Firebase initialized successfully');
+        }
     </script>
 </body>
 </html>

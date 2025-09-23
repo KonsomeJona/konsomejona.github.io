@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Game Boy ROMs - Open Source & Homebrew Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .legal-notice {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .legal-notice h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .game-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .game-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 2em;
+            margin: 40px 0 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .test-roms {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        
+        .license-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Free Game Boy ROMs Collection</h1>
+            <p class="subtitle">100% Legal • Open Source • Homebrew Games</p>
+        </header>
+        
+        <div class="legal-notice">
+            <h2>✅ Legal Notice</h2>
+            <p>All games in this collection are completely free and legal to download. They are either:</p>
+            <ul style="margin: 10px 0 0 20px;">
+                <li>Open-source projects with permissive licenses (MIT, GPL, etc.)</li>
+                <li>Homebrew games released as freeware by their creators</li>
+                <li>Public domain test ROMs for emulator development</li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>No copyrighted commercial games are included.</strong></p>
+        </div>
+        
+        <h2 class="section-title">🎯 Playable Games</h2>
+        
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-title">Tobu Tobu Girl <span class="license-badge">MIT</span></div>
+                <div class="game-description">A fun platformer where you bounce on enemies to climb higher. Great pixel art and catchy music!</div>
+                <a href="tobutobugirl.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">µCity <span class="license-badge">GPL</span></div>
+                <div class="game-description">Build and manage your own city in this SimCity-inspired game for Game Boy Color.</div>
+                <a href="ucity.gbc" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Adjustris <span class="license-badge">Open Source</span></div>
+                <div class="game-description">A Tetris-style puzzle game with adjustable gameplay mechanics and difficulty.</div>
+                <a href="adjustris.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">2048 <span class="license-badge">MIT</span></div>
+                <div class="game-description">The popular sliding puzzle game, perfectly adapted for the Game Boy.</div>
+                <a href="2048.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">GB-Wordyl <span class="license-badge">Open Source</span></div>
+                <div class="game-description">Daily word puzzle game inspired by Wordle. Guess the 5-letter word!</div>
+                <a href="gb-wordyl.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Tuff <span class="license-badge">Open Source</span></div>
+                <div class="game-description">Adventure platformer with charming graphics and challenging levels.</div>
+                <a href="tuff.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Airaki <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Classic shoot-em-up with waves of enemies and power-ups.</div>
+                <a href="airaki.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Sheep It Up <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Jump higher and higher as a sheep in this vertical platformer!</div>
+                <a href="sheepitup.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Bubble Factory <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Match bubbles and clear the screen in this addictive puzzle game.</div>
+                <a href="bubble-factory.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Retroid <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Break blocks with your ball in this Arkanoid-style arcade game.</div>
+                <a href="retroid.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Into The Blue <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Explore underwater worlds in this aquatic adventure game.</div>
+                <a href="into-the-blue.gb" class="download-btn" download>Download ROM</a>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-title">Geometrix <span class="license-badge">Public Domain</span></div>
+                <div class="game-description">Puzzle game featuring geometric shapes and mind-bending challenges.</div>
+                <a href="geometrix.gb" class="download-btn" download>Download ROM</a>
+            </div>
+        </div>
+        
+        <div class="test-roms">
+            <h2 class="section-title">🧪 Test ROMs</h2>
+            <p style="color: white; margin-bottom: 20px;">These ROMs are useful for testing emulator compatibility and accuracy:</p>
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-title">CPU Instructions Test</div>
+                    <div class="game-description">Tests CPU instruction accuracy. Essential for emulator developers.</div>
+                    <a href="test-roms/cpu_instrs.gb" class="download-btn" download>Download Test ROM</a>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-title">DMG-ACID2</div>
+                    <div class="game-description">Graphics and timing accuracy test for Game Boy emulators.</div>
+                    <a href="test-roms/dmg-acid2.gb" class="download-btn" download>Download Test ROM</a>
+                </div>
+                
+                <div class="game-card">
+                    <div class="game-title">Hello World</div>
+                    <div class="game-description">Simple test ROM that displays "Hello World" - perfect for basic testing.</div>
+                    <a href="test-roms/hello-world.gb" class="download-btn" download>Download Test ROM</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>🎮 Play these ROMs with <a href="https://github.com/yourusername/wearGB">WearGB</a> on Wear OS</p>
+            <p style="margin-top: 10px;">All games are free and legal to download • No copyright infringement</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">Last updated: September 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

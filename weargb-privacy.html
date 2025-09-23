@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - WearGB & WearGB Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h2 {
+            color: #444;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background: #f0f4ff;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .contact {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .last-updated {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+        }
+        
+        .version-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Privacy Policy</h1>
+        <div class="subtitle">WearGB & WearGB Pro - Game Boy Emulator for Wear OS</div>
+        
+        <div class="version-note">
+            This privacy policy applies to both <strong>WearGB (Free)</strong> and <strong>WearGB Pro (Paid)</strong> versions.
+        </div>
+        
+        <p>Effective Date: <strong>January 20, 2025</strong></p>
+        
+        <div class="highlight">
+            <strong>Your Privacy Matters</strong><br>
+            WearGB and WearGB Pro are designed with privacy in mind. We do not collect, store, or transmit any personal data.
+        </div>
+        
+        <h2>1. Information We Do NOT Collect</h2>
+        <p>WearGB and WearGB Pro do not collect any personal information, including but not limited to:</p>
+        <ul>
+            <li>Names or email addresses</li>
+            <li>Location data</li>
+            <li>Device identifiers</li>
+            <li>Usage statistics or analytics</li>
+            <li>Game play data or high scores</li>
+            <li>ROM files or game data</li>
+        </ul>
+        
+        <h2>2. Data Storage</h2>
+        <p>All data created by WearGB remains on your device:</p>
+        <ul>
+            <li><strong>Save States:</strong> Game save states are stored locally on your Wear OS device</li>
+            <li><strong>Settings:</strong> App preferences are saved locally using Android SharedPreferences</li>
+            <li><strong>ROM Files:</strong> Any ROM files you load are cached locally and never transmitted</li>
+        </ul>
+        <p>This data is never uploaded to any server or shared with third parties.</p>
+        
+        <h2>3. Network Usage</h2>
+        <h3>Free Version (WearGB)</h3>
+        <ul>
+            <li><strong>ROM Library:</strong> Downloads free, legal ROM files from konsomejona.github.io when selected</li>
+            <li><strong>Firebase Session:</strong> Creates temporary session IDs for QR code ROM loading (auto-deleted after 5 minutes)</li>
+        </ul>
+        
+        <h3>Pro Version (WearGB Pro)</h3>
+        <ul>
+            <li>All features from Free version</li>
+            <li><strong>Custom URLs:</strong> Downloads ROM files from URLs you provide (Google Drive, Dropbox, etc.)</li>
+            <li><strong>Direct Downloads:</strong> Files are downloaded directly to your device, not through our servers</li>
+        </ul>
+        
+        <h2>4. Firebase Usage</h2>
+        <p>Both versions use Firebase Realtime Database solely for the QR code ROM loading feature:</p>
+        <ul>
+            <li>Creates temporary session IDs (UUID format)</li>
+            <li>Sessions contain only: ROM URL and timestamp</li>
+            <li>Sessions automatically expire after 5 minutes</li>
+            <li>No personal information is included in sessions</li>
+            <li>Firebase is configured with minimal data retention</li>
+        </ul>
+        
+        <h2>5. Permissions</h2>
+        <p>WearGB requires the following permissions:</p>
+        <ul>
+            <li><strong>INTERNET:</strong> For downloading ROM files from URLs</li>
+            <li><strong>WAKE_LOCK:</strong> To keep screen on during gameplay</li>
+            <li><strong>VIBRATE:</strong> For haptic feedback (optional)</li>
+        </ul>
+        <p>The app does not request or use any permissions for tracking or data collection.</p>
+        
+        <h2>6. Third-Party Services</h2>
+        <p>WearGB may interact with the following third-party services based on your usage:</p>
+        <ul>
+            <li><strong>Google Firebase:</strong> For temporary QR code sessions only (see section 4)</li>
+            <li><strong>GitHub Pages:</strong> For downloading free ROM library</li>
+            <li><strong>Your Cloud Storage:</strong> (Pro version only) When you provide URLs to your own files</li>
+        </ul>
+        <p>We do not control these services' privacy practices. Please review their respective privacy policies.</p>
+        
+        <h2>7. Children's Privacy</h2>
+        <p>WearGB does not knowingly collect any information from anyone, including children under 13. The app functions entirely offline except for ROM downloading features.</p>
+        
+        <h2>8. Data Security</h2>
+        <ul>
+            <li>No personal data is collected, so there's no personal data to secure</li>
+            <li>All app data remains on your device under Android's app sandboxing</li>
+            <li>Temporary Firebase sessions use random UUIDs with no personal information</li>
+            <li>ROM URLs in Firebase sessions are deleted after 5 minutes</li>
+        </ul>
+        
+        <h2>9. Data Deletion</h2>
+        <p>To delete all WearGB data:</p>
+        <ol>
+            <li>Go to your Wear OS Settings</li>
+            <li>Navigate to Apps</li>
+            <li>Select WearGB or WearGB Pro</li>
+            <li>Choose "Clear Data" or "Uninstall"</li>
+        </ol>
+        <p>This will remove all save states, settings, and cached data from your device.</p>
+        
+        <h2>10. Your Rights</h2>
+        <p>Since we don't collect personal data, there is no personal information to access, modify, or delete from our servers. All your data is under your control on your own device.</p>
+        
+        <h2>11. Changes to This Policy</h2>
+        <p>We may update this privacy policy from time to time. Changes will be posted on this page with an updated "Effective Date". Continued use of WearGB after changes constitutes acceptance of the updated policy.</p>
+        
+        <h2>12. Open Source</h2>
+        <p>WearGB's emulator core is based on open-source projects. The app itself does not transmit any telemetry or usage data.</p>
+        
+        <h2>13. Contact Information</h2>
+        <div class="contact">
+            <strong>For privacy concerns or questions about this policy, contact us at:</strong><br><br>
+            Email: <a href="mailto:privacy@konsomejona.github.io">privacy@konsomejona.github.io</a><br>
+            GitHub: <a href="https://github.com/konsomejona" target="_blank">github.com/konsomejona</a><br><br>
+            <em>Please include "WearGB Privacy" in your subject line.</em>
+        </div>
+        
+        <h2>14. Compliance</h2>
+        <p>This privacy policy is designed to comply with:</p>
+        <ul>
+            <li>Google Play Store privacy requirements</li>
+            <li>GDPR (General Data Protection Regulation)</li>
+            <li>CCPA (California Consumer Privacy Act)</li>
+            <li>COPPA (Children's Online Privacy Protection Act)</li>
+        </ul>
+        
+        <div class="last-updated">
+            Last Updated: January 20, 2025<br>
+            Privacy Policy URL: <a href="https://konsomejona.github.io/weargb-privacy.html">https://konsomejona.github.io/weargb-privacy.html</a>
+        </div>
+    </div>
+</body>
+</html>
