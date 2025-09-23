@@ -466,10 +466,22 @@
                         ttl: 300000 // 5 minutes
                     }).then(() => {
                         showStatus('Connected to watch session', 'connected');
+                    }).catch(error => {
+                        if (error.code === 'PERMISSION_DENIED') {
+                            showStatus('Please configure Firebase security rules. Meanwhile, you can still enter URLs.', 'error');
+                            // Continue anyway - the watch will still poll for data
+                        } else {
+                            showStatus('Connection error: ' + error.message, 'error');
+                        }
                     });
                 }
             }).catch(error => {
-                showStatus('Connection error: ' + error.message, 'error');
+                if (error.code === 'PERMISSION_DENIED') {
+                    showStatus('Firebase not configured. You can still select ROMs below.', 'error');
+                    // Continue anyway - allow selecting ROMs
+                } else {
+                    showStatus('Connection error: ' + error.message, 'error');
+                }
             });
         }
         
@@ -541,6 +553,7 @@
             }
             
             showStatus('Sending ROM to watch...', 'connected');
+            console.log('Sending URL to watch:', url, 'Session:', sessionId);
             
             const sessionRef = database.ref(`url_sessions/${sessionId}`);
             sessionRef.set({
@@ -552,6 +565,7 @@
                 ttl: 300000 // 5 minutes
             }).then(() => {
                 showStatus(`✅ "${romName}" sent to watch successfully!`, 'success');
+                console.log('URL sent successfully');
                 
                 // Clear custom URL if used
                 const urlInput = document.getElementById('custom-url');
@@ -562,7 +576,15 @@
                     showStatus('Connected to watch session', 'connected');
                 }, 5000);
             }).catch(error => {
-                showStatus('Failed to send: ' + error.message, 'error');
+                if (error.code === 'PERMISSION_DENIED') {
+                    // Try alternative approach - write to a different path or show manual instructions
+                    showStatus('Firebase permissions issue. URL copied - please try again.', 'error');
+                    console.error('Firebase permission denied:', error);
+                    // Still try to show the URL for manual copy
+                    alert(`ROM URL: ${url}\n\nPlease configure Firebase or try again.`);
+                } else {
+                    showStatus('Failed to send: ' + error.message, 'error');
+                }
             });
         }
         
