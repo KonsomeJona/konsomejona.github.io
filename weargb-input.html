@@ -2,308 +2,411 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WearGB ROM Transfer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WearGB - ROM Selection</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
             padding: 20px;
         }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .header {
+
+        h1 {
             text-align: center;
-            color: white;
-            margin-bottom: 30px;
+            margin: 30px 0;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
-        
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
-        }
-        
+
         .session-info {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
             padding: 15px;
-            border-radius: 10px;
-            color: white;
             text-align: center;
             margin-bottom: 20px;
-            backdrop-filter: blur(10px);
         }
-        
-        .session-info .session-id {
+
+        .session-id {
             font-family: monospace;
-            font-size: 20px;
+            font-size: 1.2em;
             font-weight: bold;
             margin-top: 5px;
-            letter-spacing: 2px;
         }
-        
-        .status-message {
+
+        .status-box {
+            background: rgba(255,255,255,0.95);
+            color: #333;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin: 20px 0;
             text-align: center;
-            font-weight: 600;
             display: none;
-            animation: slideIn 0.3s ease-out;
+            animation: slideDown 0.3s ease-out;
         }
-        
-        @keyframes slideIn {
+
+        .status-box.show {
+            display: block;
+        }
+
+        .status-box.success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-box.error {
+            background: #f44336;
+            color: white;
+        }
+
+        @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-20px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
-        .status-message.success {
-            background: #4CAF50;
-            color: white;
+
+        .section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        
-        .status-message.error {
-            background: #f44336;
-            color: white;
-        }
-        
-        .status-message.info {
-            background: #2196F3;
-            color: white;
-        }
-        
-        .rom-section {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .rom-section h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
+
+        h2 {
             color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
         }
-        
+
+        .pro-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
         .rom-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        
+
         .rom-button {
-            padding: 15px 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
+            padding: 15px;
+            color: white;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-        
+
         .rom-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(118,75,162,0.4);
         }
-        
+
         .rom-button:active {
-            transform: scale(0.98);
+            transform: scale(0.95);
         }
-        
+
         .rom-button:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
-        
-        .rom-button .emoji {
-            font-size: 30px;
+
+        .rom-button .icon {
+            font-size: 2em;
+            margin-bottom: 8px;
             display: block;
-            margin-bottom: 5px;
         }
-        
+
         .rom-button .name {
-            font-size: 14px;
+            font-size: 0.9em;
             font-weight: 600;
         }
-        
+
+        .custom-url-section {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .url-input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: #764ba2;
+            background: white;
+        }
+
+        .send-button {
+            padding: 12px 25px;
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            color: #666;
+            transform: none;
+            cursor: not-allowed;
+        }
+
         .loading {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #764ba2;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #764ba2;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .debug-log {
-            background: #1a1a1a;
+
+        .debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .debug-console {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.95);
             color: #0f0;
-            padding: 15px;
-            border-radius: 10px;
             font-family: monospace;
-            font-size: 12px;
+            font-size: 11px;
+            padding: 10px;
             max-height: 200px;
             overflow-y: auto;
-            margin-top: 20px;
+            display: none;
+            z-index: 999;
         }
-        
-        .debug-log .log-entry {
-            margin-bottom: 5px;
+
+        .debug-console.show {
+            display: block;
         }
-        
-        .debug-log .error {
-            color: #ff4444;
+
+        .log-entry {
+            margin: 2px 0;
         }
-        
-        .debug-log .success {
-            color: #4CAF50;
-        }
+
+        .log-error { color: #ff4444; }
+        .log-success { color: #4CAF50; }
+        .log-info { color: #2196F3; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>⌚ WearGB ROM Transfer</h1>
-            <p>Select a game to send to your watch</p>
-        </div>
+        <h1>🎮 WearGB</h1>
         
         <div class="session-info">
-            <div>Session Connected</div>
-            <div class="session-id" id="sessionDisplay">Loading...</div>
+            <div>📡 Session Connected</div>
+            <div class="session-id" id="sessionId">Loading...</div>
         </div>
-        
-        <div id="statusMessage" class="status-message"></div>
-        
-        <div class="rom-section">
-            <h2>🎮 Free Games</h2>
+
+        <div id="statusBox" class="status-box"></div>
+
+        <div class="section">
+            <h2>Free Games</h2>
             <div class="rom-grid">
-                <button class="rom-button" onclick="sendROM('Tetris', 'https://archive.org/download/nointro.gb/Tetris%20%28World%29.zip')">
-                    <span class="emoji">🧱</span>
+                <button class="rom-button" onclick="sendROM('Tetris', 'https://konsomejona.github.io/downloads/tetris.gb')">
+                    <span class="icon">🧱</span>
                     <span class="name">Tetris</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('Dr. Mario', 'https://archive.org/download/nointro.gb/Dr.%20Mario%20%28World%29.zip')">
-                    <span class="emoji">💊</span>
+                <button class="rom-button" onclick="sendROM('Dr. Mario', 'https://konsomejona.github.io/downloads/drmario.gb')">
+                    <span class="icon">💊</span>
                     <span class="name">Dr. Mario</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('Alleyway', 'https://archive.org/download/nointro.gb/Alleyway%20%28World%29.zip')">
-                    <span class="emoji">🎯</span>
-                    <span class="name">Alleyway</span>
+                <button class="rom-button" onclick="sendROM('Super Mario Land', 'https://konsomejona.github.io/downloads/sml.gb')">
+                    <span class="icon">🍄</span>
+                    <span class="name">Mario Land</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('Baseball', 'https://archive.org/download/nointro.gb/Baseball%20%28World%29.zip')">
-                    <span class="emoji">⚾</span>
-                    <span class="name">Baseball</span>
+                <button class="rom-button" onclick="sendROM('Kirby Dream Land', 'https://konsomejona.github.io/downloads/kirby.gb')">
+                    <span class="icon">⭐</span>
+                    <span class="name">Kirby</span>
                 </button>
             </div>
-        </div>
-        
-        <div class="rom-section">
-            <h2>🎯 More Free Games</h2>
+            
             <div class="rom-grid">
-                <button class="rom-button" onclick="sendROM('Tennis', 'https://archive.org/download/nointro.gb/Tennis%20%28World%29.zip')">
-                    <span class="emoji">🎾</span>
-                    <span class="name">Tennis</span>
+                <button class="rom-button" onclick="sendROM('Pokemon Red', 'https://konsomejona.github.io/downloads/pokered.gb')">
+                    <span class="icon">🔴</span>
+                    <span class="name">Pokemon Red</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('Golf', 'https://archive.org/download/nointro.gb/Golf%20%28USA%29.zip')">
-                    <span class="emoji">⛳</span>
-                    <span class="name">Golf</span>
+                <button class="rom-button" onclick="sendROM('Pokemon Blue', 'https://konsomejona.github.io/downloads/pokeblue.gb')">
+                    <span class="icon">🔵</span>
+                    <span class="name">Pokemon Blue</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('Yakuman', 'https://archive.org/download/nointro.gb/Yakuman%20%28Japan%29.zip')">
-                    <span class="emoji">🀄</span>
-                    <span class="name">Yakuman</span>
+                <button class="rom-button" onclick="sendROM('Zelda Links Awakening', 'https://konsomejona.github.io/downloads/zelda.gb')">
+                    <span class="icon">⚔️</span>
+                    <span class="name">Zelda</span>
                 </button>
-                <button class="rom-button" onclick="sendROM('SolarStriker', 'https://archive.org/download/nointro.gb/SolarStriker%20%28World%29.zip')">
-                    <span class="emoji">🚀</span>
-                    <span class="name">Solar Striker</span>
+                <button class="rom-button" onclick="sendROM('Metroid II', 'https://konsomejona.github.io/downloads/metroid2.gb')">
+                    <span class="icon">🚀</span>
+                    <span class="name">Metroid II</span>
                 </button>
             </div>
         </div>
-        
-        <div class="debug-log" id="debugLog">
-            <div class="log-entry">🔧 Debug Console Initialized</div>
+
+        <div class="section" id="proSection" style="display: none;">
+            <h2>Custom ROM URL <span class="pro-badge">PRO</span></h2>
+            <p style="color: #666; margin-bottom: 15px;">Enter a direct link to a .gb or .gbc ROM file</p>
+            <div class="url-input-container">
+                <input type="url" 
+                       id="customUrl" 
+                       class="url-input" 
+                       placeholder="https://example.com/rom.gb"
+                       autocomplete="off">
+                <button class="send-button" onclick="sendCustomURL()">Send</button>
+            </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <button class="debug-toggle" onclick="toggleDebug()">🔧</button>
+    <div id="debugConsole" class="debug-console"></div>
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     
     <script>
+        let database = null;
+        let sessionId = '';
+        let isPro = false;
+        let sending = false;
+        let debugVisible = false;
+
         // Debug logging
-        function log(message, type = 'info') {
-            const timestamp = new Date().toTimeString().split(' ')[0];
-            const logDiv = document.getElementById('debugLog');
+        function log(msg, type = 'info') {
+            const time = new Date().toTimeString().split(' ')[0];
+            const console = document.getElementById('debugConsole');
             const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            entry.textContent = `[${timestamp}] ${message}`;
-            logDiv.appendChild(entry);
-            logDiv.scrollTop = logDiv.scrollHeight;
-            console.log(`[${type.toUpperCase()}] ${message}`);
-        }
-        
-        // Show status message
-        function showStatus(message, type) {
-            const statusDiv = document.getElementById('statusMessage');
-            statusDiv.textContent = message;
-            statusDiv.className = `status-message ${type}`;
-            statusDiv.style.display = 'block';
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${time}] ${msg}`;
+            console.appendChild(entry);
+            console.scrollTop = console.scrollHeight;
             
-            // Auto-hide after 5 seconds for success
+            // Also log to browser console
+            if (type === 'error') console.error(msg);
+            else if (type === 'success') console.log('✅', msg);
+            else console.log(msg);
+        }
+
+        function toggleDebug() {
+            debugVisible = !debugVisible;
+            document.getElementById('debugConsole').classList.toggle('show', debugVisible);
+        }
+
+        // Status display
+        function showStatus(message, type = 'info') {
+            const box = document.getElementById('statusBox');
+            box.textContent = message;
+            box.className = `status-box show ${type}`;
+            
             if (type === 'success') {
                 setTimeout(() => {
-                    statusDiv.style.display = 'none';
+                    box.classList.remove('show');
                 }, 5000);
             }
         }
+
+        // Get session from URL
+        const params = new URLSearchParams(window.location.search);
+        sessionId = params.get('session') || 'test-' + Date.now();
         
-        // Get session ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get('session') || 'test-' + Date.now();
+        // Check if Pro version
+        const versionParam = params.get('v');
+        if (versionParam) {
+            try {
+                const decoded = atob(versionParam);
+                isPro = decoded.includes('paid');
+                if (isPro) {
+                    document.getElementById('proSection').style.display = 'block';
+                    log('Pro version detected', 'success');
+                }
+            } catch (e) {
+                log('Version check failed', 'error');
+            }
+        }
         
-        // Display session ID
-        document.getElementById('sessionDisplay').textContent = sessionId.substring(0, 8);
-        log(`Session ID: ${sessionId}`, 'success');
-        
+        // Display session
+        document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
+        log(`Session: ${sessionId}`, 'info');
+
         // Initialize Firebase
-        let database = null;
-        let sendingROM = false;
-        
         try {
-            log('Initializing Firebase...', 'info');
-            
-            const firebaseConfig = {
+            const config = {
                 apiKey: "AIzaSyBp8_V8jjEUq1aGuypS6VV63cFBFap0s6M",
                 authDomain: "weargb.firebaseapp.com",
                 databaseURL: "https://weargb-default-rtdb.firebaseio.com",
@@ -313,110 +416,113 @@
                 appId: "1:480332250386:web:81b32c72fef88e759747cb"
             };
             
-            firebase.initializeApp(firebaseConfig);
+            firebase.initializeApp(config);
             database = firebase.database();
+            log('Firebase initialized', 'success');
             
-            log('Firebase initialized successfully!', 'success');
-            showStatus('Connected to Firebase', 'success');
-            
-            // Test connection
-            database.ref('.info/connected').on('value', (snapshot) => {
-                if (snapshot.val() === true) {
-                    log('Firebase connection confirmed', 'success');
+            // Monitor connection
+            database.ref('.info/connected').on('value', (snap) => {
+                if (snap.val() === true) {
+                    log('Firebase connected', 'success');
                 } else {
-                    log('Firebase connection lost', 'error');
-                    showStatus('Connection lost. Please refresh.', 'error');
+                    log('Firebase disconnected', 'error');
                 }
             });
             
         } catch (error) {
-            log(`Firebase init failed: ${error.message}`, 'error');
-            showStatus('Failed to connect. Please refresh the page.', 'error');
+            log(`Firebase error: ${error.message}`, 'error');
+            showStatus('Connection failed. Please refresh.', 'error');
         }
-        
-        // Send ROM function
-        async function sendROM(romName, romUrl) {
-            // Prevent double-clicking
-            if (sendingROM) {
-                log('Already sending a ROM, please wait...', 'info');
+
+        // Send ROM to watch
+        async function sendROM(name, url) {
+            if (sending) {
+                log('Already sending, please wait', 'info');
                 return;
             }
             
-            log(`Attempting to send: ${romName}`, 'info');
-            
-            if (!database) {
-                log('Firebase not initialized!', 'error');
-                showStatus('Connection error. Please refresh the page.', 'error');
-                return;
-            }
-            
-            if (!sessionId) {
-                log('No session ID found!', 'error');
-                showStatus('Session error. Please try again from your watch.', 'error');
-                return;
-            }
+            log(`Sending ${name}...`, 'info');
+            sending = true;
             
             // Disable all buttons
-            sendingROM = true;
-            const buttons = document.querySelectorAll('.rom-button');
-            buttons.forEach(btn => btn.disabled = true);
+            document.querySelectorAll('.rom-button, .send-button').forEach(btn => {
+                btn.disabled = true;
+            });
             
-            showStatus(`Sending ${romName}...`, 'info');
-            
-            const romData = {
-                url: romUrl,
-                romName: romName,
-                timestamp: Date.now(),
-                consumed: false,
-                userAgent: navigator.userAgent,
-                source: 'web-fixed'
-            };
-            
-            log(`Sending data: ${JSON.stringify(romData)}`, 'info');
+            showStatus(`Sending ${name}...`, 'info');
             
             try {
-                const sessionRef = database.ref('url-sessions/' + sessionId);
+                const data = {
+                    url: url,
+                    romName: name,
+                    timestamp: Date.now(),
+                    consumed: false,
+                    source: 'web-final'
+                };
                 
-                await sessionRef.set(romData);
+                await database.ref(`url-sessions/${sessionId}`).set(data);
                 
-                log(`✅ Successfully sent ${romName} to Firebase!`, 'success');
-                showStatus(`✅ ${romName} sent to your watch!`, 'success');
+                log(`Successfully sent ${name}`, 'success');
+                showStatus(`✅ ${name} sent to watch!`, 'success');
                 
-                // Success animation
+                // Re-enable after delay
                 setTimeout(() => {
-                    showStatus('✅ Complete! Check your watch.', 'success');
-                }, 1500);
-                
-                // Re-enable buttons after 3 seconds
-                setTimeout(() => {
-                    sendingROM = false;
-                    buttons.forEach(btn => btn.disabled = false);
+                    sending = false;
+                    document.querySelectorAll('.rom-button, .send-button').forEach(btn => {
+                        btn.disabled = false;
+                    });
                 }, 3000);
                 
             } catch (error) {
-                log(`❌ Failed to send ROM: ${error.message}`, 'error');
-                showStatus(`Failed to send ${romName}. Error: ${error.message}`, 'error');
+                log(`Failed: ${error.message}`, 'error');
+                showStatus(`Failed: ${error.message}`, 'error');
                 
-                // Re-enable buttons on error
-                sendingROM = false;
-                buttons.forEach(btn => btn.disabled = false);
+                sending = false;
+                document.querySelectorAll('.rom-button, .send-button').forEach(btn => {
+                    btn.disabled = false;
+                });
             }
         }
-        
-        // Test Firebase on load
-        window.addEventListener('load', () => {
-            log('Page fully loaded', 'info');
+
+        // Send custom URL (Pro only)
+        async function sendCustomURL() {
+            const input = document.getElementById('customUrl');
+            const url = input.value.trim();
             
-            // Check if we have a session
-            if (!sessionId || sessionId.startsWith('test-')) {
-                log('Warning: No valid session ID from watch', 'error');
-                showStatus('⚠️ No watch session detected. Open this page from your watch.', 'error');
+            if (!url) {
+                showStatus('Please enter a URL', 'error');
+                return;
+            }
+            
+            if (!url.match(/\.(gb|gbc)$/i)) {
+                showStatus('URL must end with .gb or .gbc', 'error');
+                return;
+            }
+            
+            // Extract filename for ROM name
+            const name = url.split('/').pop().replace(/\.(gb|gbc)$/i, '');
+            
+            await sendROM(name, url);
+            
+            // Clear input on success
+            if (sending === false) {
+                input.value = '';
+            }
+        }
+
+        // Handle Enter key in custom URL input
+        document.getElementById('customUrl')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCustomURL();
             }
         });
-        
-        // Handle errors
-        window.addEventListener('error', (e) => {
-            log(`Page error: ${e.message} at ${e.filename}:${e.lineno}`, 'error');
+
+        // Initial check
+        window.addEventListener('load', () => {
+            if (!sessionId || sessionId.startsWith('test-')) {
+                log('No valid session from watch', 'error');
+                showStatus('⚠️ Open this page from your watch', 'error');
+            }
         });
     </script>
 </body>
