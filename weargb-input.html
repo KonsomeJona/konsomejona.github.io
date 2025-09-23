@@ -115,7 +115,7 @@
             background: linear-gradient(135deg, #FFD700, #FFA000);
             border-radius: 15px;
             padding: 20px;
-            margin-top: 20px;
+            margin-bottom: 20px;
             display: none;
         }
         
@@ -167,8 +167,15 @@
         
         <div id="message" class="message"></div>
         
+        <!-- Pro section at the top -->
+        <div id="proSection" class="pro-section">
+            <h3 style="color: white; margin-bottom: 15px;">🌟 Pro Feature: Custom ROM URL</h3>
+            <input type="url" id="customUrl" class="url-input" placeholder="https://example.com/game.gb">
+            <button class="send-btn" onclick="sendCustom()">Send Custom ROM</button>
+        </div>
+        
         <div class="games">
-            <h2>Free Homebrew Games</h2>
+            <h2>Free Games</h2>
             <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
                 Click any game to send to your watch
             </p>
@@ -180,50 +187,45 @@
                     <span class="name">Crystal (Test)</span>
                 </button>
                 
-                <!-- Homebrew games hosted on GitHub -->
-                <button class="rom-btn" onclick="sendROM('Tobu Tobu Girl', 'https://konsomejona.github.io/downloads/tobu.gb')">
+                <!-- Working demo ROM -->
+                <button class="rom-btn" onclick="sendROM('Demo ROM', 'https://konsomejona.github.io/downloads/demo1.gb')">
+                    <span class="icon">🎮</span>
+                    <span class="name">Demo</span>
+                </button>
+                
+                <!-- Use GitHub raw content for actual homebrew ROMs -->
+                <button class="rom-btn" onclick="sendROM('Tobu Tobu Girl', 'https://github.com/SimonLarsen/tobutobugirl/releases/download/v1.2/tobutobugirl-v1.2.gb')">
                     <span class="icon">🦎</span>
                     <span class="name">Tobu Tobu</span>
                 </button>
                 
-                <button class="rom-btn" onclick="sendROM('Adjustris', 'https://konsomejona.github.io/downloads/adjustris.gb')">
-                    <span class="icon">🧱</span>
-                    <span class="name">Adjustris</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('uCity', 'https://konsomejona.github.io/downloads/ucity.gbc')">
-                    <span class="icon">🏙️</span>
-                    <span class="name">uCity</span>
+                <button class="rom-btn" onclick="sendROM('2048', 'https://github.com/Sanqui/2048-gb/releases/download/v1.0/2048.gb')">
+                    <span class="icon">🔢</span>
+                    <span class="name">2048</span>
                 </button>
             </div>
             
             <div class="rom-grid">
-                <button class="rom-btn" onclick="sendROM('Bouncing Ball', 'https://konsomejona.github.io/downloads/bounce.gb')">
+                <button class="rom-btn" onclick="sendROM('Adjustris', 'https://github.com/tbsp/adjustris/releases/download/v1.0.1/Adjustris.gb')">
+                    <span class="icon">🧱</span>
+                    <span class="name">Adjustris</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Bouncing Ball', 'https://github.com/flozz/bouncing-ball-gb/releases/download/v1.0/bouncing-ball.gb')">
                     <span class="icon">⚪</span>
                     <span class="name">Bounce</span>
                 </button>
                 
-                <button class="rom-btn" onclick="sendROM('Airaki', 'https://konsomejona.github.io/downloads/airaki.gb')">
-                    <span class="icon">✈️</span>
-                    <span class="name">Airaki</span>
+                <button class="rom-btn" onclick="sendROM('Plantboy', 'https://dl.itch.zone/6/15/82/19/a8/33/plantboy.gb')">
+                    <span class="icon">🌱</span>
+                    <span class="name">Plantboy</span>
                 </button>
                 
-                <button class="rom-btn" onclick="sendROM('2048', 'https://konsomejona.github.io/downloads/2048.gb')">
-                    <span class="icon">🔢</span>
-                    <span class="name">2048</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Test ROM', 'https://konsomejona.github.io/downloads/tetris.gb')">
-                    <span class="icon">🎮</span>
-                    <span class="name">Test ROM</span>
+                <button class="rom-btn" onclick="sendROM('Sheep It Up', 'https://gamejolt.com/games/sheep-it-up/258464/download/build/431527')">
+                    <span class="icon">🐑</span>
+                    <span class="name">Sheep It Up</span>
                 </button>
             </div>
-        </div>
-        
-        <div id="proSection" class="pro-section">
-            <h3 style="color: white; margin-bottom: 15px;">🌟 Pro Feature: Custom URL</h3>
-            <input type="url" id="customUrl" class="url-input" placeholder="https://example.com/game.gb">
-            <button class="send-btn" onclick="sendCustom()">Send Custom ROM</button>
         </div>
     </div>
     
@@ -243,8 +245,15 @@
         
         // Check Pro
         const v = params.get('v');
-        if (v && atob(v).includes('paid')) {
-            document.getElementById('proSection').classList.add('show');
+        if (v) {
+            try {
+                const decoded = atob(v);
+                if (decoded.includes('paid')) {
+                    document.getElementById('proSection').classList.add('show');
+                }
+            } catch (e) {
+                console.error('Version decode error:', e);
+            }
         }
         
         // Show message
@@ -312,7 +321,11 @@
                 showMsg('Enter a URL', 'error');
                 return;
             }
-            const name = url.split('/').pop().replace(/\.(gb|gbc)$/i, '');
+            if (!url.endsWith('.gb')) {
+                showMsg('URL must end with .gb', 'error');
+                return;
+            }
+            const name = url.split('/').pop().replace(/\.gb$/i, '');
             await sendROM(name, url);
             if (!sending) document.getElementById('customUrl').value = '';
         }
