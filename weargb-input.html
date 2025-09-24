@@ -294,7 +294,7 @@
         
         <div class="main-section">
             <h2 id="customRomTitle">🔒 Pro Feature: Load Custom ROM</h2>
-            <p class="subtitle" id="customRomSubtitle">Custom ROM loading is available in WearGB Pro (.gb format only)</p>
+            <p class="subtitle" id="customRomSubtitle">Custom ROM loading is available in WearGB Pro (.gb or .gbc format)</p>
             
             <!-- Pro Features Info Box -->
             <div class="info-box" style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; margin-bottom: 15px;">
@@ -332,11 +332,11 @@
                 <!-- File Upload Section -->
                 <div id="fileUploadSection" style="margin-top: 10px;">
                     <label for="romFile" style="display: block; margin-bottom: 5px; text-align: center; color: white;">
-                        Or upload a ROM file (.gb only):
+                        Or upload a ROM file (.gb or .gbc):
                     </label>
                     <input type="file" 
                            id="romFile" 
-                           accept=".gb"
+                           accept=".gb,.gbc"
                            disabled
                            style="width: 100%; padding: 10px; border: 2px solid white; border-radius: 10px; background: rgba(255,255,255,0.95); color: #333; opacity: 0.5; cursor: not-allowed;">
                 </div>
@@ -492,7 +492,7 @@
             // Update UI based on Pro status
             if (isPro) {
             document.getElementById('customRomTitle').innerHTML = '✨ Pro: Load Custom ROM';
-            document.getElementById('customRomSubtitle').textContent = 'Enter URL or upload ROM file (.gb format only)';
+            document.getElementById('customRomSubtitle').textContent = 'Enter URL or upload ROM file (.gb or .gbc format)';
             
             // Enable URL input
             const urlInput = document.getElementById('customUrl');
@@ -757,8 +757,8 @@
             if (!file) return;
             
             // Check file extension
-            if (!file.name.endsWith('.gb')) {
-                showModal('error', 'Invalid File', 'Please select a .gb ROM file (Game Boy Classic only)', true);
+            if (!file.name.endsWith('.gb') && !file.name.endsWith('.gbc')) {
+                showModal('error', 'Invalid File', 'Please select a .gb or .gbc ROM file', true);
                 event.target.value = '';
                 return;
             }
