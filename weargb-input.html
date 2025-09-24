@@ -292,17 +292,28 @@
         <div id="message" class="message"></div>
         
         <div class="main-section">
-            <h2>Load Custom ROM</h2>
-            <p class="subtitle">Enter a custom URL or select a free homebrew ROM</p>
+            <h2>🔒 Pro Feature: Load Custom ROM</h2>
+            <p class="subtitle">Custom URL input is available in WearGB Pro</p>
             
-            <input type="url" 
-                   id="customUrl" 
-                   class="url-input" 
-                   placeholder="https://example.com/game.gb"
-                   autocomplete="off">
+            <div style="position: relative;">
+                <input type="url" 
+                       id="customUrl" 
+                       class="url-input" 
+                       placeholder="https://example.com/game.gb (Pro only)"
+                       autocomplete="off"
+                       style="opacity: 0.6;">
+                
+                <div style="text-align: center; margin-top: 10px;">
+                    <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" 
+                       target="_blank" 
+                       style="color: #FFD700; text-decoration: none; font-weight: bold; font-size: 14px;">
+                       ✨ Upgrade to WearGB Pro on Google Play ✨
+                    </a>
+                </div>
+            </div>
             
-            <p style="text-align: center; margin: 15px 0; color: white; opacity: 0.9;">
-                — OR —
+            <p style="text-align: center; margin: 20px 0 15px 0; color: white; opacity: 0.9; font-weight: bold;">
+                — OR USE FREE ROMS BELOW —
             </p>
             
             <!-- Free ROM Selector (moved after custom input) -->
@@ -417,10 +428,24 @@
         let sending = false;
         let romSentInSession = false; // Track if ROM was already sent in this session
         
-        // Get session
+        // Get session and check Pro status
         const params = new URLSearchParams(window.location.search);
         sessionId = params.get('session') || 'test-' + Date.now();
         document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
+        
+        // Check if Pro version
+        const isPro = params.get('v') === 'PRO' || params.get('v') === 'PRO_TOKEN';
+        
+        // Update UI based on Pro status
+        if (isPro) {
+            document.querySelector('.main-section h2').innerHTML = '✨ Pro Feature: Load Custom ROM';
+            document.querySelector('.main-section .subtitle').textContent = 'Enter any GB/GBC ROM URL';
+            document.getElementById('customUrl').style.opacity = '1';
+            document.getElementById('customUrl').placeholder = 'https://example.com/game.gb';
+            // Hide upgrade link for Pro users
+            const upgradeLink = document.querySelector('.main-section a[href*="play.google.com"]');
+            if (upgradeLink) upgradeLink.style.display = 'none';
+        }
         
         // Show message
         function showMsg(text, type) {
@@ -564,15 +589,26 @@
                 return;
             }
             
+            // Check if this is a Pro user (has v=PRO parameter)
+            const isPro = window.location.search.includes('v=PRO');
+            
             // Otherwise use custom URL
             const url = document.getElementById('customUrl').value.trim();
             
             if (!url) {
-                showModal('error', 'No ROM Selected', 'Please select a ROM from the dropdown or enter a custom URL', true);
+                showModal('error', 'No ROM Selected', 'Please select a ROM from the dropdown', true);
                 return;
             }
             
-            // Allow any URL for maximum compatibility
+            // Block custom URL for non-Pro users
+            if (!isPro) {
+                showModal('error', 'Pro Feature Required', 
+                    'Custom ROM URLs are only available in WearGB Pro.\n\nPlease select a free homebrew ROM from the dropdown below, or upgrade to Pro on Google Play.',
+                    true);
+                return;
+            }
+            
+            // Allow any URL for Pro users
             const name = url.split('/').pop().split('?')[0].replace(/\.(gb|gbc)$/i, '') || 'Custom ROM';
             
             await sendROM(name, url);
