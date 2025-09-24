@@ -194,6 +194,90 @@
             font-size: 0.9em;
             font-weight: 600;
         }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .modal-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .modal-icon.success { color: #4CAF50; }
+        .modal-icon.error { color: #f44336; }
+        .modal-icon.loading { 
+            color: #2196F3;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .modal-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .modal-text {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .modal-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .modal-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
     </style>
 </head>
 <body>
@@ -291,6 +375,16 @@
         </div>
     </div>
     
+    <!-- Modal Dialog -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div id="modalIcon" class="modal-icon">📡</div>
+            <div id="modalTitle" class="modal-title">Sending ROM...</div>
+            <div id="modalText" class="modal-text">Please wait while we send the ROM to your watch.</div>
+            <button id="modalBtn" class="modal-btn" onclick="closeModal()" style="display: none;">OK</button>
+        </div>
+    </div>
+    
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -299,6 +393,7 @@
         let db = null;
         let sessionId = '';
         let sending = false;
+        let romSentInSession = false; // Track if ROM was already sent in this session
         
         // Get session
         const params = new URLSearchParams(window.location.search);
@@ -332,15 +427,60 @@
             showMsg('Connection error: ' + e.message, 'error');
         }
         
-        // Send ROM
+        // Modal functions
+        function showModal(type, title, text, showButton = false) {
+            const modal = document.getElementById('modal');
+            const icon = document.getElementById('modalIcon');
+            const titleEl = document.getElementById('modalTitle');
+            const textEl = document.getElementById('modalText');
+            const btn = document.getElementById('modalBtn');
+            
+            // Set icon based on type
+            if (type === 'loading') {
+                icon.textContent = '📡';
+                icon.className = 'modal-icon loading';
+            } else if (type === 'success') {
+                icon.textContent = '✅';
+                icon.className = 'modal-icon success';
+            } else if (type === 'error') {
+                icon.textContent = '❌';
+                icon.className = 'modal-icon error';
+            } else if (type === 'blocked') {
+                icon.textContent = '🚫';
+                icon.className = 'modal-icon error';
+            }
+            
+            titleEl.textContent = title;
+            textEl.textContent = text;
+            btn.style.display = showButton ? 'inline-block' : 'none';
+            
+            modal.classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+        
+        // Send ROM with modal and session blocking
         async function sendROM(name, url) {
             if (sending) return;
-            sending = true;
             
+            // Check if ROM was already sent in this session
+            if (romSentInSession) {
+                showModal('blocked', 'ROM Already Sent', 
+                    'A ROM has already been sent in this session. Please wait for your watch to download it, or refresh the page to start a new session.',
+                    true);
+                return;
+            }
+            
+            sending = true;
             document.querySelectorAll('button').forEach(b => b.disabled = true);
-            showMsg('Sending ' + name + '...', 'success');
+            
+            // Show loading modal
+            showModal('loading', 'Sending ROM...', 'Sending "' + name + '" to your watch. Please wait...');
             
             try {
+                // Send to Firebase
                 await db.ref('url-sessions/' + sessionId).set({
                     url: url,
                     romName: name,
@@ -348,17 +488,28 @@
                     consumed: false
                 });
                 
-                showMsg('✅ ' + name + ' sent to watch!', 'success');
+                // Mark session as used
+                romSentInSession = true;
+                
+                // Show success modal
+                showModal('success', 'ROM Sent!', 
+                    '"' + name + '" has been sent to your watch. The download should start automatically on your watch.',
+                    true);
+                
                 console.log('Sent:', name, url);
                 
-                setTimeout(() => {
-                    sending = false;
-                    document.querySelectorAll('button').forEach(b => b.disabled = false);
-                }, 2000);
+                // Keep buttons disabled after success
+                sending = false;
+                // Don't re-enable buttons to prevent duplicate sends
                 
             } catch (e) {
-                showMsg('Failed: ' + e.message, 'error');
+                // Show error modal
+                showModal('error', 'Failed to Send', 
+                    'Could not send ROM to watch. Error: ' + e.message,
+                    true);
+                
                 sending = false;
+                // Re-enable buttons on error
                 document.querySelectorAll('button').forEach(b => b.disabled = false);
             }
         }
@@ -368,7 +519,7 @@
             const url = document.getElementById('customUrl').value.trim();
             
             if (!url) {
-                showMsg('Please enter a ROM URL', 'error');
+                showModal('error', 'No URL Entered', 'Please enter a ROM URL', true);
                 return;
             }
             
@@ -377,8 +528,8 @@
             
             await sendROM(name, url);
             
-            // Clear input on success
-            if (!sending) {
+            // Clear input on success if ROM was sent
+            if (romSentInSession) {
                 document.getElementById('customUrl').value = '';
             }
         }
@@ -386,6 +537,20 @@
         // Check session validity
         if (!sessionId || sessionId.startsWith('test-')) {
             showMsg('⚠️ Open this page from your watch for a valid session', 'error');
+        }
+        
+        // Check if ROM was already sent in this session on page load
+        if (db && sessionId) {
+            db.ref('url-sessions/' + sessionId).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    if (data && data.url) {
+                        romSentInSession = true;
+                        document.querySelectorAll('button').forEach(b => b.disabled = true);
+                        showMsg('ℹ️ ROM "' + (data.romName || 'Unknown') + '" already sent in this session', 'success');
+                    }
+                }
+            });
         }
         
         // Allow Enter key to send
