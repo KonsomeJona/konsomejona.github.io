@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WearGB ROM Library</title>
+    <title>WearGB ROM Loader</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -58,24 +58,108 @@
         .message.error { background: #f44336; color: white; }
         .message.show { display: block; }
         
-        .games {
-            background: white;
+        .main-section {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
             border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
         
-        h2 {
+        .url-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 16px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.95);
             color: #333;
+        }
+        
+        .send-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: #764ba2;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .send-btn:disabled {
+            background: #ccc;
+            color: #666;
+            transform: none;
+            cursor: not-allowed;
+        }
+        
+        .info-box {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .disclaimer {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            line-height: 1.5;
+            text-align: center;
+        }
+        
+        .disclaimer a {
+            color: #FFD700;
+            text-decoration: none;
+        }
+        
+        .disclaimer a:hover {
+            text-decoration: underline;
+        }
+        
+        h2 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            opacity: 0.95;
             margin-bottom: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .test-section h2 {
+            color: #333;
         }
         
         .rom-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 12px;
-            margin-bottom: 20px;
+            margin-top: 20px;
         }
         
         .rom-btn {
@@ -110,60 +194,6 @@
             font-size: 0.9em;
             font-weight: 600;
         }
-        
-        .pro-section {
-            background: linear-gradient(135deg, #FFD700, #FFA000);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .pro-section.show { display: block; }
-        
-        .url-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid white;
-            border-radius: 10px;
-            font-size: 16px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.9);
-            color: #333;
-        }
-        
-        .send-btn {
-            width: 100%;
-            padding: 12px;
-            background: white;
-            color: #764ba2;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .send-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .send-btn:disabled {
-            background: #ccc;
-            color: #666;
-            transform: none;
-            cursor: not-allowed;
-        }
-        
-        .info-box {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
     </style>
 </head>
 <body>
@@ -177,40 +207,53 @@
         
         <div id="message" class="message"></div>
         
-        <!-- Pro section at the top -->
-        <div id="proSection" class="pro-section">
-            <h3 style="color: white; margin-bottom: 15px;">🌟 Pro Feature: Custom ROM URL</h3>
-            <input type="url" id="customUrl" class="url-input" placeholder="https://example.com/game.gb">
-            <button class="send-btn" onclick="sendCustom()">Send Custom ROM</button>
+        <div class="main-section">
+            <h2>Load Custom ROM</h2>
+            <p class="subtitle">Enter a direct URL to any Game Boy ROM file (.gb or .gbc)</p>
+            
+            <input type="url" 
+                   id="customUrl" 
+                   class="url-input" 
+                   placeholder="https://example.com/game.gb"
+                   autocomplete="off">
+            
+            <button class="send-btn" onclick="sendCustom()">
+                📥 Send ROM to Watch
+            </button>
+            
             <div class="info-box">
-                Enter a direct URL to any .gb ROM file you want to play on your watch.
+                <strong>Supported formats:</strong> .gb, .gbc<br>
+                <strong>Note:</strong> Enter a direct link to a ROM file hosted online.<br>
+                You can find homebrew games at <a href="https://hh.gbdev.io" target="_blank" style="color: white;">Homebrew Hub</a>
             </div>
         </div>
         
-        <div class="games">
-            <h2>Test ROM</h2>
-            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
-                Use the test ROM to verify connection
+        <div class="test-section">
+            <h2 style="color: #333;">Test ROMs</h2>
+            <p style="color: #666; font-size: 14px; text-align: center;">
+                Test the connection with these sample ROMs
             </p>
             
             <div class="rom-grid">
-                <!-- Test ROM - Pokemon Crystal already on watch -->
-                <button class="rom-btn" onclick="sendROM('Pokemon Crystal', 'test://crystal')">
+                <button class="rom-btn" onclick="sendROM('Test Connection', 'test://crystal')" title="Built-in test ROM">
                     <span class="icon">💎</span>
-                    <span class="name">Crystal (Test)</span>
+                    <span class="name">Test ROM</span>
                 </button>
                 
-                <!-- Demo ROM if it still exists -->
-                <button class="rom-btn" onclick="sendROM('Demo ROM', 'https://konsomejona.github.io/downloads/demo1.gb')">
-                    <span class="icon">🎮</span>
-                    <span class="name">Demo</span>
+                <button class="rom-btn" onclick="sendROM('Pizza Palace', 'https://hh3.gbdev.io/static/database-gb/entries/zone-booth_pizza-palace/files/pizza_palace.gb')" title="Free homebrew game">
+                    <span class="icon">🍕</span>
+                    <span class="name">Pizza Palace</span>
                 </button>
             </div>
-            
-            <p style="color: #999; font-size: 12px; margin-top: 20px; text-align: center;">
-                Note: For legal reasons, commercial ROMs are not provided.<br>
-                Pro users can add their own ROMs using the custom URL feature above.
-            </p>
+        </div>
+        
+        <div class="disclaimer">
+            <strong>⚖️ Legal Notice</strong><br>
+            ROM files from <a href="https://github.com/gbdev/database" target="_blank">gbdev/database</a> are part of the Homebrew Hub project (GPLv3).<br>
+            Each game has its own license and copyright holder. Please respect the licensing terms.<br>
+            Only use ROMs you legally own or that are freely distributable.<br><br>
+            <a href="https://hh.gbdev.io" target="_blank">Visit Homebrew Hub</a> | 
+            <a href="https://github.com/gbdev/database" target="_blank">View Database</a>
         </div>
     </div>
     
@@ -227,11 +270,6 @@
         const params = new URLSearchParams(window.location.search);
         sessionId = params.get('session') || 'test-' + Date.now();
         document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
-        
-        // Check Pro - always show Pro section for testing
-        const v = params.get('v');
-        // Always show Pro section for now
-        document.getElementById('proSection').classList.add('show');
         
         // Show message
         function showMsg(text, type) {
@@ -257,7 +295,7 @@
             db = firebase.database();
             console.log('Firebase ready');
         } catch (e) {
-            showMsg('Connection error', 'error');
+            showMsg('Connection error: ' + e.message, 'error');
         }
         
         // Send ROM
@@ -265,7 +303,7 @@
             if (sending) return;
             sending = true;
             
-            document.querySelectorAll('.rom-btn, .send-btn').forEach(b => b.disabled = true);
+            document.querySelectorAll('button').forEach(b => b.disabled = true);
             showMsg('Sending ' + name + '...', 'success');
             
             try {
@@ -281,36 +319,47 @@
                 
                 setTimeout(() => {
                     sending = false;
-                    document.querySelectorAll('.rom-btn, .send-btn').forEach(b => b.disabled = false);
+                    document.querySelectorAll('button').forEach(b => b.disabled = false);
                 }, 2000);
                 
             } catch (e) {
                 showMsg('Failed: ' + e.message, 'error');
                 sending = false;
-                document.querySelectorAll('.rom-btn, .send-btn').forEach(b => b.disabled = false);
+                document.querySelectorAll('button').forEach(b => b.disabled = false);
             }
         }
         
-        // Send custom
+        // Send custom ROM
         async function sendCustom() {
             const url = document.getElementById('customUrl').value.trim();
+            
             if (!url) {
-                showMsg('Enter a URL', 'error');
+                showMsg('Please enter a ROM URL', 'error');
                 return;
             }
-            if (!url.endsWith('.gb') && !url.endsWith('.gbc')) {
-                showMsg('URL must end with .gb or .gbc', 'error');
-                return;
-            }
-            const name = url.split('/').pop().replace(/\.(gb|gbc)$/i, '');
+            
+            // Allow any URL for maximum compatibility
+            const name = url.split('/').pop().split('?')[0].replace(/\.(gb|gbc)$/i, '') || 'Custom ROM';
+            
             await sendROM(name, url);
-            if (!sending) document.getElementById('customUrl').value = '';
+            
+            // Clear input on success
+            if (!sending) {
+                document.getElementById('customUrl').value = '';
+            }
         }
         
-        // Check session
+        // Check session validity
         if (!sessionId || sessionId.startsWith('test-')) {
-            showMsg('⚠️ Open from watch for real session', 'error');
+            showMsg('⚠️ Open this page from your watch for a valid session', 'error');
         }
+        
+        // Allow Enter key to send
+        document.getElementById('customUrl').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendCustom();
+            }
+        });
     </script>
 </body>
 </html>
