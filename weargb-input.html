@@ -154,6 +154,16 @@
             transform: none;
             cursor: not-allowed;
         }
+        
+        .info-box {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -172,12 +182,15 @@
             <h3 style="color: white; margin-bottom: 15px;">🌟 Pro Feature: Custom ROM URL</h3>
             <input type="url" id="customUrl" class="url-input" placeholder="https://example.com/game.gb">
             <button class="send-btn" onclick="sendCustom()">Send Custom ROM</button>
+            <div class="info-box">
+                Enter a direct URL to any .gb ROM file you want to play on your watch.
+            </div>
         </div>
         
         <div class="games">
-            <h2>Free Games</h2>
+            <h2>Test ROM</h2>
             <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
-                Click any game to send to your watch
+                Use the test ROM to verify connection
             </p>
             
             <div class="rom-grid">
@@ -187,45 +200,17 @@
                     <span class="name">Crystal (Test)</span>
                 </button>
                 
-                <!-- Working ROMs hosted on GitHub Pages -->
+                <!-- Demo ROM if it still exists -->
                 <button class="rom-btn" onclick="sendROM('Demo ROM', 'https://konsomejona.github.io/downloads/demo1.gb')">
                     <span class="icon">🎮</span>
                     <span class="name">Demo</span>
                 </button>
-                
-                <button class="rom-btn" onclick="sendROM('2048', 'https://konsomejona.github.io/downloads/2048.gb')">
-                    <span class="icon">🔢</span>
-                    <span class="name">2048</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Snake', 'https://konsomejona.github.io/downloads/snake.gb')">
-                    <span class="icon">🐍</span>
-                    <span class="name">Snake</span>
-                </button>
             </div>
             
-            <div class="rom-grid">
-                <button class="rom-btn" onclick="sendROM('Rocket Man', 'https://konsomejona.github.io/downloads/rocketman.gb')">
-                    <span class="icon">🚀</span>
-                    <span class="name">Rocket Man</span>
-                </button>
-                
-                <!-- Placeholder buttons for future ROMs -->
-                <button class="rom-btn" onclick="sendROM('Test Game 1', 'https://konsomejona.github.io/downloads/demo1.gb')">
-                    <span class="icon">🎯</span>
-                    <span class="name">Test 1</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Test Game 2', 'https://konsomejona.github.io/downloads/demo1.gb')">
-                    <span class="icon">⭐</span>
-                    <span class="name">Test 2</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Test Game 3', 'https://konsomejona.github.io/downloads/demo1.gb')">
-                    <span class="icon">🎪</span>
-                    <span class="name">Test 3</span>
-                </button>
-            </div>
+            <p style="color: #999; font-size: 12px; margin-top: 20px; text-align: center;">
+                Note: For legal reasons, commercial ROMs are not provided.<br>
+                Pro users can add their own ROMs using the custom URL feature above.
+            </p>
         </div>
     </div>
     
@@ -243,18 +228,10 @@
         sessionId = params.get('session') || 'test-' + Date.now();
         document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
         
-        // Check Pro
+        // Check Pro - always show Pro section for testing
         const v = params.get('v');
-        if (v) {
-            try {
-                const decoded = atob(v);
-                if (decoded.includes('paid')) {
-                    document.getElementById('proSection').classList.add('show');
-                }
-            } catch (e) {
-                console.error('Version decode error:', e);
-            }
-        }
+        // Always show Pro section for now
+        document.getElementById('proSection').classList.add('show');
         
         // Show message
         function showMsg(text, type) {
@@ -321,11 +298,11 @@
                 showMsg('Enter a URL', 'error');
                 return;
             }
-            if (!url.endsWith('.gb')) {
-                showMsg('URL must end with .gb', 'error');
+            if (!url.endsWith('.gb') && !url.endsWith('.gbc')) {
+                showMsg('URL must end with .gb or .gbc', 'error');
                 return;
             }
-            const name = url.split('/').pop().replace(/\.gb$/i, '');
+            const name = url.split('/').pop().replace(/\.(gb|gbc)$/i, '');
             await sendROM(name, url);
             if (!sending) document.getElementById('customUrl').value = '';
         }
