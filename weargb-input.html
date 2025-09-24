@@ -564,6 +564,13 @@
             btn.style.display = showButton ? 'inline-block' : 'none';
             
             modal.classList.add('show');
+            
+            // Auto-close success modals after 3 seconds
+            if (type === 'success' && !showButton) {
+                setTimeout(() => {
+                    closeModal();
+                }, 3000);
+            }
         }
         
         function closeModal() {
@@ -600,10 +607,10 @@
                 // Mark session as used
                 romSentInSession = true;
                 
-                // Show success modal
+                // Show success modal (no button needed)
                 showModal('success', 'ROM Sent!', 
-                    '"' + name + '" has been sent to your watch. The download should start automatically on your watch.',
-                    true);
+                    '"' + name + '" has been sent. Check your watch - the download should start automatically.',
+                    false);
                 
                 console.log('Sent:', name, url);
                 
@@ -777,10 +784,10 @@
                 // Mark session as used
                 romSentInSession = true;
                 
-                // Show success
+                // Show success (no button needed)
                 showModal('success', 'ROM Uploaded!', 
-                    file.name + ' has been uploaded and sent to your watch.',
-                    true);
+                    file.name + ' has been uploaded. Check your watch - the download should start automatically.',
+                    false);
                 
                 // Clear file input
                 event.target.value = '';
