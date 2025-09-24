@@ -292,22 +292,59 @@
         <div id="message" class="message"></div>
         
         <div class="main-section">
-            <h2>🔒 Pro Feature: Load Custom ROM</h2>
-            <p class="subtitle">Custom URL input is available in WearGB Pro</p>
+            <h2 id="customRomTitle">🔒 Pro Feature: Load Custom ROM</h2>
+            <p class="subtitle" id="customRomSubtitle">Custom ROM loading is available in WearGB Pro</p>
+            
+            <!-- Pro Features Info Box -->
+            <div class="info-box" style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; margin-bottom: 15px;">
+                <div style="font-weight: bold; font-size: 14sp; margin-bottom: 8px;">
+                    ✨ WearGB Pro - Load ROMs from Anywhere:
+                </div>
+                <div style="font-size: 12sp; line-height: 1.8;">
+                    <b>📁 Cloud Storage Support:</b><br>
+                    • 📦 Dropbox - Direct & shared links<br>
+                    • 🔷 Google Drive - Public & shared files<br>
+                    • ☁️ OneDrive - Personal & shared folders<br>
+                    • 📂 MEGA - Direct download links<br>
+                    • 🔥 MediaFire - Direct file URLs<br>
+                    • 🌐 GitHub - Raw file links<br>
+                    <br>
+                    <b>🎮 Additional Features:</b><br>
+                    • 📤 Upload ROM files directly from phone<br>
+                    • 🔗 Any HTTP/HTTPS direct link<br>
+                    • 📚 Archive.org ROM collections<br>
+                    • 🚀 Custom server support<br>
+                    • ⚡ No ads & priority updates
+                </div>
+            </div>
             
             <div style="position: relative;">
+                <!-- URL Input Field -->
                 <input type="url" 
                        id="customUrl" 
                        class="url-input" 
                        placeholder="https://example.com/game.gb (Pro only)"
                        autocomplete="off"
-                       style="opacity: 0.6;">
+                       disabled
+                       style="opacity: 0.5; cursor: not-allowed;">
                 
-                <div style="text-align: center; margin-top: 10px;">
+                <!-- File Upload for Pro Users (hidden by default) -->
+                <div id="fileUploadSection" style="display: none; margin-top: 10px;">
+                    <label for="romFile" style="display: block; margin-bottom: 5px; text-align: center; color: white;">
+                        Or upload a ROM file:
+                    </label>
+                    <input type="file" 
+                           id="romFile" 
+                           accept=".gb,.gbc"
+                           style="width: 100%; padding: 10px; border: 2px solid white; border-radius: 10px; background: rgba(255,255,255,0.95); color: #333;">
+                </div>
+                
+                <!-- Upgrade Link for Free Users -->
+                <div id="upgradeLink" style="text-align: center; margin-top: 10px;">
                     <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" 
                        target="_blank" 
                        style="color: #FFD700; text-decoration: none; font-weight: bold; font-size: 14px;">
-                       ✨ Upgrade to WearGB Pro on Google Play ✨
+                       🛍️ Get WearGB Pro on Google Play
                     </a>
                 </div>
             </div>
@@ -421,6 +458,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     
     <script>
         let db = null;
@@ -438,13 +476,24 @@
         
         // Update UI based on Pro status
         if (isPro) {
-            document.querySelector('.main-section h2').innerHTML = '✨ Pro Feature: Load Custom ROM';
-            document.querySelector('.main-section .subtitle').textContent = 'Enter any GB/GBC ROM URL';
-            document.getElementById('customUrl').style.opacity = '1';
-            document.getElementById('customUrl').placeholder = 'https://example.com/game.gb';
-            // Hide upgrade link for Pro users
-            const upgradeLink = document.querySelector('.main-section a[href*="play.google.com"]');
-            if (upgradeLink) upgradeLink.style.display = 'none';
+            document.getElementById('customRomTitle').innerHTML = '✨ Pro: Load Custom ROM';
+            document.getElementById('customRomSubtitle').textContent = 'Enter URL or upload ROM file';
+            
+            // Enable URL input
+            const urlInput = document.getElementById('customUrl');
+            urlInput.disabled = false;
+            urlInput.style.opacity = '1';
+            urlInput.style.cursor = 'text';
+            urlInput.placeholder = 'https://example.com/game.gb or Dropbox/Drive link';
+            
+            // Show file upload section
+            document.getElementById('fileUploadSection').style.display = 'block';
+            
+            // Hide upgrade link
+            document.getElementById('upgradeLink').style.display = 'none';
+            
+            // Setup file upload handler
+            document.getElementById('romFile').addEventListener('change', handleFileUpload);
         }
         
         // Show message
@@ -458,18 +507,20 @@
         }
         
         // Init Firebase
+        let storage = null;
         try {
             firebase.initializeApp({
                 apiKey: "AIzaSyBp8_V8jjEUq1aGuypS6VV63cFBFap0s6M",
                 authDomain: "weargb.firebaseapp.com",
                 databaseURL: "https://weargb-default-rtdb.firebaseio.com",
                 projectId: "weargb",
-                storageBucket: "weargb.firebasestorage.app",
+                storageBucket: "weargb.appspot.com",
                 messagingSenderId: "480332250386",
                 appId: "1:480332250386:web:81b32c72fef88e759747cb"
             });
             db = firebase.database();
-            console.log('Firebase ready');
+            storage = firebase.storage();
+            console.log('Firebase ready with storage');
         } catch (e) {
             showMsg('Connection error: ' + e.message, 'error');
         }
@@ -636,6 +687,70 @@
                     }
                 }
             });
+        }
+        
+        // Handle file upload (Pro only)
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file extension
+            if (!file.name.endsWith('.gb') && !file.name.endsWith('.gbc')) {
+                showModal('error', 'Invalid File', 'Please select a .gb or .gbc ROM file', true);
+                event.target.value = '';
+                return;
+            }
+            
+            // Check file size (max 8MB for Game Boy ROMs)
+            if (file.size > 8 * 1024 * 1024) {
+                showModal('error', 'File Too Large', 'ROM file must be less than 8MB', true);
+                event.target.value = '';
+                return;
+            }
+            
+            // Show uploading modal
+            showModal('loading', 'Uploading ROM...', 'Uploading ' + file.name + ' to cloud storage...');
+            
+            try {
+                // Create a unique filename with session ID
+                const timestamp = Date.now();
+                const fileName = `roms/${sessionId}/${timestamp}_${file.name}`;
+                
+                // Upload to Firebase Storage
+                const storageRef = storage.ref(fileName);
+                const snapshot = await storageRef.put(file);
+                
+                // Get download URL
+                const downloadUrl = await snapshot.ref.getDownloadURL();
+                
+                // Send the URL to the watch via Firebase Database
+                const romName = file.name.replace(/\.(gb|gbc)$/i, '');
+                await db.ref('url-sessions/' + sessionId).set({
+                    url: downloadUrl,
+                    romName: romName,
+                    timestamp: Date.now(),
+                    consumed: false,
+                    source: 'upload'
+                });
+                
+                // Mark session as used
+                romSentInSession = true;
+                
+                // Show success
+                showModal('success', 'ROM Uploaded!', 
+                    file.name + ' has been uploaded and sent to your watch.',
+                    true);
+                
+                // Clear file input
+                event.target.value = '';
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                showModal('error', 'Upload Failed', 
+                    'Could not upload ROM. Error: ' + error.message,
+                    true);
+                event.target.value = '';
+            }
         }
         
         // Allow Enter key to send
