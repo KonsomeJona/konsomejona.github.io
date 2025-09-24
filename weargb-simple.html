@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearGB - ROM Selection (Simple)</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .status {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .rom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .rom-button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .rom-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .url-display {
+            background: #f5f5f5;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-family: monospace;
+            cursor: pointer;
+        }
+        
+        .url-display:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 WearGB</h1>
+        <div class="subtitle">Game Boy Emulator for Wear OS</div>
+        
+        <div class="status" id="status">
+            Ready to select ROM
+        </div>
+        
+        <h3>📚 Available ROMs</h3>
+        <div class="rom-grid">
+            <button class="rom-button" onclick="selectROM('tetris.gb', 'Tetris')">🧱 Tetris</button>
+            <button class="rom-button" onclick="selectROM('drmario.gb', 'Dr. Mario')">💊 Dr. Mario</button>
+            <button class="rom-button" onclick="selectROM('kirbys-dream-land.gb', 'Kirby\\'s Dream Land')">🌟 Kirby's Dream Land</button>
+            <button class="rom-button" onclick="selectROM('megaman.gb', 'Mega Man')">🤖 Mega Man</button>
+            <button class="rom-button" onclick="selectROM('donkey-kong.gb', 'Donkey Kong')">🦍 Donkey Kong</button>
+            <button class="rom-button" onclick="selectROM('pacman.gb', 'Pac-Man')">👻 Pac-Man</button>
+        </div>
+    </div>
+
+    <script>
+        // Get session from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session') || 'manual-' + Date.now();
+        
+        // ROM base URL
+        const ROM_BASE_URL = 'https://konsomejona.github.io/downloads/gameboy-roms/';
+        
+        function showStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = isError ? 'status error' : 'status';
+        }
+        
+        function selectROM(filename, romName) {
+            const url = ROM_BASE_URL + filename;
+            
+            showStatus(`Selected: ${romName}`);
+            
+            // Always show the URL for manual copy (no Firebase dependency)
+            const existingUrl = document.querySelector('.url-display');
+            if (existingUrl) existingUrl.remove();
+            
+            const urlDisplay = document.createElement('div');
+            urlDisplay.className = 'url-display';
+            urlDisplay.innerHTML = `
+                <strong>📋 ${romName} URL:</strong><br>
+                <span style="color: #0066cc;">${url}</span><br>
+                <small style="color: #666;">Click to copy to clipboard, then paste in your watch</small>
+            `;
+            
+            urlDisplay.onclick = () => {
+                navigator.clipboard.writeText(url).then(() => {
+                    showStatus('✅ URL copied to clipboard! Now paste it in your watch.');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showStatus('✅ URL copied! Now paste it in your watch.');
+                });
+            };
+            
+            document.querySelector('.container').appendChild(urlDisplay);
+        }
+        
+        // Show session info
+        showStatus(`Session: ${sessionId.substring(0, 8)}... - Select a ROM below`);
+    </script>
+</body>
+</html>

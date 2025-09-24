@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WearGB Firebase Setup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 WearGB Firebase Configuration</h1>
+        
+        <p>To enable ROM syncing between your phone and watch, you need to configure Firebase Realtime Database rules.</p>
+        
+        <div class="step">
+            <h2>Step 1: Go to Firebase Console</h2>
+            <p>Visit <a href="https://console.firebase.google.com" target="_blank">https://console.firebase.google.com</a></p>
+            <p>Select your project: <code>weargb-input</code></p>
+        </div>
+        
+        <div class="step">
+            <h2>Step 2: Navigate to Realtime Database</h2>
+            <p>In the left sidebar, click on <strong>Realtime Database</strong></p>
+            <p>Click on the <strong>Rules</strong> tab</p>
+        </div>
+        
+        <div class="step">
+            <h2>Step 3: Update Security Rules</h2>
+            <p>Replace the existing rules with:</p>
+            <pre>{
+  "rules": {
+    "url_sessions": {
+      "$sessionId": {
+        ".read": true,
+        ".write": true,
+        ".indexOn": ["timestamp"]
+      }
+    }
+  }
+}</pre>
+        </div>
+        
+        <div class="step">
+            <h2>Step 4: Publish Rules</h2>
+            <p>Click the <strong>Publish</strong> button to save your changes</p>
+        </div>
+        
+        <h2>⚠️ Important Note</h2>
+        <p>These rules allow anyone with a session ID to read/write data. This is fine for development and personal use. For production apps with many users, you should implement proper authentication.</p>
+        
+        <h2>Alternative: Test Mode (Temporary)</h2>
+        <p>For quick testing (30 days), you can use these open rules:</p>
+        <pre>{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}</pre>
+        
+        <p><strong>Note:</strong> Even without Firebase configured, you can still:</p>
+        <ul>
+            <li>Select ROMs from the dropdown list</li>
+            <li>Use the Pro version's custom URL feature</li>
+            <li>The app will show the URL for manual entry if needed</li>
+        </ul>
+    </div>
+</body>
+</html>
