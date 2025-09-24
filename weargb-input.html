@@ -293,7 +293,18 @@
         
         <div class="main-section">
             <h2>Load Custom ROM</h2>
-            <p class="subtitle">Enter a direct URL to any Game Boy ROM file (.gb or .gbc)</p>
+            <p class="subtitle">Select a free homebrew ROM or enter a custom URL</p>
+            
+            <!-- Free ROM Selector -->
+            <select id="romSelect" class="url-input" onchange="handleRomSelect()">
+                <option value="">-- Select a Free Homebrew ROM --</option>
+                <option value="https://konsomejona.github.io/downloads/plantboy.gb">Plant Boy (Adventure)</option>
+                <option value="https://konsomejona.github.io/downloads/solitaire.gb">GB Solitaire (Card Game)</option>
+            </select>
+            
+            <p style="text-align: center; margin: 15px 0; color: white; opacity: 0.9;">
+                — OR —
+            </p>
             
             <input type="url" 
                    id="customUrl" 
@@ -307,8 +318,8 @@
             
             <div class="info-box">
                 <strong>Supported formats:</strong> .gb, .gbc<br>
-                <strong>Note:</strong> Enter a direct link to a ROM file hosted online.<br>
-                Or choose from the homebrew games below.
+                <strong>Note:</strong> Select a free homebrew ROM from the dropdown or enter a direct link to any GB/GBC ROM file.<br>
+                All homebrew ROMs are free and legal to use.
             </div>
         </div>
         
@@ -319,39 +330,14 @@
             </p>
             
             <div class="rom-grid">
-                <button class="rom-btn" onclick="sendROM('Pizza Palace', 'https://konsomejona.github.io/downloads/pizza_palace.gb')" title="Pizza delivery arcade game">
-                    <span class="icon">🍕</span>
-                    <span class="name">Pizza Palace</span>
+                <button class="rom-btn" onclick="sendROM('Plant Boy', 'https://konsomejona.github.io/downloads/plantboy.gb')" title="Adventure game">
+                    <span class="icon">🌱</span>
+                    <span class="name">Plant Boy</span>
                 </button>
                 
-                <button class="rom-btn" onclick="sendROM('µCity', 'https://konsomejona.github.io/downloads/ucity.gbc')" title="City building simulation">
-                    <span class="icon">🏙️</span>
-                    <span class="name">µCity</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('2048', 'https://konsomejona.github.io/downloads/2048.gb')" title="Number puzzle game">
-                    <span class="icon">🔢</span>
-                    <span class="name">2048</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Tuff', 'https://konsomejona.github.io/downloads/tuff.gb')" title="Platform adventure">
-                    <span class="icon">🦴</span>
-                    <span class="name">Tuff</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Super Connard', 'https://konsomejona.github.io/downloads/superconnard.gb')" title="Action game">
-                    <span class="icon">🎯</span>
-                    <span class="name">Super Connard</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Espionage', 'https://konsomejona.github.io/downloads/espionage.gb')" title="Stealth action">
-                    <span class="icon">🕵️</span>
-                    <span class="name">Espionage</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Demo 1', 'https://konsomejona.github.io/downloads/demo1.gb')" title="Demo game">
-                    <span class="icon">🎮</span>
-                    <span class="name">Demo 1</span>
+                <button class="rom-btn" onclick="sendROM('GB Solitaire', 'https://konsomejona.github.io/downloads/solitaire.gb')" title="Classic card game">
+                    <span class="icon">🃏</span>
+                    <span class="name">Solitaire</span>
                 </button>
                 
                 <button class="rom-btn" onclick="sendROM('Test ROM', 'test://crystal')" title="Built-in test ROM">
@@ -367,11 +353,11 @@
         
         <div class="disclaimer">
             <strong>⚖️ Legal Notice</strong><br>
-            Pizza Palace and other homebrew games are from <a href="https://github.com/gbdev/database" target="_blank">gbdev/database</a> (Homebrew Hub project, GPLv3).<br>
-            Each game has its own license and copyright holder. Please respect the licensing terms.<br>
+            Plant Boy and GB Solitaire are free homebrew games from the Game Boy development community.<br>
+            These ROMs are freely distributable homebrew titles with proper licenses.<br>
             Only use ROMs you legally own or that are freely distributable.<br><br>
             <a href="https://hh.gbdev.io" target="_blank">Visit Homebrew Hub</a> | 
-            <a href="https://github.com/gbdev/database" target="_blank">View Database</a>
+            <a href="https://github.com/gbdev/database" target="_blank">GB Homebrew Database</a>
         </div>
     </div>
     
@@ -514,12 +500,39 @@
             }
         }
         
+        // Handle ROM selection from dropdown
+        async function handleRomSelect() {
+            const select = document.getElementById('romSelect');
+            const url = select.value;
+            
+            if (!url) return;
+            
+            // Extract name from select option text
+            const selectedOption = select.options[select.selectedIndex];
+            const name = selectedOption.text.split(' (')[0]; // Remove genre part
+            
+            await sendROM(name, url);
+            
+            // Reset select on success if ROM was sent
+            if (romSentInSession) {
+                select.value = '';
+            }
+        }
+        
         // Send custom ROM
         async function sendCustom() {
+            // First check if a ROM is selected in dropdown
+            const select = document.getElementById('romSelect');
+            if (select.value) {
+                await handleRomSelect();
+                return;
+            }
+            
+            // Otherwise use custom URL
             const url = document.getElementById('customUrl').value.trim();
             
             if (!url) {
-                showModal('error', 'No URL Entered', 'Please enter a ROM URL', true);
+                showModal('error', 'No ROM Selected', 'Please select a ROM from the dropdown or enter a custom URL', true);
                 return;
             }
             
