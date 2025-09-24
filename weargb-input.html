@@ -466,17 +466,31 @@
         let sessionId = '';
         let sending = false;
         let romSentInSession = false; // Track if ROM was already sent in this session
+        let isPro = false; // Track Pro version globally
         
-        // Get session and check Pro status
-        const params = new URLSearchParams(window.location.search);
-        sessionId = params.get('session') || 'test-' + Date.now();
-        document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
-        
-        // Check if Pro version
-        const isPro = params.get('v') === 'PRO' || params.get('v') === 'PRO_TOKEN';
-        
-        // Update UI based on Pro status
-        if (isPro) {
+        // Initialize app
+        (async function initApp() {
+            // Get session and check Pro status
+            const params = new URLSearchParams(window.location.search);
+            sessionId = params.get('session') || 'test-' + Date.now();
+            document.getElementById('sessionId').textContent = sessionId.substring(0, 8).toUpperCase();
+            
+            // Fetch version from Firebase
+            try {
+                const response = await fetch(`https://weargb-default-rtdb.firebaseio.com/url-sessions/${sessionId}.json`);
+                if (response.ok) {
+                    const sessionData = await response.json();
+                    if (sessionData && sessionData.version) {
+                        isPro = sessionData.version === 'PRO';
+                        console.log(`Session ${sessionId}: Version = ${sessionData.version}`);
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch session version:', error);
+            }
+            
+            // Update UI based on Pro status
+            if (isPro) {
             document.getElementById('customRomTitle').innerHTML = '✨ Pro: Load Custom ROM';
             document.getElementById('customRomSubtitle').textContent = 'Enter URL or upload ROM file (.gb format only)';
             
@@ -652,7 +666,7 @@
         // Download custom ROM (Pro feature) or open Google Play for free users
         async function downloadCustomRom() {
             // Check if this is a Pro user
-            const isPro = window.location.search.includes('v=PRO');
+            // Version already fetched from Firebase at initialization
             
             if (!isPro) {
                 // Free version - open Google Play Store
@@ -689,7 +703,7 @@
             }
             
             // Check if this is a Pro user (has v=PRO parameter)
-            const isPro = window.location.search.includes('v=PRO');
+            // Version already fetched from Firebase at initialization
             
             // Otherwise use custom URL
             const url = document.getElementById('customUrl').value.trim();
@@ -807,6 +821,7 @@
                 sendCustom();
             }
         });
+        })(); // Close async function and execute it
     </script>
 </body>
 </html>
