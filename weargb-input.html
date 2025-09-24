@@ -293,24 +293,33 @@
         
         <div class="main-section">
             <h2>Load Custom ROM</h2>
-            <p class="subtitle">Select a free homebrew ROM or enter a custom URL</p>
-            
-            <!-- Free ROM Selector -->
-            <select id="romSelect" class="url-input" onchange="handleRomSelect()">
-                <option value="">-- Select a Free Homebrew ROM --</option>
-                <option value="https://konsomejona.github.io/downloads/plantboy.gb">Plant Boy (Adventure)</option>
-                <option value="https://konsomejona.github.io/downloads/solitaire.gb">GB Solitaire (Card Game)</option>
-            </select>
-            
-            <p style="text-align: center; margin: 15px 0; color: white; opacity: 0.9;">
-                — OR —
-            </p>
+            <p class="subtitle">Enter a custom URL or select a free homebrew ROM</p>
             
             <input type="url" 
                    id="customUrl" 
                    class="url-input" 
                    placeholder="https://example.com/game.gb"
                    autocomplete="off">
+            
+            <p style="text-align: center; margin: 15px 0; color: white; opacity: 0.9;">
+                — OR —
+            </p>
+            
+            <!-- Free ROM Selector (moved after custom input) -->
+            <select id="romSelect" class="url-input" onchange="handleRomSelect()">
+                <option value="">-- Select a Free Homebrew ROM --</option>
+                <option value="https://konsomejona.github.io/downloads/2048.gb">2048 (Puzzle)</option>
+                <option value="https://konsomejona.github.io/downloads/adjustris.gb">Adjustris (Tetris-like)</option>
+                <option value="https://konsomejona.github.io/downloads/airaki.gb">Airaki (Platform)</option>
+                <option value="https://konsomejona.github.io/downloads/alien-planet.gb">Alien Planet (Adventure)</option>
+                <option value="https://konsomejona.github.io/downloads/bubble-factory.gb">Bubble Factory (Puzzle)</option>
+                <option value="https://konsomejona.github.io/downloads/nightmode.gb">Nightmode (Puzzle)</option>
+                <option value="https://konsomejona.github.io/downloads/plantboy.gb">Plant Boy (Adventure)</option>
+                <option value="https://konsomejona.github.io/downloads/porklike.gb">Porklike (Roguelike)</option>
+                <option value="https://konsomejona.github.io/downloads/snake.gb">Snake (Classic)</option>
+                <option value="https://konsomejona.github.io/downloads/solitaire.gb">Solitaire (Card Game)</option>
+                <option value="https://konsomejona.github.io/downloads/sqrxz.gb">Sqrxz (Platform)</option>
+            </select>
             
             <button class="send-btn" onclick="sendCustom()">
                 📥 Send ROM to Watch
@@ -330,14 +339,59 @@
             </p>
             
             <div class="rom-grid">
+                <button class="rom-btn" onclick="sendROM('2048', 'https://konsomejona.github.io/downloads/2048.gb')" title="Number puzzle game">
+                    <span class="icon">🔢</span>
+                    <span class="name">2048</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Adjustris', 'https://konsomejona.github.io/downloads/adjustris.gb')" title="Tetris-like puzzle">
+                    <span class="icon">🧱</span>
+                    <span class="name">Adjustris</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Airaki', 'https://konsomejona.github.io/downloads/airaki.gb')" title="Platform adventure">
+                    <span class="icon">🏃</span>
+                    <span class="name">Airaki</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Alien Planet', 'https://konsomejona.github.io/downloads/alien-planet.gb')" title="Space adventure">
+                    <span class="icon">👽</span>
+                    <span class="name">Alien Planet</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Bubble Factory', 'https://konsomejona.github.io/downloads/bubble-factory.gb')" title="Bubble puzzle">
+                    <span class="icon">🫧</span>
+                    <span class="name">Bubble Factory</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Nightmode', 'https://konsomejona.github.io/downloads/nightmode.gb')" title="Dark puzzle">
+                    <span class="icon">🌙</span>
+                    <span class="name">Nightmode</span>
+                </button>
+                
                 <button class="rom-btn" onclick="sendROM('Plant Boy', 'https://konsomejona.github.io/downloads/plantboy.gb')" title="Adventure game">
                     <span class="icon">🌱</span>
                     <span class="name">Plant Boy</span>
                 </button>
                 
-                <button class="rom-btn" onclick="sendROM('GB Solitaire', 'https://konsomejona.github.io/downloads/solitaire.gb')" title="Classic card game">
+                <button class="rom-btn" onclick="sendROM('Porklike', 'https://konsomejona.github.io/downloads/porklike.gb')" title="Roguelike dungeon">
+                    <span class="icon">🐷</span>
+                    <span class="name">Porklike</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Snake', 'https://konsomejona.github.io/downloads/snake.gb')" title="Classic snake">
+                    <span class="icon">🐍</span>
+                    <span class="name">Snake</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Solitaire', 'https://konsomejona.github.io/downloads/solitaire.gb')" title="Card game">
                     <span class="icon">🃏</span>
                     <span class="name">Solitaire</span>
+                </button>
+                
+                <button class="rom-btn" onclick="sendROM('Sqrxz', 'https://konsomejona.github.io/downloads/sqrxz.gb')" title="Platform game">
+                    <span class="icon">🦎</span>
+                    <span class="name">Sqrxz</span>
                 </button>
                 
                 <button class="rom-btn" onclick="sendROM('Test ROM', 'test://crystal')" title="Built-in test ROM">
