@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Debug</title>
+</head>
+<body>
+    <h1>Firebase Debug Test</h1>
+    <div id="status">Testing...</div>
+    <div id="details"></div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <script>
+        const statusDiv = document.getElementById('status');
+        const detailsDiv = document.getElementById('details');
+        
+        function log(message, isError = false) {
+            console.log(message);
+            statusDiv.innerHTML += (isError ? '❌ ' : '✅ ') + message + '<br>';
+        }
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDw7cGPgUcWdJ0sYtRdOjv3Q6FgLpze0Pg",
+            authDomain: "weargb.firebaseapp.com",
+            databaseURL: "https://weargb-default-rtdb.firebaseio.com",
+            projectId: "weargb",
+            storageBucket: "weargb.appspot.com",
+            messagingSenderId: "480332250386",
+            appId: "1:480332250386:web:9747cb818b022d2f9747cb"
+        };
+        
+        try {
+            log('Initializing Firebase...');
+            firebase.initializeApp(firebaseConfig);
+            log('Firebase app initialized');
+            
+            const database = firebase.database();
+            log('Database reference obtained');
+            
+            // Test connection
+            log('Testing database connection...');
+            const testRef = database.ref('url_sessions/test_' + Date.now());
+            
+            testRef.set({
+                url: 'https://test.com',
+                timestamp: Date.now(),
+                consumed: false
+            }).then(() => {
+                log('✅ Write test successful!');
+                
+                // Test read
+                return testRef.once('value');
+            }).then(snapshot => {
+                if (snapshot.exists()) {
+                    log('✅ Read test successful!');
+                    detailsDiv.innerHTML = '<h3>Data read:</h3><pre>' + JSON.stringify(snapshot.val(), null, 2) + '</pre>';
+                } else {
+                    log('❌ Read test failed - no data', true);
+                }
+            }).catch(error => {
+                log('❌ Database error: ' + error.code + ' - ' + error.message, true);
+                detailsDiv.innerHTML = '<h3>Error details:</h3><pre>' + JSON.stringify(error, null, 2) + '</pre>';
+            });
+            
+        } catch (error) {
+            log('❌ Initialization error: ' + error.message, true);
+            detailsDiv.innerHTML = '<h3>Init error:</h3><pre>' + JSON.stringify(error, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+</html>

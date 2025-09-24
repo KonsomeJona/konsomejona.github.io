@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WearGB - ROM Selection (Test)</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .status {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        
+        .rom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .rom-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .rom-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .url-display {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: 2px dashed #ccc;
+        }
+        
+        .url-display:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🎮 WearGB</h1>
+            <p id="subtitle">Game Boy Emulator for Wear OS</p>
+        </div>
+        
+        <div class="status" id="status">
+            Ready to send ROM to your watch
+        </div>
+        
+        <div class="section">
+            <h3>📚 Free Game Boy ROMs</h3>
+            <div class="rom-grid">
+                <button class="rom-button" onclick="selectROM('tetris.gb', 'Tetris')">🧱 Tetris</button>
+                <button class="rom-button" onclick="selectROM('drmario.gb', 'Dr. Mario')">💊 Dr. Mario</button>
+                <button class="rom-button" onclick="selectROM('kirbys-dream-land.gb', 'Kirby\\'s Dream Land')">🌟 Kirby's Dream Land</button>
+                <button class="rom-button" onclick="selectROM('megaman.gb', 'Mega Man')">🤖 Mega Man</button>
+                <button class="rom-button" onclick="selectROM('donkey-kong.gb', 'Donkey Kong')">🦍 Donkey Kong</button>
+                <button class="rom-button" onclick="selectROM('pacman.gb', 'Pac-Man')">👻 Pac-Man</button>
+                <button class="rom-button" onclick="selectROM('space-invaders.gb', 'Space Invaders')">👾 Space Invaders</button>
+                <button class="rom-button" onclick="selectROM('frogger.gb', 'Frogger')">🐸 Frogger</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get('session') || 'test123';
+        const versionToken = urlParams.get('v');
+        
+        // Base URL for ROM downloads
+        const ROM_BASE_URL = 'https://konsomejona.github.io/downloads/gameboy-roms/';
+        
+        // Check if Pro version
+        const isPro = versionToken && versionToken.includes('PRO');
+        if (isPro) {
+            document.getElementById('subtitle').innerHTML = 'Game Boy Emulator for Wear OS <span style="background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">[PRO]</span>';
+        }
+        
+        function showStatus(message, type = 'success') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status';
+            if (type === 'error') {
+                statusEl.style.background = '#ffebee';
+                statusEl.style.color = '#c62828';
+            } else {
+                statusEl.style.background = '#e8f5e9';
+                statusEl.style.color = '#2e7d32';
+            }
+        }
+        
+        function selectROM(filename, romName) {
+            const url = ROM_BASE_URL + filename;
+            
+            showStatus(`Selected: ${romName}`);
+            
+            // Create copyable URL display
+            const existingUrl = document.querySelector('.url-display');
+            if (existingUrl) existingUrl.remove();
+            
+            const urlDisplay = document.createElement('div');
+            urlDisplay.className = 'url-display';
+            urlDisplay.innerHTML = `
+                <strong>ROM URL for ${romName}:</strong><br>
+                ${url}<br>
+                <small>📋 Tap to copy to clipboard</small>
+            `;
+            
+            urlDisplay.onclick = () => {
+                navigator.clipboard.writeText(url).then(() => {
+                    showStatus('✅ URL copied to clipboard! Paste in your watch.');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showStatus('✅ URL copied! Paste in your watch.');
+                });
+            };
+            
+            document.querySelector('.container').appendChild(urlDisplay);
+        }
+        
+        // Show ready message
+        showStatus(`Session: ${sessionId} - Select a ROM below`);
+    </script>
+</body>
+</html>
