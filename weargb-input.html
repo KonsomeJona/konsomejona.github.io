@@ -351,9 +351,9 @@
                 </div>
             </div>
             
-            <!-- Download Button -->
-            <button class="send-btn" onclick="downloadCustomRom()" style="margin-top: 15px; background: #2196F3; color: white;" id="downloadBtn" disabled>
-                📥 Download Custom ROM
+            <!-- Download Button / Get Pro Button -->
+            <button class="send-btn" onclick="downloadCustomRom()" style="margin-top: 15px; background: #2196F3; color: white;" id="downloadBtn">
+                🛍️ Get Pro Version
             </button>
             
             <p style="text-align: center; margin: 20px 0 15px 0; color: white; opacity: 0.9; font-weight: bold;">
@@ -364,7 +364,6 @@
             <select id="romSelect" class="url-input" onchange="handleRomSelect()">
                 <option value="">-- Select a Free Homebrew ROM --</option>
                 <option value="https://konsomejona.github.io/downloads/adjustris.gb">Adjustris (Tetris-like)</option>
-                <option value="https://konsomejona.github.io/downloads/airaki.gb">Airaki (Platform)</option>
                 <option value="https://konsomejona.github.io/downloads/bubble-factory.gb">Bubble Factory (Puzzle)</option>
                 <option value="https://konsomejona.github.io/downloads/nightmode.gb">Nightmode (Puzzle)</option>
                 <option value="https://konsomejona.github.io/downloads/pizza_palace.gb">Pizza Palace (Arcade)</option>
@@ -394,11 +393,6 @@
                 <button class="rom-btn" onclick="sendROM('Adjustris', 'https://konsomejona.github.io/downloads/adjustris.gb')" title="Tetris-like puzzle">
                     <span class="icon">🧱</span>
                     <span class="name">Adjustris</span>
-                </button>
-                
-                <button class="rom-btn" onclick="sendROM('Airaki', 'https://konsomejona.github.io/downloads/airaki.gb')" title="Platform adventure">
-                    <span class="icon">🏃</span>
-                    <span class="name">Airaki</span>
                 </button>
                 
                 <button class="rom-btn" onclick="sendROM('Bubble Factory', 'https://konsomejona.github.io/downloads/bubble-factory.gb')" title="Bubble puzzle">
@@ -499,11 +493,12 @@
             fileInput.style.opacity = '1';
             fileInput.style.cursor = 'pointer';
             
-            // Enable download button
+            // Enable download button and change text
             const downloadBtn = document.getElementById('downloadBtn');
             downloadBtn.disabled = false;
             downloadBtn.style.opacity = '1';
             downloadBtn.style.cursor = 'pointer';
+            downloadBtn.innerHTML = '📥 Download Custom ROM';
             
             // Hide upgrade link
             document.getElementById('upgradeLink').style.display = 'none';
@@ -647,18 +642,18 @@
             }
         }
         
-        // Download custom ROM (Pro feature)
+        // Download custom ROM (Pro feature) or open Google Play for free users
         async function downloadCustomRom() {
             // Check if this is a Pro user
             const isPro = window.location.search.includes('v=PRO');
             
             if (!isPro) {
-                showModal('error', 'Pro Feature Required', 
-                    'Custom ROM downloads are only available in WearGB Pro. Please upgrade on Google Play.',
-                    true);
+                // Free version - open Google Play Store
+                window.open('https://play.google.com/store/apps/details?id=me.takohi.weargb.pro', '_blank');
                 return;
             }
             
+            // Pro version - download custom ROM
             const url = document.getElementById('customUrl').value.trim();
             
             if (!url) {
