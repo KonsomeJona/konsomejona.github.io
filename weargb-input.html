@@ -279,6 +279,43 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
+        
+        .file-upload-label {
+            display: block;
+            cursor: pointer;
+        }
+        
+        .file-upload-label.disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .file-upload-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255,255,255,0.3);
+            display: inline-block;
+            width: 200px;
+        }
+        
+        .file-upload-label.disabled .file-upload-btn {
+            background: linear-gradient(135deg, #888, #666);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        .file-upload-label:not(.disabled) .file-upload-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.6);
+        }
+        
+        .file-upload-label:not(.disabled) .file-upload-btn:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -299,23 +336,17 @@
             <!-- Pro Features Info Box -->
             <div class="info-box" style="background: linear-gradient(135deg, #2196F3, #1976D2); color: white; margin-bottom: 15px;">
                 <div style="font-weight: bold; font-size: 14sp; margin-bottom: 8px;">
-                    ✨ WearGB Pro - Load ROMs from Anywhere:
+                    ✨ WearGB Pro - Load ROMs from Cloud Storage:
                 </div>
                 <div style="font-size: 12sp; line-height: 1.8;">
-                    <b>📁 Cloud Storage Support:</b><br>
                     • 📦 Dropbox - Direct & shared links<br>
                     • 🔷 Google Drive - Public & shared files<br>
                     • ☁️ OneDrive - Personal & shared folders<br>
                     • 📂 MEGA - Direct download links<br>
                     • 🔥 MediaFire - Direct file URLs<br>
                     • 🌐 GitHub - Raw file links<br>
-                    <br>
-                    <b>🎮 Additional Features:</b><br>
-                    • 📤 Upload ROM files directly from phone<br>
-                    • 🔗 Any HTTP/HTTPS direct link<br>
-                    • 📚 Archive.org ROM collections<br>
-                    • 🚀 Custom server support<br>
-                    • ⚡ No ads & priority updates
+                    • 📤 Upload ROM files directly<br>
+                    • 🔗 Any HTTP/HTTPS direct link
                 </div>
             </div>
             
@@ -330,15 +361,22 @@
                        style="opacity: 0.5; cursor: not-allowed;">
                 
                 <!-- File Upload Section -->
-                <div id="fileUploadSection" style="margin-top: 10px;">
-                    <label for="romFile" style="display: block; margin-bottom: 5px; text-align: center; color: white;">
-                        Or upload a ROM file (.gb or .gbc):
+                <div id="fileUploadSection" style="margin-top: 15px; display: none;">
+                    <div style="text-align: center; margin-bottom: 10px;">
+                        <span style="color: white; font-size: 13px; opacity: 0.9;">— OR —</span>
+                    </div>
+                    <label for="romFile" class="file-upload-label disabled">
+                        <div class="file-upload-btn">
+                            <span style="font-size: 24px; margin-bottom: 5px;">📁</span><br>
+                            <span style="font-size: 14px; font-weight: bold;">Choose ROM File</span><br>
+                            <span style="font-size: 11px; opacity: 0.8;">(.gb or .gbc)</span>
+                        </div>
+                        <input type="file" 
+                               id="romFile" 
+                               accept=".gb,.gbc"
+                               disabled
+                               style="display: none;">
                     </label>
-                    <input type="file" 
-                           id="romFile" 
-                           accept=".gb,.gbc"
-                           disabled
-                           style="width: 100%; padding: 10px; border: 2px solid white; border-radius: 10px; background: rgba(255,255,255,0.95); color: #333; opacity: 0.5; cursor: not-allowed;">
                 </div>
                 
                 <!-- Upgrade Link for Free Users -->
@@ -377,9 +415,10 @@
             </button>
             
             <div class="info-box">
-                <strong>Supported format:</strong> .gb only (Game Boy Classic)<br>
-                <strong>Note:</strong> Select a free homebrew ROM from the dropdown or enter a direct link to any GB/GBC ROM file.<br>
-                All homebrew ROMs are free and legal to use.
+                <strong>⚠️ IMPORTANT LEGAL NOTICE:</strong><br>
+                <span style="color: #FFD700; font-weight: bold;">Only use ROMs that you legally own or that are freely distributable.</span><br>
+                All homebrew ROMs provided here are free and legal to use.<br>
+                <strong>Supported formats:</strong> .gb and .gbc files
             </div>
         </div>
         
@@ -437,10 +476,11 @@
         </div>
         
         <div class="disclaimer">
-            <strong>⚖️ Legal Notice</strong><br>
-            Plant Boy and GB Solitaire are free homebrew games from the Game Boy development community.<br>
-            These ROMs are freely distributable homebrew titles with proper licenses.<br>
-            Only use ROMs you legally own or that are freely distributable.<br><br>
+            <strong style="color: #FFD700; font-size: 14px;">⚖️ LEGAL NOTICE - IMPORTANT</strong><br>
+            <span style="color: #FF6B6B; font-weight: bold;">This legal notice applies to ALL ROM usage.</span><br>
+            <strong>You must only use ROMs that you legally own or that are freely distributable.</strong><br>
+            The homebrew games provided here are free and legal to use.<br>
+            Uploading or using copyrighted ROMs without ownership is illegal.<br><br>
             <a href="https://hh.gbdev.io" target="_blank">Visit Homebrew Hub</a> | 
             <a href="https://github.com/gbdev/database" target="_blank">GB Homebrew Database</a>
         </div>
@@ -501,11 +541,17 @@
             urlInput.style.cursor = 'text';
             urlInput.placeholder = 'https://example.com/game.gb or Dropbox/Drive link';
             
-            // Enable file upload
+            // Show and enable file upload section
+            const fileUploadSection = document.getElementById('fileUploadSection');
+            fileUploadSection.style.display = 'block';
+            
             const fileInput = document.getElementById('romFile');
             fileInput.disabled = false;
-            fileInput.style.opacity = '1';
-            fileInput.style.cursor = 'pointer';
+            
+            const fileLabel = fileInput.closest('.file-upload-label');
+            if (fileLabel) {
+                fileLabel.classList.remove('disabled');
+            }
             
             // Enable download button and change text
             const downloadBtn = document.getElementById('downloadBtn');
