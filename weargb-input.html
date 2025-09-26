@@ -807,6 +807,13 @@
             showModal('loading', 'Uploading ROM...', 'Uploading ' + file.name + ' to cloud storage...');
             
             try {
+                // Check if Firebase Storage is initialized
+                if (!storage) {
+                    console.error('Firebase Storage not initialized');
+                    showModal('error', 'Upload Error', 'Storage service not available. Please try again later.');
+                    return;
+                }
+                
                 // Create a unique filename with session ID
                 const timestamp = Date.now();
                 const fileName = `roms/${sessionId}/${timestamp}_${file.name}`;
