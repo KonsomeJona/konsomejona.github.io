@@ -291,30 +291,35 @@
         }
         
         .file-upload-btn {
-            background: linear-gradient(135deg, #4CAF50, #45a049);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+            background: white;
+            color: #333;
+            padding: 25px 40px;
+            border-radius: 20px;
             text-align: center;
             transition: all 0.3s ease;
-            border: 3px solid rgba(255,255,255,0.3);
+            border: 3px dashed #667eea;
             display: inline-block;
-            width: 200px;
+            min-width: 250px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
         .file-upload-label.disabled .file-upload-btn {
-            background: linear-gradient(135deg, #888, #666);
-            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.2);
+            cursor: not-allowed;
+            color: #999;
         }
         
         .file-upload-label:not(.disabled) .file-upload-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+            border-color: #764ba2;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
         }
         
         .file-upload-label:not(.disabled) .file-upload-btn:active {
-            transform: scale(0.98);
+            transform: translateY(-1px);
         }
     </style>
 </head>
@@ -360,16 +365,22 @@
                        disabled
                        style="opacity: 0.5; cursor: not-allowed;">
                 
+                <!-- Download Button for URL (Pro only) -->
+                <button class="send-btn" onclick="downloadCustomRom()" style="margin-top: 10px; background: #4CAF50; color: white; display: none;" id="downloadBtn">
+                    📥 Download ROM from URL
+                </button>
+                
                 <!-- File Upload Section -->
-                <div id="fileUploadSection" style="margin-top: 15px; display: none;">
-                    <div style="text-align: center; margin-bottom: 10px;">
-                        <span style="color: white; font-size: 13px; opacity: 0.9;">— OR —</span>
+                <div id="fileUploadSection" style="margin-top: 20px; display: none; text-align: center;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <span style="color: white; font-size: 14px; font-weight: bold;">— OR —</span>
                     </div>
-                    <label for="romFile" class="file-upload-label disabled">
+                    <label for="romFile" class="file-upload-label disabled" style="display: inline-block;">
                         <div class="file-upload-btn">
-                            <span style="font-size: 24px; margin-bottom: 5px;">📁</span><br>
-                            <span style="font-size: 14px; font-weight: bold;">Choose ROM File</span><br>
-                            <span style="font-size: 11px; opacity: 0.8;">(.gb or .gbc)</span>
+                            <span style="font-size: 32px;">📤</span><br>
+                            <span style="font-size: 16px; font-weight: bold; color: #667eea;">Click to Select ROM File</span><br>
+                            <span style="font-size: 12px; opacity: 0.7;">Supports .gb and .gbc files</span><br>
+                            <span style="font-size: 11px; opacity: 0.6; margin-top: 5px; display: block;">File will auto-upload when selected</span>
                         </div>
                         <input type="file" 
                                id="romFile" 
@@ -389,12 +400,7 @@
                 </div>
             </div>
             
-            <!-- Download Button / Get Pro Button -->
-            <button class="send-btn" onclick="downloadCustomRom()" style="margin-top: 15px; background: #2196F3; color: white;" id="downloadBtn">
-                🛍️ Get Pro Version
-            </button>
-            
-            <p style="text-align: center; margin: 20px 0 15px 0; color: white; opacity: 0.9; font-weight: bold;">
+            <p style="text-align: center; margin: 25px 0 15px 0; color: white; opacity: 0.9; font-weight: bold; font-size: 14px;">
                 — OR USE FREE ROMS BELOW —
             </p>
             
@@ -553,12 +559,12 @@
                 fileLabel.classList.remove('disabled');
             }
             
-            // Enable download button and change text
+            // Show and enable download button for URL
             const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.style.display = 'block';
             downloadBtn.disabled = false;
             downloadBtn.style.opacity = '1';
             downloadBtn.style.cursor = 'pointer';
-            downloadBtn.innerHTML = '📥 Download Custom ROM';
             
             // Hide upgrade link
             document.getElementById('upgradeLink').style.display = 'none';
@@ -817,12 +823,21 @@
             });
         }
         
-        // Handle file upload (Pro only)
+        // Handle file upload (Pro only) - Auto upload and send
         async function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            console.log('=== File Upload Started ===');
+            // Check if ROM was already sent in this session
+            if (romSentInSession) {
+                showModal('blocked', 'ROM Already Sent', 
+                    'A ROM has already been sent in this session. Please wait for your watch to download it, or refresh the page to start a new session.',
+                    true);
+                event.target.value = '';
+                return;
+            }
+            
+            console.log('=== File Upload Started (Auto-send) ===');
             console.log('File name:', file.name);
             console.log('File size:', file.size);
             console.log('Firebase Storage available:', storage !== null);
@@ -850,7 +865,7 @@
             }
             
             // Show uploading modal
-            showModal('loading', 'Uploading ROM...', 'Uploading ' + file.name + ' to cloud storage...');
+            showModal('loading', 'Uploading & Sending ROM...', 'Uploading ' + file.name + ' and sending to your watch...');
             
             try {
                 // Check if Firebase Storage is initialized
@@ -891,9 +906,17 @@
                 // Mark session as used
                 romSentInSession = true;
                 
+                // Disable all buttons to prevent duplicate sends
+                document.querySelectorAll('button').forEach(b => b.disabled = true);
+                const fileLabel = document.querySelector('.file-upload-label');
+                if (fileLabel) {
+                    fileLabel.classList.add('disabled');
+                }
+                document.getElementById('romFile').disabled = true;
+                
                 // Show success (no button needed)
-                showModal('success', 'ROM Uploaded!', 
-                    file.name + ' has been uploaded. Check your watch - the download should start automatically.',
+                showModal('success', 'ROM Sent!', 
+                    file.name + ' has been sent to your watch. The download should start automatically.',
                     false);
                 
                 // Clear file input
