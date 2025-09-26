@@ -794,6 +794,13 @@
             showModal('loading', 'Uploading ROM...', 'Uploading ' + file.name + ' to cloud storage...');
             
             try {
+                // Check if Firebase Storage is initialized
+                if (!storage) {
+                    console.error('Firebase Storage not initialized');
+                    showModal('error', 'Upload Error', 'Storage service not available. Please try again later.');
+                    return;
+                }
+                
                 // Create a unique filename with session ID
                 const timestamp = Date.now();
                 const fileName = `roms/${sessionId}/${timestamp}_${file.name}`;
@@ -807,13 +814,24 @@
                 
                 // Send the URL to the watch via Firebase Database
                 const romName = file.name.replace(/\.gb$/i, '');
-                await db.ref('url-sessions/' + sessionId).set({
+                console.log('Attempting to write to database path:', 'url-sessions/' + sessionId);
+                console.log('Data to write:', {
                     url: downloadUrl,
                     romName: romName,
                     timestamp: Date.now(),
                     consumed: false,
                     source: 'upload'
                 });
+                
+                await db.ref('url-sessions/' + sessionId).update({
+                    url: downloadUrl,
+                    romName: romName,
+                    timestamp: Date.now(),
+                    consumed: false,
+                    source: 'upload'
+                });
+                
+                console.log('Database write successful');
                 
                 // Mark session as used
                 romSentInSession = true;
