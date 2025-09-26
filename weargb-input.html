@@ -321,6 +321,12 @@
         .file-upload-label:not(.disabled) .file-upload-btn:active {
             transform: translateY(-1px);
         }
+        
+        /* Upgrade button hover effect */
+        #upgradeButtonSection a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6) !important;
+        }
     </style>
 </head>
 <body>
@@ -371,7 +377,7 @@
                 </button>
                 
                 <!-- File Upload Section -->
-                <div id="fileUploadSection" style="margin-top: 20px; display: none; text-align: center;">
+                <div id="fileUploadSection" style="margin-top: 20px; text-align: center;">
                     <div style="text-align: center; margin-bottom: 15px;">
                         <span style="color: white; font-size: 14px; font-weight: bold;">— OR —</span>
                     </div>
@@ -381,6 +387,7 @@
                             <span style="font-size: 16px; font-weight: bold; color: #667eea;">Click to Select ROM File</span><br>
                             <span style="font-size: 12px; opacity: 0.7;">Supports .gb and .gbc files</span><br>
                             <span style="font-size: 11px; opacity: 0.6; margin-top: 5px; display: block;">File will auto-upload when selected</span>
+                            <span style="font-size: 10px; color: #FF9800; font-weight: bold; margin-top: 8px; display: block;">🔒 PRO FEATURE</span>
                         </div>
                         <input type="file" 
                                id="romFile" 
@@ -389,15 +396,31 @@
                                style="display: none;">
                     </label>
                 </div>
-                
-                <!-- Upgrade Link for Free Users -->
-                <div id="upgradeLink" style="text-align: center; margin-top: 10px;">
-                    <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" 
-                       target="_blank" 
-                       style="color: #2196F3; text-decoration: none; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
-                       🛍️ Get WearGB Pro on Google Play
-                    </a>
+            </div>
+            
+            <!-- Prominent Upgrade Button (for Free Users) -->
+            <div id="upgradeButtonSection" style="text-align: center; margin-top: 20px;">
+                <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" 
+                   target="_blank" 
+                   style="display: inline-block; background: linear-gradient(135deg, #4CAF50, #45a049); 
+                          color: white; padding: 15px 30px; border-radius: 15px; 
+                          text-decoration: none; font-weight: bold; font-size: 16px; 
+                          box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4); 
+                          transition: all 0.3s ease;">
+                   🚀 Upgrade to WearGB Pro
+                </a>
+                <div style="margin-top: 8px; font-size: 12px; color: rgba(255,255,255,0.8);">
+                    Unlock custom ROM loading from URLs and files
                 </div>
+            </div>
+            
+            <!-- Small Upgrade Link (for Free Users) -->
+            <div id="upgradeLink" style="text-align: center; margin-top: 15px;">
+                <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" 
+                   target="_blank" 
+                   style="color: #2196F3; text-decoration: none; font-weight: bold; font-size: 14px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
+                   🛍️ Get WearGB Pro on Google Play
+                </a>
             </div>
             
             <p style="text-align: center; margin: 25px 0 15px 0; color: white; opacity: 0.9; font-weight: bold; font-size: 14px;">
@@ -566,7 +589,8 @@
             downloadBtn.style.opacity = '1';
             downloadBtn.style.cursor = 'pointer';
             
-            // Hide upgrade link
+            // Hide upgrade elements
+            document.getElementById('upgradeButtonSection').style.display = 'none';
             document.getElementById('upgradeLink').style.display = 'none';
             
             // Setup file upload handler
