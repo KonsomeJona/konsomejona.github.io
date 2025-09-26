@@ -776,6 +776,19 @@
             const file = event.target.files[0];
             if (!file) return;
             
+            console.log('=== File Upload Started ===');
+            console.log('File name:', file.name);
+            console.log('File size:', file.size);
+            console.log('Firebase Storage available:', storage !== null);
+            
+            // Check if Firebase Storage is initialized
+            if (!storage) {
+                console.error('Firebase Storage not initialized');
+                showModal('error', 'Storage Not Available', 'Firebase Storage is not initialized. Please refresh the page.', true);
+                event.target.value = '';
+                return;
+            }
+            
             // Check file extension
             if (!file.name.endsWith('.gb') && !file.name.endsWith('.gbc')) {
                 showModal('error', 'Invalid File', 'Please select a .gb or .gbc ROM file', true);
@@ -807,13 +820,20 @@
                 
                 // Send the URL to the watch via Firebase Database
                 const romName = file.name.replace(/\.gb$/i, '');
-                await db.ref('url-sessions/' + sessionId).set({
+                console.log('=== Manual Upload: Updating Firebase ===');
+                console.log('Session ID:', sessionId);
+                console.log('Download URL:', downloadUrl);
+                console.log('ROM Name:', romName);
+                
+                // IMPORTANT: Use update() instead of set() to preserve existing session fields
+                await db.ref('url-sessions/' + sessionId).update({
                     url: downloadUrl,
                     romName: romName,
                     timestamp: Date.now(),
                     consumed: false,
                     source: 'upload'
                 });
+                console.log('✅ Firebase update successful for uploaded ROM');
                 
                 // Mark session as used
                 romSentInSession = true;
