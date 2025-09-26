@@ -592,7 +592,7 @@
         }
         
         // Send ROM with modal and session blocking
-        async function sendROM(name, url) {
+        window.sendROM = async function(name, url) {
             console.log('=== sendROM START ===');
             console.log('ROM Name:', name);
             console.log('ROM URL:', url);
