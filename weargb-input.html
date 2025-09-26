@@ -592,11 +592,23 @@
         }
         
         // Send ROM with modal and session blocking
-        async function sendROM(name, url) {
-            if (sending) return;
+        window.sendROM = async function(name, url) {
+            console.log('=== sendROM START ===');
+            console.log('ROM Name:', name);
+            console.log('ROM URL:', url);
+            console.log('Session ID:', sessionId);
+            console.log('Is Pro:', isPro);
+            console.log('Already sending:', sending);
+            console.log('ROM sent in session:', romSentInSession);
+            
+            if (sending) {
+                console.log('Already sending, returning');
+                return;
+            }
             
             // Check if ROM was already sent in this session
             if (romSentInSession) {
+                console.log('ROM already sent in this session');
                 showModal('blocked', 'ROM Already Sent', 
                     'A ROM has already been sent in this session. Please wait for your watch to download it, or refresh the page to start a new session.',
                     true);
@@ -610,13 +622,18 @@
             showModal('loading', 'Sending ROM...', 'Sending "' + name + '" to your watch. Please wait...');
             
             try {
-                // Send to Firebase
-                await db.ref('url-sessions/' + sessionId).set({
+                console.log('Attempting Firebase update at path:', 'url-sessions/' + sessionId);
+                const updateData = {
                     url: url,
                     romName: name,
                     timestamp: Date.now(),
                     consumed: false
-                });
+                };
+                console.log('Update data:', JSON.stringify(updateData));
+                
+                // IMPORTANT: Use update() instead of set() to preserve existing session fields
+                await db.ref('url-sessions/' + sessionId).update(updateData);
+                console.log('✅ Firebase update successful');
                 
                 // Mark session as used
                 romSentInSession = true;
@@ -626,13 +643,16 @@
                     '"' + name + '" has been sent. Check your watch - the download should start automatically.',
                     false);
                 
-                console.log('Sent:', name, url);
+                console.log('✅ ROM sent successfully:', name, url);
                 
                 // Keep buttons disabled after success
                 sending = false;
                 // Don't re-enable buttons to prevent duplicate sends
                 
             } catch (e) {
+                console.error('❌ Failed to send ROM:', e);
+                console.error('Error details:', e.message, e.stack);
+                
                 // Show error modal
                 showModal('error', 'Failed to Send', 
                     'Could not send ROM to watch. Error: ' + e.message,
