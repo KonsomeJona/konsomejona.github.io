@@ -846,9 +846,20 @@
                 
             } catch (error) {
                 console.error('Upload error:', error);
-                showModal('error', 'Upload Failed', 
-                    'Could not upload ROM. Error: ' + error.message,
-                    true);
+                
+                // Check if it's a CORS error
+                if (error.code === 'storage/unauthorized' || error.code === 'storage/retry-limit-exceeded' || error.message.includes('CORS')) {
+                    showModal('error', 'Upload Service Unavailable', 
+                        'File upload is temporarily unavailable due to CORS configuration. Please use a direct URL instead:\n\n' +
+                        '1. Upload your ROM to Google Drive, Dropbox, or GitHub\n' +
+                        '2. Get a direct download link\n' +
+                        '3. Paste the link in the URL field above',
+                        true);
+                } else {
+                    showModal('error', 'Upload Failed', 
+                        'Could not upload ROM. Error: ' + error.message + '\n\nTry using a direct URL instead.',
+                        true);
+                }
                 event.target.value = '';
             }
         }
