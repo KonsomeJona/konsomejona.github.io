@@ -152,12 +152,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             animation: fadeIn 0.3s;
+            cursor: not-allowed;
         }
         
         .modal-overlay.show {
@@ -214,21 +215,6 @@
             margin-bottom: 25px;
         }
         
-        .modal-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .modal-button:hover {
-            transform: translateY(-2px);
-        }
         
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -279,7 +265,6 @@
             <div class="modal-icon" id="modalIcon"></div>
             <div class="modal-title" id="modalTitle"></div>
             <div class="modal-message" id="modalMessage"></div>
-            <button class="modal-button" id="modalButton" onclick="closeModal()">OK</button>
         </div>
     </div>
     
@@ -389,16 +374,21 @@
                 await database.ref('public-feedback').push(feedbackData);
                 
                 // Show success modal
-                showModal('success', 'Feedback Sent!', 'Thank you for your feedback! We appreciate you taking the time to help improve WearGB.');
+                showModal('success', 'Feedback Sent!', 'Thank you for your feedback! Redirecting...');
                 
-                // Reset form
-                document.getElementById('feedbackForm').reset();
-                submitBtn.disabled = false;
+                // Redirect after 2 seconds to prevent spam
+                setTimeout(() => {
+                    window.location.href = 'https://github.com/KonsomeJona/WearGB';
+                }, 2000);
                 
             } catch (error) {
                 console.error('Error submitting feedback:', error);
-                showModal('error', 'Oops!', 'Something went wrong. Please try again later or visit the GitHub issues page.');
-                submitBtn.disabled = false;
+                showModal('error', 'Oops!', 'Something went wrong. Redirecting to GitHub...');
+                
+                // Redirect to GitHub after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'https://github.com/KonsomeJona/WearGB/issues';
+                }, 3000);
             }
         });
         
@@ -408,28 +398,20 @@
             const modalIcon = document.getElementById('modalIcon');
             const modalTitle = document.getElementById('modalTitle');
             const modalMessage = document.getElementById('modalMessage');
-            const modalButton = document.getElementById('modalButton');
             
             // Set icon based on type
             modalIcon.className = 'modal-icon ' + type;
             if (type === 'success') {
                 modalIcon.innerHTML = '✓';
-                modalButton.style.display = 'block';
             } else if (type === 'error') {
                 modalIcon.innerHTML = '✗';
-                modalButton.style.display = 'block';
             } else if (type === 'loading') {
                 modalIcon.innerHTML = '<div class="spinner"></div>';
-                modalButton.style.display = 'none';
             }
             
             modalTitle.textContent = title;
             modalMessage.textContent = message;
             modalOverlay.classList.add('show');
-        }
-        
-        function closeModal() {
-            document.getElementById('modalOverlay').classList.remove('show');
         }
     </script>
 </body>
