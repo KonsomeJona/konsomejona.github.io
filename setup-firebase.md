@@ -11,6 +11,8 @@
 ```json
 {
   "rules": {
+    ".read": false,
+    ".write": false,
     "url-sessions": {
       ".read": true,
       ".write": true,
