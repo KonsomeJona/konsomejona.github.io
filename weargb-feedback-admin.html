@@ -5,6 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WearGB Feedback Admin Dashboard</title>
     <style>
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .login-error {
+            color: #f44336;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+    </style>
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -264,6 +334,19 @@
     </style>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <div class="login-title">🔒 Admin Access Required</div>
+            <p style="color: #666; text-align: center; margin-bottom: 20px;">Enter password to view feedback dashboard</p>
+            <div class="login-error" id="loginError" style="display: none;">Invalid password. Please try again.</div>
+            <input type="password" class="password-input" id="passwordInput" placeholder="Enter password" onkeypress="if(event.key==='Enter') checkPassword()">
+            <button class="login-btn" onclick="checkPassword()">Login</button>
+        </div>
+    </div>
+    
+    <!-- Main Dashboard (hidden initially) -->
+    <div id="mainDashboard" style="display: none;">
     <div class="header">
         <h1>🎮 WearGB Feedback Dashboard</h1>
         <p>Real-time feedback from users</p>
@@ -313,6 +396,7 @@
     </div>
     
     <button class="export-btn" onclick="exportToJSON()">📥 Export JSON</button>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -508,8 +592,51 @@
             renderFeedback();
         });
         
-        // Initialize
-        loadFeedback();
+        // Password protection
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        
+        async function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const hashedPassword = await hashPassword(password);
+            
+            // Check against the hash of "kanda1004"
+            const correctHash = '01bf9fdcfab32af44f181adb638ed806e9a3cd2c1b42aa292ffe6c662c51bcfe';
+            
+            if (hashedPassword === correctHash) {
+                // Password correct - show dashboard
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                
+                // Store in sessionStorage so it persists during the session
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                
+                // Initialize feedback loading
+                loadFeedback();
+            } else {
+                // Password incorrect
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+        
+        // Check if already authenticated in this session
+        window.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('adminAuthenticated') === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                loadFeedback();
+            } else {
+                document.getElementById('passwordInput').focus();
+            }
+        });
     </script>
 </body>
 </html>
