@@ -11,13 +11,15 @@
 ```json
 {
   "rules": {
-    "rom-sessions": {
+    "url-sessions": {
       ".read": true,
-      ".write": true
+      ".write": true,
+      ".indexOn": ["timestamp", "createdAt"]
     },
     "public-feedback": {
       ".read": true,
-      ".write": true
+      ".write": true,
+      ".indexOn": ["timestamp_millis", "timestamp"]
     },
     "public-feedback-test": {
       ".read": true,
