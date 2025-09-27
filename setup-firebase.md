@@ -1,12 +1,20 @@
 # Firebase Setup Instructions
 
-## Update Firebase Realtime Database Rules
+## IMPORTANT: Make sure you're in Realtime Database, NOT Firestore!
+
+### Finding the Right Place:
 
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Select the **weargb** project
-3. Go to **Realtime Database** in the left menu
-4. Click on the **Rules** tab
-5. Replace the existing rules with:
+3. In the left sidebar, look for **"Realtime Database"** (NOT "Cloud Firestore")
+   - The icon looks like a lightning bolt ⚡
+   - It's usually below "Cloud Firestore" in the menu
+4. Click on **Realtime Database**
+5. At the top of the page, you'll see tabs: **Data | Rules | Backups | Usage**
+6. Click on the **Rules** tab
+7. You should see a JSON editor that starts with `{"rules":`
+8. Select ALL the text in the editor (Ctrl+A or Cmd+A)
+9. Delete it and paste this instead:
 
 ```json
 {
