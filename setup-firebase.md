@@ -19,17 +19,13 @@
 ```json
 {
   "rules": {
-    ".read": false,
-    ".write": false,
     "url-sessions": {
       ".read": true,
-      ".write": true,
-      ".indexOn": ["timestamp", "createdAt"]
+      ".write": true
     },
     "public-feedback": {
       ".read": true,
-      ".write": true,
-      ".indexOn": ["timestamp_millis", "timestamp"]
+      ".write": true
     },
     "public-feedback-test": {
       ".read": true,
