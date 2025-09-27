@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "rom-sessions": {
+      ".read": true,
+      ".write": true
+    },
+    "public-feedback": {
+      ".read": true,
+      ".write": true
+    },
+    "public-feedback-test": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
