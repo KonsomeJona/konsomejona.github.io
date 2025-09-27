@@ -326,8 +326,8 @@
             databaseURL: "https://weargb-default-rtdb.firebaseio.com",
             projectId: "weargb",
             storageBucket: "weargb.firebasestorage.app",
-            messagingSenderId: "480332250386",
-            appId: "1:480332250386:web:abc123def456"
+            messagingSenderId: "480332250386"
+            // Note: appId is not required for anonymous web access
         };
         
         // Initialize Firebase
@@ -340,7 +340,7 @@
         
         // Load feedback from Firebase
         function loadFeedback() {
-            const feedbackRef = database.ref('feedback');
+            const feedbackRef = database.ref('public-feedback');
             
             feedbackRef.on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -475,7 +475,7 @@
         // Delete feedback
         function deleteFeedback(id) {
             if (confirm('Are you sure you want to delete this feedback?')) {
-                database.ref(`feedback/${id}`).remove();
+                database.ref(`public-feedback/${id}`).remove();
             }
         }
         

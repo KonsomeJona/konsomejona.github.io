@@ -101,8 +101,8 @@
                 databaseURL: "https://weargb-default-rtdb.firebaseio.com",
                 projectId: "weargb",
                 storageBucket: "weargb.firebasestorage.app",
-                messagingSenderId: "480332250386",
-                appId: "1:480332250386:web:abc123def456"
+                messagingSenderId: "480332250386"
+                // Note: appId is not required for anonymous web access
             };
             
             log('Initializing Firebase with config: ' + JSON.stringify(firebaseConfig, null, 2));
@@ -143,7 +143,7 @@
                     message: 'Test write from web'
                 };
                 
-                await database.ref('feedback-test').push(testData);
+                await database.ref('public-feedback-test').push(testData);
                 
                 document.getElementById('write-status').textContent = 'Allowed ✓';
                 document.querySelectorAll('.test-item')[3].className = 'test-item success';
@@ -156,7 +156,7 @@
                 if (error.code === 'PERMISSION_DENIED') {
                     log('Permission denied. You need to update Firebase Realtime Database rules.', 'error');
                     log('Go to Firebase Console > Realtime Database > Rules and set:', 'info');
-                    log('{\n  "rules": {\n    "feedback": {\n      ".read": true,\n      ".write": true\n    },\n    "feedback-test": {\n      ".read": true,\n      ".write": true\n    }\n  }\n}', 'info');
+                    log('{\n  "rules": {\n    "public-feedback": {\n      ".read": true,\n      ".write": true\n    },\n    "public-feedback-test": {\n      ".read": true,\n      ".write": true\n    }\n  }\n}', 'info');
                 }
             }
         }
@@ -164,7 +164,7 @@
         async function testRead() {
             log('Testing read permission...');
             try {
-                const snapshot = await database.ref('feedback').limitToLast(1).once('value');
+                const snapshot = await database.ref('public-feedback').limitToLast(1).once('value');
                 const data = snapshot.val();
                 
                 document.getElementById('read-status').textContent = 'Allowed ✓';

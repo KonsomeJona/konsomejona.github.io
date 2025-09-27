@@ -235,8 +235,8 @@
             databaseURL: "https://weargb-default-rtdb.firebaseio.com",
             projectId: "weargb",
             storageBucket: "weargb.firebasestorage.app",
-            messagingSenderId: "480332250386",
-            appId: "1:480332250386:web:abc123def456"
+            messagingSenderId: "480332250386"
+            // Note: appId is not required for anonymous web access
         };
         
         // Initialize Firebase
@@ -292,8 +292,8 @@
             errorMsg.style.display = 'none';
             
             try {
-                // Submit to Firebase
-                await database.ref('feedback').push(feedbackData);
+                // Submit to Firebase - using public-feedback path for anonymous writes
+                await database.ref('public-feedback').push(feedbackData);
                 
                 // Show success
                 loading.style.display = 'none';
