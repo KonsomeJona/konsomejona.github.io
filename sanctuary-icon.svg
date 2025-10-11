@@ -1,0 +1,89 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient sky -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5B9BD5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B4D7F1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF4A3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD966;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B8E7F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4A6B5E;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="url(#skyGradient)"/>
+
+  <!-- Sun -->
+  <circle cx="380" cy="120" r="60" fill="url(#sunGradient)"/>
+
+  <!-- Sun rays -->
+  <g opacity="0.6">
+    <line x1="380" y1="40" x2="380" y2="70" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="460" y1="120" x2="430" y2="120" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="300" y1="120" x2="330" y2="120" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="380" y1="200" x2="380" y2="170" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="432" y1="68" x2="410" y2="90" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="328" y1="172" x2="350" y2="150" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="432" y1="172" x2="410" y2="150" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+    <line x1="328" y1="68" x2="350" y2="90" stroke="#FFF4A3" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Back mountain -->
+  <path d="M 0 450 L 150 250 L 300 380 L 512 200 L 512 512 L 0 512 Z" fill="#7A9D8F" opacity="0.7"/>
+
+  <!-- Middle mountain -->
+  <path d="M 50 512 L 200 280 L 350 420 L 512 280 L 512 512 Z" fill="#6B8E7F"/>
+
+  <!-- Front mountain with gradient -->
+  <path d="M 0 512 L 160 300 L 256 400 L 350 320 L 450 420 L 512 360 L 512 512 Z" fill="url(#mountainGradient)"/>
+
+  <!-- Snow caps on mountains -->
+  <path d="M 160 300 L 180 320 L 140 320 Z" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M 256 400 L 270 415 L 242 415 Z" fill="#FFFFFF" opacity="0.8"/>
+  <path d="M 350 320 L 365 335 L 335 335 Z" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Sanctuary building (temple/house) -->
+  <g transform="translate(206, 360)">
+    <!-- Building base -->
+    <rect x="0" y="20" width="100" height="80" fill="#8B4513" rx="4"/>
+
+    <!-- Roof -->
+    <path d="M -10 20 L 50 -10 L 110 20 Z" fill="#CD853F"/>
+    <path d="M -5 20 L 50 -5 L 105 20 Z" fill="#DEB887"/>
+
+    <!-- Door -->
+    <rect x="35" y="55" width="30" height="45" fill="#654321" rx="4"/>
+    <circle cx="60" cy="77" r="2" fill="#FFD700"/>
+
+    <!-- Windows -->
+    <rect x="10" y="35" width="18" height="18" fill="#87CEEB" rx="2"/>
+    <rect x="72" y="35" width="18" height="18" fill="#87CEEB" rx="2"/>
+
+    <!-- Window cross bars -->
+    <line x1="19" y1="35" x2="19" y2="53" stroke="#654321" stroke-width="1"/>
+    <line x1="10" y1="44" x2="28" y2="44" stroke="#654321" stroke-width="1"/>
+    <line x1="81" y1="35" x2="81" y2="53" stroke="#654321" stroke-width="1"/>
+    <line x1="72" y1="44" x2="90" y2="44" stroke="#654321" stroke-width="1"/>
+  </g>
+
+  <!-- Trees -->
+  <g opacity="0.8">
+    <!-- Left tree -->
+    <polygon points="130,450 140,480 120,480" fill="#2D5016"/>
+    <polygon points="125,470 145,500 105,500" fill="#2D5016"/>
+    <rect x="137" y="500" width="6" height="12" fill="#654321"/>
+
+    <!-- Right tree -->
+    <polygon points="380,450 390,480 370,480" fill="#2D5016"/>
+    <polygon points="375,470 395,500 355,500" fill="#2D5016"/>
+    <rect x="387" y="500" width="6" height="12" fill="#654321"/>
+  </g>
+
+  <!-- Ground/Grass -->
+  <ellipse cx="256" cy="505" rx="200" ry="15" fill="#5A7C3E" opacity="0.5"/>
+</svg>
