@@ -452,6 +452,58 @@ h3 {
     text-decoration: none;
 }
 
+/* Header Buttons Container */
+.header-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-left: 16px;
+}
+
+/* Play Store Button */
+.playstore-button {
+    display: inline-block;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 100px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--md-sys-elevation-level1);
+    position: relative;
+    overflow: hidden;
+}
+
+.playstore-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--md-sys-color-on-primary);
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.playstore-button:hover {
+    box-shadow: var(--md-sys-elevation-level2);
+    color: var(--md-sys-color-on-primary);
+    text-decoration: none;
+}
+
+.playstore-button:hover::before {
+    opacity: var(--md-sys-state-hover-opacity);
+}
+
+.playstore-button span {
+    margin-right: 6px;
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
 /* Support Button */
 .support-button {
     display: inline-block;
@@ -462,7 +514,6 @@ h3 {
     border-radius: 100px;
     font-weight: 500;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-left: 16px;
     box-shadow: var(--md-sys-elevation-level1);
 }
 
@@ -600,6 +651,18 @@ footer .container {
         flex-wrap: wrap;
         gap: 1rem;
         justify-content: center;
+    }
+
+    .header-buttons {
+        margin-left: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .playstore-button,
+    .support-button {
+        font-size: 0.9rem;
+        padding: 6px 12px;
     }
 
     .app-grid {
