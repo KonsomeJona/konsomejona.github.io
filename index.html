@@ -8,167 +8,9 @@
     <title>Takohi - Professional Android Apps</title>
     <link rel="stylesheet" href="style.css">
     <link href="css/bootstrap.css" rel="stylesheet">
-    <style>
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .app-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-        
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .app-icon {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1rem;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .app-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .platform-badge {
-            display: inline-block;
-            background: #4CAF50;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin: 0.25rem;
-        }
-        
-        .platform-badge.wearos { background: #1976D2; }
-        .platform-badge.mobile { background: #FF9800; }
-        .platform-badge.game { background: #9C27B0; }
-        .platform-badge.wellness { background: #4CAF50; }
-        .platform-badge.utility { background: #607D8B; }
-        .platform-badge.emulator { background: #FF5722; }
-        
-        .play-button {
-            display: inline-block;
-            background: #01875F;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-top: 1rem;
-            transition: background 0.3s ease;
-        }
-        
-        .play-button:hover {
-            background: #016A4D;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .mono-repo-link {
-            background: #333;
-            color: white;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-left: 1rem;
-            transition: background 0.3s ease;
-        }
-        
-        .mono-repo-link:hover {
-            background: #555;
-            color: white;
-            text-decoration: none;
-        }
-        
-        .developer-stats {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            text-align: center;
-        }
-        
-        .stat-item {
-            display: inline-block;
-            margin: 0 1rem;
-        }
-        
-        .stat-number {
-            display: block;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1976D2;
-        }
-        
-        .legacy-projects {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-        }
-        
-        .legacy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        
-        .legacy-card {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        .legacy-card img {
-            max-width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        
-        .support-button {
-            display: inline-block;
-            background: #FFDD00;
-            color: #000;
-            padding: 0.5rem 1rem;
-            text-decoration: none;
-            border-radius: 20px;
-            font-weight: bold;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-left: 1rem;
-        }
-        
-        .support-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 221, 0, 0.4);
-            color: #000;
-            text-decoration: none;
-        }
-        
-        .support-button span {
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols for Material 3 icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
     <header>
@@ -200,7 +42,7 @@
             <div class="developer-stats">
                 <h3>Development Portfolio Stats</h3>
                 <div class="stat-item">
-                    <span class="stat-number">8</span>
+                    <span class="stat-number">10+</span>
                     <span>Published Apps</span>
                 </div>
                 <div class="stat-item">
@@ -230,7 +72,7 @@
                     <p><strong>Tron-Inspired WearOS Game</strong></p>
                     <p>A motorcycle light cycle game optimized for WearOS with gesture controls, AI opponents, and 6 game modes including multiplayer and power-up battles.</p>
                     <p><em>Package: me.takohi.tronwear</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Sophisticated AI with multiple difficulty levels</li>
                         <li>Circular map layout for round watch displays</li>
                         <li>Multi-language support (15+ languages)</li>
@@ -241,18 +83,18 @@
                     </a>
                 </div>
 
-                <!-- MindfulBreath -->
+                <!-- ZenBreath - Mindful Breathing -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="mindfulbreath-icon.png" alt="MindfulBreath">
+                        <img src="mindfulbreath-icon.png" alt="ZenBreath">
                     </div>
                     <div class="platform-badge wearos">WearOS</div>
                     <div class="platform-badge wellness">Wellness</div>
-                    <h3>MindfulBreath</h3>
+                    <h3>ZenBreath - Mindful Breathing</h3>
                     <p><strong>Meditation & Wellness App</strong></p>
                     <p>A meditation and breathing exercises app designed for mindfulness and wellness on WearOS devices with guided sessions and progress tracking.</p>
                     <p><em>Package: com.takohi.mindfulbreath</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Guided breathing exercises with animations</li>
                         <li>Session tracking and progress history</li>
                         <li>Multiple breathing patterns (4-7-8, Box breathing)</li>
@@ -263,19 +105,19 @@
                     </a>
                 </div>
 
-                <!-- HourlyChime -->
+                <!-- Time Speak - Hourly Chime -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="hourlychime-icon.png" alt="HourlyChime">
+                        <img src="hourlychime-icon.png" alt="Time Speak - Hourly Chime">
                     </div>
                     <div class="platform-badge wearos">WearOS</div>
                     <div class="platform-badge mobile">Mobile</div>
                     <div class="platform-badge utility">Utility</div>
-                    <h3>HourlyChime</h3>
+                    <h3>Time Speak - Hourly Chime</h3>
                     <p><strong>Dual-Platform Time Announcer</strong></p>
                     <p>A utility app that announces the current time every hour using text-to-speech synthesis, available for both WearOS and Android mobile.</p>
                     <p><em>Package: me.takohi.hourlychime</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Hourly time announcements with TTS</li>
                         <li>Customizable voice settings and languages</li>
                         <li>Battery optimization and boot persistence</li>
@@ -297,7 +139,7 @@
                     <p><strong>Classic Asteroids Game</strong></p>
                     <p>A retro-inspired space shooter game featuring classic asteroids gameplay with touch and crown controls optimized for WearOS devices.</p>
                     <p><em>Package: com.studiojona.astrowear</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Authentic 80s asteroids gameplay</li>
                         <li>Touch + crown controls optimized for watches</li>
                         <li>Progressive haptic feedback</li>
@@ -308,18 +150,18 @@
                     </a>
                 </div>
 
-                <!-- SkyBird -->
+                <!-- Sky Bird FREE -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="skybird-icon.png" alt="SkyBird">
+                        <img src="skybird-icon.png" alt="Sky Bird FREE">
                     </div>
                     <div class="platform-badge wearos">WearOS</div>
                     <div class="platform-badge game">Game</div>
-                    <h3>SkyBird</h3>
-                    <p><strong>Endless Runner Game</strong></p>
+                    <h3>Sky Bird FREE</h3>
+                    <p><strong>Endless Runner Game (Free Version)</strong></p>
                     <p>A classic endless runner game with Flappy Bird-style mechanics, featuring smooth gameplay and crown control support for WearOS.</p>
                     <p><em>Package: com.flappybird.wear</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Smooth 60 FPS gameplay</li>
                         <li>Touch or crown controls</li>
                         <li>Realistic physics with gravity</li>
@@ -330,19 +172,42 @@
                     </a>
                 </div>
 
-                <!-- StreamWatch IPTV -->
+                <!-- Sky Bird PRO -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="iptv-icon.png" alt="StreamWatch IPTV">
+                        <img src="skybird-icon.png" alt="Sky Bird PRO">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge game">Game</div>
+                    <h3>Sky Bird PRO</h3>
+                    <p><strong>Endless Runner Game (Premium Version)</strong></p>
+                    <p>The premium, ad-free version of Sky Bird with enhanced features and unlimited gameplay for the ultimate WearOS gaming experience.</p>
+                    <p><em>Package: com.flappybird.wear.pro</em></p>
+                    <ul>
+                        <li>Ad-free gaming experience</li>
+                        <li>Smooth 60 FPS gameplay</li>
+                        <li>Touch or crown controls</li>
+                        <li>Enhanced graphics and effects</li>
+                        <li>Optimized for round and square displays</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.flappybird.wear.pro" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- IPTV Watch -->
+                <div class="app-card">
+                    <div class="app-icon">
+                        <img src="iptv-icon.png" alt="IPTV Watch">
                     </div>
                     <div class="platform-badge wearos">WearOS</div>
                     <div class="platform-badge mobile">Mobile</div>
                     <div class="platform-badge utility">Android TV</div>
-                    <h3>StreamWatch IPTV</h3>
+                    <h3>IPTV Watch</h3>
                     <p><strong>Multi-Platform IPTV Streaming</strong></p>
                     <p>Professional IPTV streaming app with QR code input, Firebase sync, and cross-device support for WearOS, Mobile, and Android TV.</p>
                     <p><em>Package: me.takohi.iptv</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>M3U/M3U8 playlist support with smart parsing</li>
                         <li>QR code URL input via web interface</li>
                         <li>Firebase real-time synchronization</li>
@@ -355,24 +220,26 @@
                     </a>
                 </div>
 
-                <!-- WearGB -->
+                <!-- WearGB Pro -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="weargb-icon.png" alt="WearGB">
+                        <img src="weargb-icon.png" alt="WearGB Pro">
                     </div>
                     <div class="platform-badge wearos">WearOS</div>
                     <div class="platform-badge emulator">Emulator</div>
-                    <h3>WearGB</h3>
+                    <h3>WearGB Pro - Retro Emulator</h3>
                     <p><strong>Game Boy Emulator</strong></p>
                     <p>A Game Boy and Game Boy Color emulator designed specifically for WearOS devices with optimized touch controls and crown navigation.</p>
                     <p><em>Package: me.takohi.weargb</em></p>
-                    <ul style="text-align: left; display: inline-block;">
+                    <ul>
                         <li>Game Boy / Game Boy Color emulation</li>
                         <li>Touch controls optimized for watches</li>
                         <li>Crown navigation support</li>
                         <li>Save states and SRAM support</li>
                     </ul>
-                    <p><em>In Development</em></p>
+                    <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
                 </div>
 
                 <!-- Easy Print -->
@@ -390,16 +257,16 @@
                     </a>
                 </div>
 
-                <!-- Mood Light -->
+                <!-- Mood Glow -->
                 <div class="app-card">
                     <div class="app-icon">
-                        <img src="moodlight-icon.svg" alt="Mood Light">
+                        <img src="moodlight-icon.svg" alt="Mood Glow">
                     </div>
                     <div class="platform-badge mobile">Mobile</div>
                     <div class="platform-badge wellness">Wellness</div>
-                    <h3>Mood Light</h3>
+                    <h3>Mood Glow</h3>
                     <p><strong>Ambient Lighting App</strong></p>
-                    <p>Transform your device into a relaxing mood light with customizable colors</p>
+                    <p>Transform your device into a relaxing mood light with customizable colors and calming effects.</p>
                     <a href="https://play.google.com/store/apps/details?id=com.takohi.moodlight" class="play-button" target="_blank">
                         View on Google Play
                     </a>
