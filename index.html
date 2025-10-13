@@ -6,6 +6,7 @@
     <meta name="description" content="Takohi - Professional Android app developer specializing in WearOS games, wellness apps, and productivity tools">
     <meta name="author" content="Takohi">
     <title>Takohi - Professional Android Apps</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;700&display=swap" rel="stylesheet">
@@ -240,6 +241,72 @@
             margin-right: 0.5rem;
             font-size: 1.2rem;
         }
+
+        /* GOAT Apps Styling */
+        .goat-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 900;
+            margin: 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .app-card.goat {
+            border: 3px solid #FFD700;
+            background: linear-gradient(to bottom, #ffffff, #fffef8);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .app-card.goat:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.5);
+        }
+
+        .app-card.goat .app-icon {
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+            border: 2px solid #FFD700;
+        }
+
+        /* Enhanced Page Styling */
+        body {
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+        }
+
+        h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin: 2.5rem 0;
+        }
     </style>
 </head>
 <body>
@@ -307,6 +374,77 @@
 
             <h2>Featured Applications</h2>
             <div class="app-grid">
+                <!-- WearGB Pro - GOAT -->
+                <div class="app-card goat">
+                    <span class="goat-badge">🐐 Flagship</span>
+                    <div class="app-icon">
+                        <img src="weargb-icon.png" alt="WearGB Pro">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge emulator">Emulator</div>
+                    <h3>WearGB Pro - Retro Emulator</h3>
+                    <p><strong>Game Boy Emulator for Your Wrist</strong></p>
+                    <p>The ultimate Game Boy and Game Boy Color emulator designed specifically for WearOS devices with optimized touch controls, crown navigation, and full compatibility.</p>
+                    <p><em>Package: me.takohi.weargb.pro</em></p>
+                    <ul>
+                        <li>Full Game Boy / Game Boy Color emulation</li>
+                        <li>Touch controls optimized for watches</li>
+                        <li>Crown navigation support</li>
+                        <li>Save states and SRAM support</li>
+                        <li>QR code ROM loading via web interface</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- Sky Bird PRO - GOAT -->
+                <div class="app-card goat">
+                    <span class="goat-badge">🐐 Flagship</span>
+                    <div class="app-icon">
+                        <img src="skybird-pro-icon.png" alt="Sky Bird PRO">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge game">Game</div>
+                    <h3>Sky Bird PRO</h3>
+                    <p><strong>Premium Endless Runner Experience</strong></p>
+                    <p>The premium, ad-free version of Sky Bird with enhanced features and unlimited gameplay for the ultimate WearOS gaming experience.</p>
+                    <p><em>Package: com.flappybird.wear.premium</em></p>
+                    <ul>
+                        <li>Ad-free gaming experience</li>
+                        <li>Smooth 60 FPS gameplay</li>
+                        <li>Touch or crown controls</li>
+                        <li>Enhanced graphics and effects</li>
+                        <li>Optimized for round and square displays</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.flappybird.wear.premium" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
+                <!-- ZenBreath - GOAT -->
+                <div class="app-card goat">
+                    <span class="goat-badge">🐐 Flagship</span>
+                    <div class="app-icon">
+                        <img src="mindfulbreath-icon.png" alt="ZenBreath">
+                    </div>
+                    <div class="platform-badge wearos">WearOS</div>
+                    <div class="platform-badge wellness">Wellness</div>
+                    <h3>ZenBreath - Mindful Breathing</h3>
+                    <p><strong>Your Wrist-Worn Meditation Companion</strong></p>
+                    <p>A premium meditation and breathing exercises app designed for mindfulness and wellness on WearOS devices with guided sessions and progress tracking.</p>
+                    <p><em>Package: com.takohi.mindfulbreath</em></p>
+                    <ul>
+                        <li>Guided breathing exercises with animations</li>
+                        <li>Session tracking and progress history</li>
+                        <li>Multiple breathing patterns (4-7-8, Box breathing)</li>
+                        <li>WearOS tiles and complications</li>
+                    </ul>
+                    <a href="https://play.google.com/store/apps/details?id=com.takohi.mindfulbreath" class="play-button" target="_blank">
+                        View on Google Play
+                    </a>
+                </div>
+
                 <!-- TronWear -->
                 <div class="app-card">
                     <div class="app-icon">
@@ -325,28 +463,6 @@
                         <li>Haptic feedback and sound effects</li>
                     </ul>
                     <a href="https://play.google.com/store/apps/details?id=me.takohi.tronwear" class="play-button" target="_blank">
-                        View on Google Play
-                    </a>
-                </div>
-
-                <!-- ZenBreath - Mindful Breathing -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="mindfulbreath-icon.png" alt="ZenBreath">
-                    </div>
-                    <div class="platform-badge wearos">WearOS</div>
-                    <div class="platform-badge wellness">Wellness</div>
-                    <h3>ZenBreath - Mindful Breathing</h3>
-                    <p><strong>Meditation & Wellness App</strong></p>
-                    <p>A meditation and breathing exercises app designed for mindfulness and wellness on WearOS devices with guided sessions and progress tracking.</p>
-                    <p><em>Package: com.takohi.mindfulbreath</em></p>
-                    <ul>
-                        <li>Guided breathing exercises with animations</li>
-                        <li>Session tracking and progress history</li>
-                        <li>Multiple breathing patterns (4-7-8, Box breathing)</li>
-                        <li>WearOS tiles and complications</li>
-                    </ul>
-                    <a href="https://play.google.com/store/apps/details?id=com.takohi.mindfulbreath" class="play-button" target="_blank">
                         View on Google Play
                     </a>
                 </div>
@@ -418,29 +534,6 @@
                     </a>
                 </div>
 
-                <!-- Sky Bird PRO -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="skybird-pro-icon.png" alt="Sky Bird PRO">
-                    </div>
-                    <div class="platform-badge wearos">WearOS</div>
-                    <div class="platform-badge game">Game</div>
-                    <h3>Sky Bird PRO</h3>
-                    <p><strong>Endless Runner Game (Premium Version)</strong></p>
-                    <p>The premium, ad-free version of Sky Bird with enhanced features and unlimited gameplay for the ultimate WearOS gaming experience.</p>
-                    <p><em>Package: com.flappybird.wear.premium</em></p>
-                    <ul>
-                        <li>Ad-free gaming experience</li>
-                        <li>Smooth 60 FPS gameplay</li>
-                        <li>Touch or crown controls</li>
-                        <li>Enhanced graphics and effects</li>
-                        <li>Optimized for round and square displays</li>
-                    </ul>
-                    <a href="https://play.google.com/store/apps/details?id=com.flappybird.wear.premium" class="play-button" target="_blank">
-                        View on Google Play
-                    </a>
-                </div>
-
                 <!-- IPTV Watch -->
                 <div class="app-card">
                     <div class="app-icon">
@@ -462,28 +555,6 @@
                         <li>ExoPlayer with adaptive streaming</li>
                     </ul>
                     <a href="https://play.google.com/store/apps/details?id=me.takohi.iptv" class="play-button" target="_blank">
-                        View on Google Play
-                    </a>
-                </div>
-
-                <!-- WearGB Pro -->
-                <div class="app-card">
-                    <div class="app-icon">
-                        <img src="weargb-icon.png" alt="WearGB Pro">
-                    </div>
-                    <div class="platform-badge wearos">WearOS</div>
-                    <div class="platform-badge emulator">Emulator</div>
-                    <h3>WearGB Pro - Retro Emulator</h3>
-                    <p><strong>Game Boy Emulator</strong></p>
-                    <p>A Game Boy and Game Boy Color emulator designed specifically for WearOS devices with optimized touch controls and crown navigation.</p>
-                    <p><em>Package: me.takohi.weargb.pro</em></p>
-                    <ul>
-                        <li>Game Boy / Game Boy Color emulation</li>
-                        <li>Touch controls optimized for watches</li>
-                        <li>Crown navigation support</li>
-                        <li>Save states and SRAM support</li>
-                    </ul>
-                    <a href="https://play.google.com/store/apps/details?id=me.takohi.weargb.pro" class="play-button" target="_blank">
                         View on Google Play
                     </a>
                 </div>
