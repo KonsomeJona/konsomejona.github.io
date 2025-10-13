@@ -168,6 +168,75 @@
             margin-right: 0.5rem;
             font-size: 1.2rem;
         }
+
+        .funding-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .funding-banner h2 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .funding-banner p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+        }
+
+        .funding-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .funding-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .funding-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+        .funding-btn.github-sponsors {
+            background: #EA4AAA;
+            color: white;
+        }
+
+        .funding-btn.buymeacoffee {
+            background: #FFDD00;
+            color: #000;
+        }
+
+        .funding-btn.paypal {
+            background: #0070BA;
+            color: white;
+        }
+
+        .funding-btn.thanksdev {
+            background: #10B981;
+            color: white;
+        }
+
+        .funding-btn span {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -189,6 +258,25 @@
 
     <main>
         <div class="container">
+            <div class="funding-banner">
+                <h2>Support My Development Work</h2>
+                <p>If you enjoy my apps and projects, consider supporting my work through any of these platforms:</p>
+                <div class="funding-buttons">
+                    <a href="https://github.com/sponsors/KonsomeJona" target="_blank" class="funding-btn github-sponsors">
+                        <span>❤️</span> GitHub Sponsors
+                    </a>
+                    <a href="https://buymeacoffee.com/konsomejona" target="_blank" class="funding-btn buymeacoffee">
+                        <span>☕</span> Buy Me a Coffee
+                    </a>
+                    <a href="https://paypal.me/konsomejona" target="_blank" class="funding-btn paypal">
+                        <span>💙</span> PayPal
+                    </a>
+                    <a href="https://thanks.dev/e/gh/konsomejona/dependencies" target="_blank" class="funding-btn thanksdev">
+                        <span>🙏</span> Thanks.dev
+                    </a>
+                </div>
+            </div>
+
             <h1>Professional Android Applications</h1>
             <p class="developer-link">
                 View all apps on <a href="https://play.google.com/store/apps/developer?id=%E8%9B%B8%E7%81%AB" target="_blank">Google Play Store</a>
