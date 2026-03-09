@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Support KonsomeJona / Takohi - Independent Android & WearOS developer creating games, emulators, and wellness apps">
+    <meta name="author" content="Takohi">
+    <title>Support My Work - Takohi / KonsomeJona</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Flex:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        /* Hero Section */
+        .donate-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 4rem 0 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donate-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .donate-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            margin-bottom: 2rem;
+        }
+
+        .profile-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-handle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .profile-bio {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.7;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .profile-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.75);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Donation Section */
+        .donate-section {
+            padding: 3rem 0;
+        }
+
+        .donate-intro {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .donate-intro h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--md-sys-color-on-background);
+        }
+
+        .donate-intro h2::after {
+            display: none;
+        }
+
+        .donate-intro p {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        /* Donation Cards Grid */
+        .donate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .donate-card {
+            background: var(--md-sys-color-surface);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donate-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+        }
+
+        .donate-card-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .donate-card:hover .donate-card-icon {
+            transform: scale(1.1);
+        }
+
+        .donate-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .donate-card p {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+        }
+
+        .donate-card-btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .donate-card-btn:hover {
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* GitHub Sponsors */
+        .donate-card.github-sponsors {
+            border-color: #EA4AAA22;
+        }
+
+        .donate-card.github-sponsors:hover {
+            border-color: #EA4AAA;
+        }
+
+        .donate-card.github-sponsors .donate-card-icon {
+            background: linear-gradient(135deg, #EA4AAA, #d63384);
+            color: white;
+        }
+
+        .donate-card.github-sponsors .donate-card-btn {
+            background: linear-gradient(135deg, #EA4AAA, #d63384);
+            color: white;
+        }
+
+        /* Buy Me a Coffee */
+        .donate-card.buymeacoffee {
+            border-color: #FFDD0022;
+        }
+
+        .donate-card.buymeacoffee:hover {
+            border-color: #FFDD00;
+        }
+
+        .donate-card.buymeacoffee .donate-card-icon {
+            background: linear-gradient(135deg, #FFDD00, #FFB800);
+            color: #000;
+        }
+
+        .donate-card.buymeacoffee .donate-card-btn {
+            background: linear-gradient(135deg, #FFDD00, #FFB800);
+            color: #000;
+        }
+
+        /* PayPal */
+        .donate-card.paypal {
+            border-color: #0070BA22;
+        }
+
+        .donate-card.paypal:hover {
+            border-color: #0070BA;
+        }
+
+        .donate-card.paypal .donate-card-icon {
+            background: linear-gradient(135deg, #0070BA, #003087);
+            color: white;
+        }
+
+        .donate-card.paypal .donate-card-btn {
+            background: linear-gradient(135deg, #0070BA, #003087);
+            color: white;
+        }
+
+        /* Thanks.dev */
+        .donate-card.thanksdev {
+            border-color: #10B98122;
+        }
+
+        .donate-card.thanksdev:hover {
+            border-color: #10B981;
+        }
+
+        .donate-card.thanksdev .donate-card-icon {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        .donate-card.thanksdev .donate-card-btn {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        /* Why Support Section */
+        .why-support {
+            background: var(--md-sys-color-surface-variant);
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+
+        .why-support h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .why-support h2::after {
+            display: none;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .why-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .why-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .why-item h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .why-item p {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Thank You Banner */
+        .thank-you {
+            text-align: center;
+            padding: 3rem 0 1rem;
+        }
+
+        .thank-you p {
+            font-size: 1.2rem;
+            color: var(--md-sys-color-on-surface-variant);
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: var(--md-sys-elevation-level1);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            box-shadow: var(--md-sys-elevation-level2);
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: var(--md-sys-color-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-name {
+                font-size: 1.7rem;
+            }
+
+            .profile-photo {
+                width: 130px;
+                height: 130px;
+            }
+
+            .profile-stats {
+                gap: 1.5rem;
+            }
+
+            .profile-stat-number {
+                font-size: 1.4rem;
+            }
+
+            .donate-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .donate-hero {
+                padding: 3rem 0 2rem;
+            }
+
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="takohi-logo.png" alt="Takohi Logo" class="logo">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Apps</a></li>
+                    <li><a href="donate.html" class="active">Donate</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                </ul>
+                <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank" class="playstore-button">
+                    <span>📱</span> View All Apps
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="donate-hero">
+        <div class="container">
+            <div class="profile-section">
+                <img src="https://github.com/KonsomeJona.png" alt="KonsomeJona" class="profile-photo">
+                <h1 class="profile-name">KonsomeJona</h1>
+                <p class="profile-handle">@KonsomeJona &middot; Takohi</p>
+                <p class="profile-bio">
+                    Independent developer crafting WearOS games, emulators, and wellness apps.
+                    Passionate about bringing great experiences to smartwatches and mobile devices.
+                </p>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">90K+</span>
+                        <span class="profile-stat-label">Downloads</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">10</span>
+                        <span class="profile-stat-label">Apps</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">4+</span>
+                        <span class="profile-stat-label">Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+            <section class="donate-section">
+                <div class="donate-intro">
+                    <h2>Support My Work</h2>
+                    <p>
+                        I build and maintain all my apps as an independent developer. Your support helps me
+                        dedicate more time to creating new features, fixing bugs, and developing new apps
+                        for the community. Every contribution, big or small, makes a real difference.
+                    </p>
+                </div>
+
+                <div class="donate-grid">
+                    <div class="donate-card github-sponsors">
+                        <div class="donate-card-icon">&#10084;&#65039;</div>
+                        <h3>GitHub Sponsors</h3>
+                        <p>Support me directly through GitHub with monthly or one-time sponsorships. Get recognition on my profile.</p>
+                        <a href="https://github.com/sponsors/KonsomeJona" target="_blank" class="donate-card-btn">
+                            Sponsor on GitHub
+                        </a>
+                    </div>
+
+                    <div class="donate-card buymeacoffee">
+                        <div class="donate-card-icon">&#9749;</div>
+                        <h3>Buy Me a Coffee</h3>
+                        <p>Fuel my late-night coding sessions with a coffee. Quick and easy one-time or recurring support.</p>
+                        <a href="https://buymeacoffee.com/konsomejona" target="_blank" class="donate-card-btn">
+                            Buy Me a Coffee
+                        </a>
+                    </div>
+
+                    <div class="donate-card paypal">
+                        <div class="donate-card-icon">&#128153;</div>
+                        <h3>PayPal</h3>
+                        <p>Send a direct contribution via PayPal. Fast, secure, and available worldwide.</p>
+                        <a href="https://paypal.me/konsomejona" target="_blank" class="donate-card-btn">
+                            Donate via PayPal
+                        </a>
+                    </div>
+
+                    <div class="donate-card thanksdev">
+                        <div class="donate-card-icon">&#128591;</div>
+                        <h3>Thanks.dev</h3>
+                        <p>Support the open-source dependencies I maintain. Your contribution helps the entire ecosystem.</p>
+                        <a href="https://thanks.dev/e/gh/konsomejona/dependencies" target="_blank" class="donate-card-btn">
+                            Support on Thanks.dev
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="why-support">
+            <div class="container">
+                <h2>What Your Support Enables</h2>
+                <div class="why-grid">
+                    <div class="why-item">
+                        <span class="why-icon">&#128187;</span>
+                        <h3>New App Development</h3>
+                        <p>Fund the creation of innovative new apps and games for WearOS and Android platforms.</p>
+                    </div>
+                    <div class="why-item">
+                        <span class="why-icon">&#128736;&#65039;</span>
+                        <h3>Continuous Updates</h3>
+                        <p>Keep existing apps running smoothly with regular updates, bug fixes, and new features.</p>
+                    </div>
+                    <div class="why-item">
+                        <span class="why-icon">&#127760;</span>
+                        <h3>Open Source Contributions</h3>
+                        <p>Support my open-source projects like UnityGB, OctoMouse, and other community tools.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="thank-you">
+                <p>
+                    Thank you for considering supporting my work. Whether you use my apps, share them
+                    with friends, or contribute financially, it all means the world to me.
+                </p>
+                <div class="social-links">
+                    <a href="https://github.com/KonsomeJona" target="_blank" class="social-link">
+                        GitHub
+                    </a>
+                    <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank" class="social-link">
+                        Google Play
+                    </a>
+                    <a href="mailto:konsomejona@gmail.com" class="social-link">
+                        Contact
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Takohi. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+                <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank">All Apps</a>
+                <a href="https://github.com/KonsomeJona" target="_blank">GitHub</a>
+                <a href="mailto:konsomejona@gmail.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Update copyright year automatically
+        document.addEventListener('DOMContentLoaded', function() {
+            const year = new Date().getFullYear();
+            document.querySelector('footer p').innerHTML = `&copy; ${year} Takohi. All rights reserved.`;
+        });
+    </script>
+</body>
+</html>
