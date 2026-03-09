@@ -373,6 +373,52 @@
             color: var(--md-sys-color-primary);
         }
 
+        /* Hero Store Buttons */
+        .hero-store-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-store-btn {
+            display: inline-block;
+            padding: 0.85rem 2rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-store-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+        }
+
+        .hero-store-btn.play {
+            background: #01875F;
+            color: white;
+        }
+
+        .hero-store-btn.play:hover {
+            background: #016A4D;
+            color: white;
+        }
+
+        .hero-store-btn.microsoft {
+            background: #0078D4;
+            color: white;
+        }
+
+        .hero-store-btn.microsoft:hover {
+            background: #005FA3;
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .profile-name {
@@ -424,7 +470,10 @@
                     <li><a href="terms-of-service.html">Terms of Service</a></li>
                 </ul>
                 <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank" class="playstore-button">
-                    <span>📱</span> View All Apps
+                    <span>📱</span> Google Play
+                </a>
+                <a href="https://apps.microsoft.com/search/publisher?name=Takopi" target="_blank" class="playstore-button" style="background: #0078D4;">
+                    <span>🪟</span> Microsoft Store
                 </a>
             </nav>
         </div>
@@ -453,6 +502,14 @@
                         <span class="profile-stat-number">4+</span>
                         <span class="profile-stat-label">Rating</span>
                     </div>
+                </div>
+                <div class="hero-store-buttons">
+                    <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank" class="hero-store-btn play">
+                        View All Apps on Google Play
+                    </a>
+                    <a href="https://apps.microsoft.com/search/publisher?name=Takopi" target="_blank" class="hero-store-btn microsoft">
+                        View on Microsoft Store
+                    </a>
                 </div>
             </div>
         </div>
@@ -560,7 +617,8 @@
             <div class="footer-links">
                 <a href="privacy-policy.html">Privacy Policy</a>
                 <a href="terms-of-service.html">Terms of Service</a>
-                <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank">All Apps</a>
+                <a href="https://play.google.com/store/apps/dev?id=5172226523200831099&hl=en" target="_blank">Google Play</a>
+                <a href="https://apps.microsoft.com/search/publisher?name=Takopi" target="_blank">Microsoft Store</a>
                 <a href="https://github.com/KonsomeJona" target="_blank">GitHub</a>
                 <a href="mailto:konsomejona@gmail.com">Contact</a>
             </div>
