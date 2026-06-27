@@ -11,7 +11,9 @@
       "Bash(git commit:*)",
       "Bash(curl:*)",
       "Bash(ls:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:md.takohi.me)"
     ],
     "deny": []
   }
