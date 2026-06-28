@@ -62,6 +62,14 @@ header .container {
     flex-shrink: 0;
 }
 
+.logo-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
 nav {
     display: flex;
     align-items: center;
